@@ -59,6 +59,36 @@ class Proyectos extends BaseController
          $id_proyecto=$row->id_proyecto;
          $subelementos = new SubelementoGastosModel();
          $produccionProceso=$subelementos->sumaSubelementosPorProyecto($id_proyecto);
+         $gastosalariototalarray=$subelementos->gastoSalarioPorProyecto($id_proyecto);
+         //dd($gastosalariototalarray);
+         $totalSalarioCon909=0;
+         //recorro el arreglo que me devuelve la cnsulta sumando el valor de salario909 de cada fila
+        //  for($i=0;$i < count($gastosalariototalarray);$i++)
+        if($gastosalariototalarray!=0)
+        {
+            for($i=0;$i<count($gastosalariototalarray);$i++)
+            {
+            
+            $totalSalarioCon909+=$gastosalariototalarray[$i]['gastosalariocon909'];    
+                    
+                
+                // foreach($gastosalariototalarray[$i] as $array)
+                //     {
+                //         dd($array[1]);
+                        
+                //         $totalSalarioCon909+=$array['gastosalariocon909'];
+                        
+                //     }
+            }
+        }
+        else
+        {
+            $totalSalarioCon909+=0;   
+        }
+        
+         //sumandole el salario ya con 909 a la suma de los otros subelemetos de gasto!=de salario
+         $gastoTotal=$totalSalarioCon909 + $produccionProceso[0]->valor;
+        //  var_dump($gastosalariototal);die;
 
          //$produccionProceso->valor;
         // $icono = base_url() . '/assets/images/descarga.png';
@@ -67,7 +97,7 @@ class Proyectos extends BaseController
         {
           return
           '<a href="' . base_url() . '/Proyectos/descarga_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
-          $'.$produccionProceso[0]->valor.'
+          $'.$gastoTotal.'
            </a>' ;
         }
         else

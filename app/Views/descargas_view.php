@@ -60,7 +60,8 @@
                             </div>
 							<div class="card-footer" >
                             <div id="activity_error"></div>
-							<button id="button2id" name="button2id" type="reset" class="btn btn-danger float-right" ><i class="fa fa-cancel"></i> Cancelar</button>
+							<button id="button2id" name="button2id" type="reset" class="btn btn-danger float-right" onClick="history.go(-1);" >  Cancelar</button>
+             
 							<button id="guardar_descarga" name="guardar_descarga" type="submit" class="btn btn-info guardar_descarga float-right"><i class="fa fa-save"></i>  Guardar</button>
                             </form> 
 					        </div>
