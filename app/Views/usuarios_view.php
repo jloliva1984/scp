@@ -8,9 +8,9 @@
 	<div id="layoutSidenav_content" style="height: 100%">
 					<main>
 						<div class="container-fluid">
-							<h1 class="mt-4">Especialidades</h1>
+							<h1 class="mt-4">Usuarios</h1>
 							<ol class="breadcrumb mb-4">
-								<li class="breadcrumb-item active">Especialidades</li>
+								<li class="breadcrumb-item active">Usuarios</li>
 							</ol>
 						</div>
 						
