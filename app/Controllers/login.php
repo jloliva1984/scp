@@ -15,7 +15,7 @@ class Login extends BaseController
 		$username=$request->getPost('username');
 		$password=$request->getPost('password');
 		
-		
+		var_dump($username);
 		
 		
 		$ldapconfig['host'] = 'vzeus.sc.azcuba.cu';
