@@ -28,10 +28,13 @@ class Proyectos extends BaseController
         //     return site_url('Proyectos/descarga/' . $primaryKey); 
         // }, true);
 
+        
+        
+        
+        $crud->columns(['codigo','descripcion','valor','Prod./Proc.','fecha_fin','descarga']);
+
         $crud->callbackColumn('descarga', array($this, '_INCIDENCIAS'));
-        
-        
-        $crud->columns(['codigo','descripcion','valor','fecha_inicio','fecha_fin','estado','descarga']);
+        $crud->callbackColumn('Prod./Proc.', array($this, '_produccionProceso'));
 
 	    $output = $crud->render();
 
@@ -48,6 +51,29 @@ class Proyectos extends BaseController
            <a href="' . base_url() . '/Proyectos/descarga_show/' . $id_proyecto . '" style="align-content: center">
            <i class="el el-file-edit el-2x"></i>
            </a>' ;
+    }
+    public function _produccionProceso($value, $row)
+    { 
+        $useKint = true;//para debug
+        //sumar todos los elementos de gasto de un proyecto
+         $id_proyecto=$row->id_proyecto;
+         $subelementos = new SubelementoGastosModel();
+         $produccionProceso=$subelementos->sumaSubelementosPorProyecto($id_proyecto);
+
+         //$produccionProceso->valor;
+        // $icono = base_url() . '/assets/images/descarga.png';
+        // return '<a>'.$valor.'</a>';
+        if($produccionProceso!=0)
+        {
+          return
+          '<a href="' . base_url() . '/Proyectos/descarga_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
+          $'.$produccionProceso[0]->valor.'
+           </a>' ;
+        }
+        else
+        {
+            return '0';
+        }
     }
 
     public function descarga_show($id_proyecto)

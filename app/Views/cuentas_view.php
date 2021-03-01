@@ -8,9 +8,9 @@
 	<div id="layoutSidenav_content" style="height: 100%">
 					<main>
 						<div class="container-fluid">
-							<h1 class="mt-4">Proyectos</h1>
+							<h1 class="mt-4">Cuenta 731</h1>
 							<ol class="breadcrumb mb-4">
-								<li class="breadcrumb-item active">Proyectos</li>
+								<li class="breadcrumb-item active">Cuenta 731</li>
 							</ol>
 						</div>
 						
@@ -36,8 +36,4 @@
 
 					</main>
 	</div>
-
-<!-- MODALS -->
-
-	
 <?= $this->endSection() ?>

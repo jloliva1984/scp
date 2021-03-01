@@ -42,5 +42,21 @@ class SubelementoGastosModel extends Model
         return $query->getResult();
     }
 
+    public function sumaSubelementosPorProyecto($id_proyecto)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('proyectos');
+
+        $builder->selectSUM('proyectos_subelemento_gastos.valor','valor');
+        $builder->select('proyectos.id_proyecto');
+        $builder->join('proyectos_subelemento_gastos', 'proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto');
+        $builder->join('especialistas', 'proyectos_subelemento_gastos.id_especialista = especialistas.id_especialista');
+        $builder->join('subelemento_gastos', 'proyectos_subelemento_gastos.id_subelemento_gasto = subelemento_gastos.id_subelemento_gasto');
+        $builder->having('proyectos.id_proyecto',$id_proyecto);
+        $query=$builder->get();
+        if($db->affectedRows()>0) { return $query->getResult();} else { return 0;}
+        
+    }
+
 }
 ?>
