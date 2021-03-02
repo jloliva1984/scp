@@ -44,6 +44,7 @@ class SubelementoGastosModel extends Model
 
     public function sumaSubelementosPorProyecto($id_proyecto)
     {
+        //aqui no incluyo el subelemento salario
         $db      = \Config\Database::connect();
         $builder = $db->table('proyectos');
 
@@ -52,9 +53,34 @@ class SubelementoGastosModel extends Model
         $builder->join('proyectos_subelemento_gastos', 'proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto');
         $builder->join('especialistas', 'proyectos_subelemento_gastos.id_especialista = especialistas.id_especialista');
         $builder->join('subelemento_gastos', 'proyectos_subelemento_gastos.id_subelemento_gasto = subelemento_gastos.id_subelemento_gasto');
-        $builder->having('proyectos.id_proyecto',$id_proyecto);
+        $builder->where('proyectos.id_proyecto',$id_proyecto);
+        $builder->where('subelemento_gastos.nombre!=','salario');
         $query=$builder->get();
-        if($db->affectedRows()>0) { return $query->getResult();} else { return 0;}
+        if($builder->countAllResults()>0) { return $query->getResult();} else { return 0;}
+        
+    }
+
+    public function gastoSalarioPorProyecto($id_proyecto)
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        especialistas.salario_diario,
+        especialistas.salario_diario*proyectos_subelemento_gastos.valor as gastosalario,
+        (especialistas.salario_diario*proyectos_subelemento_gastos.valor)*0.0909 as vacaciones,
+        (especialistas.salario_diario*proyectos_subelemento_gastos.valor)*0.0909+ (especialistas.salario_diario*proyectos_subelemento_gastos.valor) as gastosalariocon909,
+        proyectos_subelemento_gastos.valor,
+        subelemento_gastos.nombre,
+        especialistas.nombre_completo
+        FROM
+        proyectos
+        Inner Join proyectos_subelemento_gastos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
+        Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
+        Inner Join especialistas ON especialistas.id_especialista = proyectos_subelemento_gastos.id_especialista
+        WHERE
+        proyectos.id_proyecto =  '$id_proyecto' AND
+        subelemento_gastos.nombre =  'salario'
+        ");
+        if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
         
     }
 
