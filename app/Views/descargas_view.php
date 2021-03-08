@@ -18,6 +18,23 @@
                                                   <i class="fa fa-plus-circle">Agregar</i>
                                      </button>
                                    </div>
+                                   <table id="formulario_insercion" class="table table-striped table-hover table-sm" width="100%" cellspacing="0">
+                                   <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>
+                                                <div class="text-right">
+                                                  <button type="button" name="add_descarga" id="add_descarga" class="btn btn-success btn-sm add_descarga ">
+                                                    <i class="fa fa-plus-circle">Agregar</i>
+                                                    </button>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                   </table>
                                     <table class="table table-striped table-hover table-sm" id="descargas" name="descargas" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
@@ -33,7 +50,7 @@
                                         <tr>
 											<td><?= $dato->nombre ?></td>
 											<td><?= $dato->nombre_completo ?></td>
-											<td class="act-price"><?= $dato->valor ?></td>
+											<td class="valor"><?= $dato->valor ?></td>
 											<td class=""><?= $dato->fecha ?></td>
 
                                             <td><button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato->id_proyectos_subelemento_gastos ?>" id="<?= $dato->id_proyectos_subelemento_gastos ?>" onclick="eliminar_descarga(<?= $dato->id_proyectos_subelemento_gastos ?>)"> <i class="fa fa-minus-circle"></i>
@@ -44,10 +61,11 @@
 
                                         <tfoot>
                                             <tr>
-                                            <th>Subelemento de Gasto</th>
-                                                <th>Especialista</th>
-                                                <th>Valor</th>
-                                                <th>Fecha</th>
+                                            <th>Total</th>
+                                                <th></th>
+                                                <th> <strong id="monto">0</strong></th>
+                                                <th></th>
+                                                <th></th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -60,13 +78,16 @@
                             </div>
 							<div class="card-footer" >
                             <div id="activity_error"></div>
+              <span id="monto" class="badge badge-info monto">0</span>
 							<button id="button2id" name="button2id" type="reset" class="btn btn-danger float-right" onClick="history.go(-1);" >  Cancelar</button>
-             
+              
 							<button id="guardar_descarga" name="guardar_descarga" type="submit" class="btn btn-info guardar_descarga float-right"><i class="fa fa-save"></i>  Guardar</button>
                             </form> 
 					        </div>
                         </div>
-	</div>						
+	</div>	
+
+				
     
 <!-- CARGO JQUERY MANUALMENTE EN CADA VISTA DONDE NO USE GORCERY ,PUES ESTE LO CARGA POR SI MISMO-->
 
@@ -99,7 +120,9 @@
 $(document).ready(function()
 {
 
-    //crear_datatable();
+
+    crear_datatable();
+    getValorTotal();
     //descargas
     $(document).on('click', '.add_descarga', function () {
         var html = '';
@@ -124,20 +147,45 @@ $(document).ready(function()
         html += '<option value="<?= $especialista['id_especialista'] ?>"><?= $especialista['nombre_completo']?></option>'
         <?php }}   ?>
         html += '</select></td>';
-
-        html += '<td><input type="text" name="valor[]" id="valor"  size="4" class="form-control valor" placeholder="" ></td>';
+     
+        html += '<td><input type="text" name="valor[]" id="valor"  size="4" class="form-control valor" placeholder="$ o H/D" ></td>';
         html += '<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="fecha[]" id="fecha"  size="2" class="form-control fecha" placeholder="" ></td>';
         html += '<td><button type="button" name="remove_descarga" id="-1" onclick="eliminar_descarga(-1)" class="btn btn-danger btn-sm remove_descarga eliminar "><i class="fa fa-minus-circle"></i>';
         html += '</tr>';
 
-        $('#descargas').prepend(html);
+        // $('#descargas').prepend(html);
+        $('#formulario_insercion').prepend(html);
         crear_select2();
-        
+        //getValorTotal();
         
 
     });
+    getValorTotal() ;
     insert_descarga();//llamando a la funcion que inserta la descarga (esto esta dentro del onready function)
+    
+    //FUNCION PARA VALOR TOTAL
+    function getValorTotal() 
+    {
+     console.log('entrooo');
+      let valor = 0;
+      let total = 0;
+      let objvalor = $('.valor');
+      let monto = $('.monto');
+      //console.log(monto);
+      
+      // let objmaterial=$('.mat-price');
+      objvalor.each(function (e) {
+        valor += parseFloat($(this).text());
+        total += parseFloat($(this).text());
+      });
 
+      //console.log(valor);
+      
+
+      monto.html(valor);
+  
+    }
+    //END FUNCION PARA VALOR TOTAL
     function ajax_delete(boton_eliminar, base_url, fila)
      { 
         // $.ajax({
@@ -164,7 +212,39 @@ $(document).ready(function()
    }
    function crear_datatable()
    {
-    $('#descargas').DataTable({select: true});
+   // $('#descargas').DataTable({});
+
+    jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
+    return this.flatten().reduce( function ( a, b ) {
+      if ( typeof a === 'string' ) {
+        a = a.replace(/[^\d.-]/g, '') * 1;
+      }
+      if ( typeof b === 'string' ) {
+        b = b.replace(/[^\d.-]/g, '') * 1;
+      }
+      var a = parseFloat(a) || 0;
+      var b = parseFloat(b) || 0;
+      return a + b;
+    }, 0);
+  });
+  var table = $('#descargas').DataTable(
+    {
+      drawCallback: function () {
+        var api = this.api();
+        var total = api.column( 2, {"filter":"applied"}).data().sum();
+        $('#monto').html('$ '+total);
+        },
+        language: {
+             search:         "Buscar:",
+            lengthMenu: "Mostrando _MENU_registros por página",
+            zeroRecords: "No hay resultados que mostrar",
+            info: "Mostrando página _PAGE_ de _PAGES_",
+            infoEmpty: "No records available",
+            infoFiltered: "(filtrado de _MAX_ total de registros)"
+                   }
+        
+    });
+
    }
  
    
@@ -207,6 +287,7 @@ function eliminar_descarga(id)
                     if(data=='ok')
                     {
                         fila.remove();
+                        //getValorTotal();
                         swal("Eliminado!", "Registro eliminado satisfactoriamente.", "success");
                         window.location = "<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto; 
                     }
@@ -309,14 +390,22 @@ function insert_descarga() {
         //dataType : 'json',
         success: function (response) {
           $('#descargas').append(response);
+          window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+          getValorTotal();
           limpiarformulario("#descargas_form");
-          getAllPrice();
+          // $('#descargas').DataTable().ajax.reload();//listarNoticias();
+          // window.location = "<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto;
+          // var table = crear_datatable();console.log(table);exit;
+          // table.ajax.reload();
+         // alert('dsffffffffffffffffffff');
+         // $('#monto').INNERhtml('insertando');
+         // getValorTotal();
           // delete_product();
           // $('#estados').append(data);
           //var project_id=$('#project_id').val();
 
-          	 window.location="<?php echo base_url()?>Proyectos/descarga_show/"+id_proyecto;
-
+          	// window.location="<?php echo base_url()?>Proyectos/descarga_show/"+id_proyecto;
+             
 
         }
       });

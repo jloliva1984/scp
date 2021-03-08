@@ -113,7 +113,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logueado como:</div>
-                        Jorge Luis
+                        Jorge Luis<?php echo base_url('/assets/')?>/datatables.bootstrap4.min.js
                     </div>
                 </nav>
             </div>
@@ -143,6 +143,7 @@
         </div>   
             </div>
         </div>
+        
         <!--OOOOOJJJOOOOOO    EN LAS VISTAS DONDE NO USE GROCERY DEBO CARGAR JQUERY MANUALMENTE-->
 
         <!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>-->
@@ -153,8 +154,8 @@
        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-area-demo.js"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-bar-demo.js"></script>-->
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
+        <script src="<?php echo base_url('/assets/')?>/datatables/datatables.bootstrap4.min" crossorigin="anonymous"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/datatables-demo.js"></script>
         <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/brands.js" integrity="sha384-sCI3dTBIJuqT6AwL++zH7qL8ZdKaHpxU43dDt9SyOzimtQ9eyRhkG3B7KMl6AO19" crossorigin="anonymous"></script>
         <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>

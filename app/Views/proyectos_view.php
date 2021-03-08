@@ -35,10 +35,48 @@
 							<script src="<?php echo $file; ?>"></script>
 						<?php endforeach; ?>  
 
+<button type="button" class="btn btn-success openBtn" onclick="prueba(1)">Open Modal</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Modal with Dynamic Content</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 					</main>
 	</div>
 
 <!-- MODALS -->
+<!-- Trigger the modal with a button -->
+
+<script language="javascript">
+$(document).ready(function()
+{
+	alert('ducumento listo');
+// 	function prueba(param)
+// 	{
+// 		alert (param);
+// 	}
+// 	$('.openBtn').on('click',function(){alert('ddfgdfgdfg');
+//     $('.modal-body').html('content.html',function(){
+//         $('#myModal').modal({show:true});
+//     });
+// });
+
+}
+</script>
 
 	
 <?= $this->endSection() ?>

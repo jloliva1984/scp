@@ -21,6 +21,7 @@ class Proyectos extends BaseController
         $crud->setTable('proyectos');
         $crud->setSubject('Proyectos');
         $crud->setTexteditor(['descripcion']);
+        $crud->fieldType('estado', 'hidden',1);
        
         $crud->setRead();
         //$crud->setActionButton('Descarga', "$imgDescarga", 'Proyectos/descarga');
@@ -31,10 +32,11 @@ class Proyectos extends BaseController
         
         
         
-        $crud->columns(['codigo','descripcion','valor','Prod./Proc.','fecha_fin','descarga']);
+        $crud->columns(['codigo','descripcion','valor','Prod./Proc.','fecha_fin','descarga','Desglose']);
 
         $crud->callbackColumn('descarga', array($this, '_INCIDENCIAS'));
         $crud->callbackColumn('Prod./Proc.', array($this, '_produccionProceso'));
+        $crud->callbackColumn('Desglose', array($this, '_desglose'));
 
 	    $output = $crud->render();
 
@@ -52,6 +54,17 @@ class Proyectos extends BaseController
            <i class="el el-file-edit el-2x"></i>
            </a>' ;
     }
+    public function _desglose($value, $row)
+    {
+        $id_proyecto=$row->id_proyecto;
+         $icono = base_url() . '/assets/images/descarga.png';
+         
+          return
+          '
+           <a href="' . base_url() . '/Proyectos/desglose_show/' . $id_proyecto . '" style="align-content: center">
+           <i class="fas fa-layer-group fa-2x"></i>
+           </a>' ;
+    }
     public function _produccionProceso($value, $row)
     { 
         $useKint = true;//para debug
@@ -59,8 +72,9 @@ class Proyectos extends BaseController
          $id_proyecto=$row->id_proyecto;
          $subelementos = new SubelementoGastosModel();
          $produccionProceso=$subelementos->sumaSubelementosPorProyecto($id_proyecto);
+         //dd($produccionProceso);
          $gastosalariototalarray=$subelementos->gastoSalarioPorProyecto($id_proyecto);
-         //dd($gastosalariototalarray);
+         dd($gastosalariototalarray);
          $totalSalarioCon909=0;
          //recorro el arreglo que me devuelve la cnsulta sumando el valor de salario909 de cada fila
         //  for($i=0;$i < count($gastosalariototalarray);$i++)
@@ -88,7 +102,7 @@ class Proyectos extends BaseController
         
          //sumandole el salario ya con 909 a la suma de los otros subelemetos de gasto!=de salario
          $gastoTotal=$totalSalarioCon909 + $produccionProceso[0]->valor;
-        //  var_dump($gastosalariototal);die;
+        //   var_dump($gastoTotal);die;
 
          //$produccionProceso->valor;
         // $icono = base_url() . '/assets/images/descarga.png';
@@ -98,7 +112,9 @@ class Proyectos extends BaseController
           return
           '<a href="' . base_url() . '/Proyectos/descarga_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
           $'.$gastoTotal.'
-           </a>' ;
+          <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Subelementos de gasto + Salario + 9.09"> $'.$gastoTotal.'</button>
+          <!-- Botón -->
+          </a>' ;
         }
         else
         {
@@ -148,35 +164,82 @@ class Proyectos extends BaseController
            {
             $validation =  \Config\Services::validation();
 		    $validation->setRules(['subelementos' => 'required|integer|greater_than[0]','especialistas' => 'required|integer|greater_than[0]','valor' => 'required','fecha' => 'required']);   
-            $html='';   
+            $html[0]=''; 
+            $htmlfilatotales='';
+            $total=0;  
             for($count=0;$count<count($subelemento);$count++)
             {
-                $proyecto = new ProyectosModel(); 
-                $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count],$valor[$count],$fecha[$count]);
-
+                $subelem=new SubelementoGastosModel();
+                $subelem=$subelem->find($subelemento[$count]);
+                $subelem=$subelem['nombre'];  
+                $proyecto = new ProyectosModel();
+                //verificar si el subelemento es salario,si lo es coger el esp. buscar su salario ,multiplicarlo y ese es el valor
+                if($subelem=='Salario')
+                {
+                $especialistas = new EspecialistasModel();  
+                $esp=$especialistas->find($especialista[$count]);
+                $valorEsp=($esp['salario_diario'])*$valor[$count];
+                
+                $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count], $valorEsp,$fecha[$count]);
+               
                 if($inserted_id !=0)//buscando los datos de la descarga una vez insertada para mostrarla concatenando la variale html
-				{
-                 $subelementos = new SubelementoGastosModel();
-                 $datos= $subelementos->SubElementosGastosxId($inserted_id);
-                 //var_dump($datos);die;
-                 $html.='<tr><td>'.$datos[0]->nombre.'</td><td>'.$datos[0]->nombre_completo.'</td><td class="mat-price">'.$datos[0]->valor.'</td><td>'.$datos[0]->fecha.'</td><td><button type="button" name="remove_descarga" class="btn btn-danger  btn-sm" value="'.$datos[0]->id_proyectos_subelemento_gastos.'" remove_descarga" id="'.$datos[0]->id_proyectos_subelemento_gastos.'" onclick="eliminar_descarga('.$datos[0]->id_proyectos_subelemento_gastos.')"><i class="fa fa-minus-circle"></i></td></tr>';
- 
-                 //echo($html)	;die;
-				//busco el real total de los materiales de ese proyecto	
-				
-				//$total_real_materiales=$this->proyecto->get_total_materiales_real($project_id);
-				//$total_real_materiales=$total_real_materiales[0]->total_materiales_real;
-				//$html[1]=$total_real_materiales;	
-				}
+                {
+                $subelementos = new SubelementoGastosModel();
+                $datos= $subelementos->SubElementosGastosxId($inserted_id);
+                $html[0].='<tr><td>'.$datos[0]->nombre.'</td><td>'.$datos[0]->nombre_completo.'</td><td class="valor">'.$datos[0]->valor.'</td><td>'.$datos[0]->fecha.'</td><td><button type="button" name="remove_descarga" class="btn btn-danger  btn-sm" value="'.$datos[0]->id_proyectos_subelemento_gastos.'" remove_descarga" id="'.$datos[0]->id_proyectos_subelemento_gastos.'" onclick="eliminar_descarga('.$datos[0]->id_proyectos_subelemento_gastos.')"><i class="fa fa-minus-circle"></i></td></tr>';
+                }
+                }
+                else
+                {
+                    $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count],$valor[$count],$fecha[$count]);
+
+                    if($inserted_id !=0)//buscando los datos de la descarga una vez insertada para mostrarla concatenando la variale html
+                    {
+                    $subelementos = new SubelementoGastosModel();
+                    $datos= $subelementos->SubElementosGastosxId($inserted_id);
+                    $html[0].='<tr><td>'.$datos[0]->nombre.'</td><td>'.$datos[0]->nombre_completo.'</td><td class="valor">'.$datos[0]->valor.'</td><td>'.$datos[0]->fecha.'</td><td><button type="button" name="remove_descarga" class="btn btn-danger  btn-sm" value="'.$datos[0]->id_proyectos_subelemento_gastos.'" remove_descarga" id="'.$datos[0]->id_proyectos_subelemento_gastos.'" onclick="eliminar_descarga('.$datos[0]->id_proyectos_subelemento_gastos.')"><i class="fa fa-minus-circle"></i></td></tr>';
+                    }
+                }
               
             }
+
            }
-           $html=strip_slashes($html);
+           $html=strip_slashes($html[0]);
            //$html = quotes_to_entities($html); 
-           $html = str_replace ('"\"',' ', $html);
+           $html[0] = str_replace ('"\"',' ', $html[0]);
            echo ($html)  ; 
 
         } 
+    }
+
+    public function desglose_show($id_proyecto)
+    {
+        $useKint = true;//para debug
+        //sumar todos los elementos de gasto de un proyecto
+         
+         $subelementos = new SubelementoGastosModel();
+         $produccionProceso=$subelementos->sumaSubelementosPorProyecto($id_proyecto);
+         $gastosalariototalarray=$subelementos->gastoSalarioPorProyecto($id_proyecto);
+         //dd($gastosalariototalarray);
+         $totalSalarioCon909=0;
+         $vacaciones909=0;
+         //recorro el arreglo que me devuelve la cnsulta sumando el valor de salario909 de cada fila
+        //  for($i=0;$i < count($gastosalariototalarray);$i++)
+        if($gastosalariototalarray!=0)
+        {
+            for($i=0;$i<count($gastosalariototalarray);$i++)
+            {
+            
+            $gastosalario+=$gastosalariototalarray[$i]['gastosalario'];    
+            $vacaciones909+=$gastosalariototalarray[$i]['vacaciones'];  
+            }
+        }
+        else
+        {
+            $gastosalario+=0; $vacaciones909+=0;  
+        }
+
+        $gastoTotal=$totalSalarioCon909 + $produccionProceso[0]->valor;
     }
     
    
