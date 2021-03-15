@@ -270,7 +270,15 @@ class Proyectos extends BaseController
 
     public function prorrateo_show()
     {
-        return view('prorrateo_view');
+        var_dump($_POST);die;
+        if(isset($_POST) && $_POST!='')//si hay evio de datos se procesa
+        {
+        echo 'si';
+        }
+        else // si no hay envio de datos muestro la vista inicial
+        {
+          return view('prorrateo_view');
+        }
     }
 
     public function descarga_real()

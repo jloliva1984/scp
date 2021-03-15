@@ -59,10 +59,7 @@
                                         <tr>
                                         <td>
                                           <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" value="<?=$dato->id_proyectos_subelemento_gastos?>">
-                                            <label class="custom-control-label" for="checkDescarga"><?=$dato->id_proyectos_subelemento_gastos?></label>
-
-                                            <input type="checkbox" value=<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" /><label><?=$dato->id_proyectos_subelemento_gastos?></label><br/>
+                                          <input type="checkbox" value=<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" /><br/>
                                           </div>
                                         </td>
 											<td><?= $dato->nombre ?></td>
