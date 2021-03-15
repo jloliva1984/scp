@@ -4,86 +4,47 @@
 <div id="layoutSidenav_content" style="height: 100%">
 <div class="card mb-4">
                             <div class="card-header text-right">
-                               							
-                                <h6 id="id_proyecto" data-id_proyecto='<?= $proyecto['id_proyecto'] ?>'>    
-                                <strong>Proyecto</strong> - <?= $proyecto['descripcion']?> || <strong>Código</strong> - <?= $proyecto['codigo']?>
+                                <?php //var_dump($resultados[0]['codigo']);die;?>							
+                                <h6 id="id_proyecto" data-id_proyecto='<?= $resultados[0]['id_proyecto'] ?>'>    
+                                <strong>Resumen - Proyecto</strong> - <?= $resultados[0]['descripcion']?> || <strong>Código</strong> - <?= $resultados[0]['codigo'] ;?>
 								</h6>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                 <?= \Config\Services::session()->getFlashdata('msg'); //para mostrar confirmacion?>
-                                <form name="descargas_form" action="<?php echo base_url('Proyectos/insertar_descarga')?>" id="descargas_form" method="post" class="descargas_form">
-                                  <div class="text-right"><!--div para el boton agregar-->
-                                     <!-- <button type="button" name="add_descarga" id="add_descarga" class="btn btn-success btn-sm add_descarga ">
-                                                  <i class="fa fa-plus-circle">Agregar</i>
-                                     </button> -->
-                                   </div>
-                                   <table id="formulario_insercion" class="table table-striped table-hover table-sm" width="100%" cellspacing="0">
-                                   <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th>
-                                                <div class="text-right">
-                                                    <button type="button" name="add_descarga" id="add_descarga" class="btn btn-success btn-sm add_descarga ">
-                                                      <!-- <i class="fa fa-plus-circle">+ Agregar</i>
-                                                      <i class="fa fa-plus" aria-hidden="true">agregar</i> -->
-                                                        <strong>+ Agregar</strong>
-                                                    </button>
-                                                    <button type="button" name="descarga_real" id="descarga_real" class="btn btn-warning btn-sm descarga_real ">
-                                                      <!-- <i class="fa fa-plus-circle">+ Agregar</i>
-                                                      <i class="fa fa-plus" aria-hidden="true">agregar</i> -->
-                                                        <strong>Descargar</strong>
-                                                    </button>
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                   </table>
-                                    <table class="table table-striped table-hover table-sm" id="descargas" name="descargas" width="100%" cellspacing="0">
+                       
+                                
+                                    <table class="table table-striped table-hover table-sm" id="resumen" name="resumen" width="100%" cellspacing="0">
                                         <thead>
-                                            <tr>
-                                                <th>Seleccionar</th>
-                                                <th>Subelemento de Gasto</th>
-                                                <th>Especialista</th>
-                                                <th>Valor</th>
-                                                <th>Fecha</th>
-                                                <th>Acciones</th>
-                                                
-                                            </tr>
-                                        </thead>
-                                        <?php if(isset($datos) && $datos!=0){ ?>
-                                        <?php foreach($datos as $dato): ?>
                                         <tr>
-                                        <td>
-                                          <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" value="<?=$dato->id_proyectos_subelemento_gastos?>">
-                                            <label class="custom-control-label" for="checkDescarga"><?=$dato->id_proyectos_subelemento_gastos?></label>
-
-                                            <input type="checkbox" value=<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" /><label><?=$dato->id_proyectos_subelemento_gastos?></label><br/>
-                                          </div>
-                                        </td>
-											<td><?= $dato->nombre ?></td>
-											<td><?= $dato->nombre_completo ?></td>
-											<td class="valor"><?= $dato->valor ?></td>
-											<td class=""><?= $dato->fecha ?></td>
-
-                                            <td><button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato->id_proyectos_subelemento_gastos ?>" id="<?= $dato->id_proyectos_subelemento_gastos ?>" onclick="eliminar_descarga(<?= $dato->id_proyectos_subelemento_gastos ?>)"> <i class="fa fa-minus-circle"></i>
-											</td>
-									    </tr>
-                                        <?php endforeach ?>
-                                        <?php } ?>
+                                            <?php 
+                                            $valor909=0;
+                                            $total=0;
+                                            unset($resultados[0]);//quitando la posicion 0 del resultado que son los datos del proyecto
+                                            foreach($resultados as $subelemento=>$valor)
+                                            {?>
+                                            <th><?= $subelemento ?></th>
+                                            <?php } ?>
+                                            <th>9.09</th>
+                                            <th>Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tr>
+                                            <?php 
+                                            foreach($resultados as $subelemento=>$valor)
+                                            {
+                                             if( $subelemento=='Salario'){ $valor909=$valor*0.0909;} 
+                                              ?>
+                                            <td><?='$ '. $valor;$total+=$valor; ?></td>
+                                            <?php } ?>
+                                            <td><?= round($valor909,2) ?></td>
+                                            <td><?= round($total+$valor909,2) ?></td>
+                                        </tr>
 
                                         <tfoot>
-                                            <tr>
-                                            <th>Total</th>
-                                                <th></th>
-                                                <th></th>
-                                                <th> <strong id="monto">0</strong></th>
-                                                <th></th>
-                                            </tr>
+                                        <td colspan=7><div class="text-left">
+                            <button id="button2id" name="button2id" type="reset" class="btn btn-danger float-right" onclick="history.go(-1);"> Atrás</button>
+                            </div></td>
                                         </tfoot>
                                         <tbody>
                                                                                         
@@ -95,11 +56,8 @@
                             </div>
 							<div class="card-footer" >
                             <div id="activity_error"></div>
-              <span id="monto" class="badge badge-info monto">0</span>
-							<button id="button2id" name="button2id" type="reset" class="btn btn-danger float-right" onClick="history.go(-1);" >  Cancelar</button>
               
-							<button id="guardar_descarga" name="guardar_descarga" type="submit" class="btn btn-info guardar_descarga float-right"><i class="fa fa-save"></i>  Guardar</button>
-                            </form> 
+                           
 					        </div>
                         </div>
 	</div>	
@@ -117,7 +75,6 @@
 <script type="text/javascript" src="<?php echo base_url('/assets/bootstrap/')?>/js/bootstrap.js"></script>
 <script src="<?php echo base_url('/assets/sweetalert/');?>/js/sweetalert.js"></script>
 <link rel="stylesheet" href="<?php echo base_url('/assets/sweetalert/');?>/css/sweetalert.css" />
-<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
 
 <script language="JavaScript">
@@ -135,386 +92,5 @@
 
 <script language="javascript" >
 
-$(document).ready(function()
-{
-
-
-    crear_datatable();
-    getValorTotal();
-    //descargas
-    $(document).on('click', '.add_descarga', function () {
-        var html = '';
-        html += '<tr>';
-        html += '<td><select name="subelementos[]" id="subelementos" class="form-control subelementos"><option value="0">Subelementos de Gasto</option>';
-        
-        <?php
-        if(isset($subelementos) && $subelementos != 0)
-        {
-        foreach ($subelementos as $subelemento)
-        {?>
-            html += '<option value="<?= $subelemento['id_subelemento_gasto'] ?>"><?= $subelemento['codigo'].' - '.$subelemento['nombre'] ?></option>'
-        <?php }}   ?>
-        html += '</select></td>';
-
-        html += '<td><select name="especialistas[]" id="especialistas" class="form-control especialistas"><option value="0">Especialistas</option>';
-        <?php
-        if(isset($especialistas) && $especialistas != 0)
-        {
-        foreach ($especialistas as $especialista)
-        {?>
-        html += '<option value="<?= $especialista['id_especialista'] ?>"><?= $especialista['nombre_completo']?></option>'
-        <?php }}   ?>
-        html += '</select></td>';
-     
-        html += '<td><input type="text" name="valor[]" id="valor"  size="4" class="form-control valor" placeholder="$ o H/D" ></td>';
-        html += '<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="fecha[]" id="fecha"  size="2" class="form-control fecha" placeholder="" ></td>';
-        html += '<td><button type="button" name="remove_descarga" id="-1" onclick="eliminar_descarga(-1)" class="btn btn-danger btn-sm remove_descarga eliminar "><i class="fa fa-minus-circle"></i>';
-        html += '</tr>';
-
-        // $('#descargas').prepend(html);
-        $('#formulario_insercion').prepend(html);
-        crear_select2();
-        //getValorTotal();
-        
-
-    });
-    getValorTotal() ;
-    insert_descarga();//llamando a la funcion que inserta la descarga (esto esta dentro del onready function)
-    descarga_real();
-    
-    //FUNCION PARA VALOR TOTAL
-    function getValorTotal() 
-    {
-     console.log('entrooo');
-      let valor = 0;
-      let total = 0;
-      let objvalor = $('.valor');
-      let monto = $('.monto');
-      //console.log(monto);
-      
-      // let objmaterial=$('.mat-price');
-      objvalor.each(function (e) {
-        valor += parseFloat($(this).text());
-        total += parseFloat($(this).text());
-      });
-
-      //console.log(valor);
-      
-
-      monto.html(valor);
-  
-    }
-    //END FUNCION PARA VALOR TOTAL
-    function ajax_delete(boton_eliminar, base_url, fila)
-     { 
-        // $.ajax({
-        //     url: base_url + boton_eliminar.closest('button').attr('value'),
-        //     method: "POST",
-        // //				data:form_data,
-        //     success: function (data) {
-        //     if (data == 'ok') {
-        //         fila.remove();
-        //         getAllPrice();
-        //     }
-        //     else {
-        //         alert(' Error al eliminar el registro.');
-        //     }
-
-        //     }
-        // });
-    }
-
-    function crear_select2()
-     {
-      $('#subelementos').select2();
-      $('#especialistas').select2();
-   }
-   function crear_datatable()
-   {
-   // $('#descargas').DataTable({});
-
-    jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
-    return this.flatten().reduce( function ( a, b ) {
-      if ( typeof a === 'string' ) {
-        a = a.replace(/[^\d.-]/g, '') * 1;
-      }
-      if ( typeof b === 'string' ) {
-        b = b.replace(/[^\d.-]/g, '') * 1;
-      }
-      var a = parseFloat(a) || 0;
-      var b = parseFloat(b) || 0;
-      return a + b;
-    }, 0);
-  });
-  var table = $('#descargas').DataTable(
-    {
-      drawCallback: function () {
-        var api = this.api();
-        var total = api.column( 3, {"filter":"applied"}).data().sum();
-        $('#monto').html('$ '+total);
-        },
-        language: {
-             search:         "Buscar:",
-            lengthMenu: "Mostrando _MENU_registros por página",
-            zeroRecords: "No hay resultados que mostrar",
-            info: "Mostrando página _PAGE_ de _PAGES_",
-            infoEmpty: "No records available",
-            infoFiltered: "(filtrado de _MAX_ total de registros)"
-                   }
-        
-    });
-
-   }
- 
-   
-
-});
-
-function eliminar_descarga(id) 
-  {
-      var id_proyecto = $('#id_proyecto').attr('data-id_proyecto');
-      var boton_eliminar = $('#' + id);
-      var base_url = '<?php echo base_url()?>';
-      var base_url = base_url + '/Proyectos/delete_descarga/'+id;
-      var fila = boton_eliminar.closest('tr');
-      //console.log(base_url);
-       if (id == -1)
-       {     boton_eliminar.closest('tr').remove();}
-       else   
-       {
-        swal({
-
-                title: "Esta seguro que desea eliminar este registro?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Sí",
-                cancelButtonText: "No",
-                closeOnConfirm: true,
-                closeOnCancel: true
-                },
-                function(isConfirm) {
-                if (isConfirm) {
-                $.ajax({
-   
-                    url : base_url,
-                    method: "POST",
-                    //dataType: "JSON",
-                    headers: {'X-Requested-With': 'XMLHttpRequest'},
-                    success: function(data)
-                    {
-                    if(data=='ok')
-                    {
-                        fila.remove();
-                        //getValorTotal();
-                        swal("Eliminado!", "Registro eliminado satisfactoriamente.", "success");
-                        window.location = "<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto; 
-                    }
-                    //    location.reload();
-                    },
-                    error: function (jqXHR, textStatus, errorThrown)
-                    {
-                        alert('Error al eliminar los datos');
-                    }
-
-                });
-
-                } else {
-
-                swal("Cancelled", "Your imaginary file is safe :)", "error");
-
-                }
-
-            });
-            // if(confirm('Está seguro que desea eliminar este registro?'))
-            // {
-            //     // ajax delete data from database
-            //     $.ajax({
-            //         url : base_url,
-            //         method: "POST",
-            //         //dataType: "JSON",
-            //         headers: {'X-Requested-With': 'XMLHttpRequest'},
-            //         success: function(data)
-            //         {
-            //         if(data=='ok')
-            //         {
-            //             fila.remove();
-            //             window.location = "<?php echo base_url()?>/Proyectos/descarga_show/" + id; 
-            //         }
-            //         //    location.reload();
-            //         },
-            //         error: function (jqXHR, textStatus, errorThrown)
-            //         {
-            //             alert('Error al eliminar los datos');
-            //         }
-            //     });
-
-            // }
-
-       }
-    }
-
-    //INSERTANDO LAS DESCARGAS Y VALIDANDO LOS DATOS DEL FORMULARIO
-function insert_descarga() {
-  $('#descargas_form').on('submit', function (event) {
-    event.preventDefault();
-    var error = '';
-
-    $('.subelementos').each(function () {
-      var count = 1;
-      if ($(this).val() == '') {
-        error += "<p>Debe seleccionar el subelemento de gasto en la fila " + count + "</p>";
-        return false;
-      }
-      count = count + 1;
-    });
-
-
-    $('.especialistas').each(function () {
-      var count = 1;
-      if ($(this).val() == '') {
-        error += "<p>Debe seleccionar el especiaslita en la fila " + count + "</p>";
-        return false;
-      }
-      count = count + 1;
-    });
-
-    $('#valor').each(function () {
-      var count = 1;
-      if ($(this).val() == '') {
-        error += "<p>Debe especificar el valor en la fila " + count + "</p>";
-        return false;
-      }
-      count = count + 1;
-    });
-    $('.fecha').each(function () {
-      var count = 1;
-      if ($(this).val() == '') {
-        error += "<p>Debe seleccionar la fecha en la fila " + count + "</p>";
-        return false;
-      }
-      count = count + 1;
-    });
-
-    var form_data = $(this).serialize();
-    var base_url = '<?php echo base_url() ?>';
-
-    if (error == '') {
-      var id_proyecto = $('#id_proyecto').attr('data-id_proyecto');
-      
-      $.ajax({
-        url: base_url + '/Proyectos/insertar_descarga/' + id_proyecto,
-        method: "POST",
-        data: form_data,
-        //dataType : 'json',
-        success: function (response) {
-          $('#descargas').append(response);
-          window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
-          getValorTotal();
-          limpiarformulario("#descargas_form");
-        }
-      });
-    }
-    else {
-      $('#activity_error').html('<div class="alert alert-danger">' + error + '</div>');
-    }
-
-
-  });
-}
-
-
-function descarga_real()
-{
-  $('#descarga_real').on('click',function()
-  {
-    var id_proyecto = $('#id_proyecto').attr('data-id_proyecto');
-    var ids = $('[name="checkDescarga[]"]').serializeArray();
-    if(ids!='')
-    {
-   
-    swal({
-
-            title: "Esta seguro que desea descargar estos registros?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonText: "Sí",
-            cancelButtonText: "No",
-            closeOnConfirm: true,
-            closeOnCancel: true
-          },
-function(isConfirm) {
-        if (isConfirm) {
-          $.ajax({
-                type: "POST",
-                dataType: 'json',
-
-                data: {'ids': JSON.stringify($('[name="checkDescarga[]"]').serializeArray())},
-                url: "<?php echo base_url();?>/Proyectos/descarga_real",
-                success : function(data) {
-                  if(data==1)
-                  {
-                    swal("Confirmación!", "Los elementos seleccionados fueron llevados al costo satisfactoriamente.", "success");
-                    window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
-                  }
-
-                }
-            });
-
-        }
-         else {
-          swal("Cancelado", "Se ha cancelado la descarga de los elementos seleccionados :)", "error");
-              }
-
-});
-}
-else
-{ swal("Error", "Debe seleccionar al menos un elemento :)", "error");;}
-
-
-
-
-
-
-  })
-}
-
-
-
-
-function limpiarformulario(formulario) {
-  /* Se encarga de leer todas las etiquetas input del formulario*/
-  $(formulario).find('input').each(function () {
-    switch (this.type) {
-      case 'password':
-      case 'text':
-      case 'hidden':
-        $(this).val('');
-        break;
-      case 'checkbox':
-      case 'radio':
-        this.checked = false;
-    }
-  });
-
-  /* Se encarga de leer todas las etiquetas select del formulario */
-  $(formulario).find('select').each(function () {
-    $("#" + this.id + " option[value=0]").attr("selected", true);
-  });
-  /* Se encarga de leer todas las etiquetas textarea del formulario */
-  $(formulario).find('textarea').each(function () {
-    $(this).val('');
-  });
-
-//	var boton_eliminar=$('#-1');
-//	console.log(boton_eliminar);
-  $(formulario).find('.eliminar').each(function () {
-    var fila = (this).closest('tr');
-    fila.remove();
-  })
-
-
-}
 </script>
 <?= $this->endSection() ?>

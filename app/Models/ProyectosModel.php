@@ -25,7 +25,7 @@ class ProyectosModel extends Model
         if($db->affectedRows()>0){return 1;}else{return 0;}
             
     }
-    public function insert_descarga($id_proyecto,$id_subelemento_gasto,$id_especialista,$valor,$fecha)
+    public function insert_descarga($id_proyecto,$id_subelemento_gasto,$id_especialista,$valor,$fecha,$estado)
     {   
         $db      = \Config\Database::connect();
         $builder = $db->table('proyectos_subelemento_gastos');
@@ -37,6 +37,7 @@ class ProyectosModel extends Model
             'valor' => $valor,
             'fecha'  => $fecha,
             'id_proyecto'  => $id_proyecto,
+            'estado'=>$estado,
         ];
         
         $builder->insert($data);
@@ -49,6 +50,36 @@ class ProyectosModel extends Model
             {
                 return 0;
             }
+    }
+
+
+    public function resumen_proyecto_subelemento($id_proyecto,$id_subelemento)
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        Sum(proyectos_subelemento_gastos.valor) AS valor
+        FROM
+        proyectos_subelemento_gastos
+        Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
+        Inner Join proyectos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
+        WHERE
+        proyectos.id_proyecto =  '$id_proyecto' AND
+        subelemento_gastos.id_subelemento_gasto =  '$id_subelemento'
+        
+        ");
+        if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
+    }
+
+    public function descarga_real($id)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('proyectos_subelemento_gastos');
+        $data = ['estado' => 0];
+        
+        $builder->where('id_proyectos_subelemento_gastos', $id);
+        $builder->update($data);
+
+        if($db->affectedRows()>0){return 1;}else{return 0; }//retorna 1 si la consulta de modificacion fue ok ,0 si no
     }
 
 }

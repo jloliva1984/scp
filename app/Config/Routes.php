@@ -47,6 +47,7 @@ $routes->post('/proyectos/delete_descarga/(:any)','Proyectos::delete_descarga/$1
 
 //$routes->match(['get', 'post'],'/proyectos/delete_descarga', 'Proyectos::delete_descarga');
 $routes->match(['get', 'post'],'/proyectos/insertar_descarga/(:any)', 'Proyectos::insertar_descarga/$1');
+$routes->match(['get', 'post'],'/proyectos/prorrateo', 'Proyectos::prorrateo_show');
 
 //rutas para grocery crud de subelementos de gasto
 $routes->get('/subelementos_gasto','SubElementosGastos::SubElementosGastos_management');

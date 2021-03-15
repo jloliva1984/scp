@@ -67,10 +67,10 @@ class SubelementoGastosModel extends Model
     {
         $db      = \Config\Database::connect();
         $query = $db->query("SELECT
-        especialistas.salario_diario,
-        especialistas.salario_diario*proyectos_subelemento_gastos.valor as gastosalario,
-        (especialistas.salario_diario*proyectos_subelemento_gastos.valor)*0.0909 as vacaciones,
-        (especialistas.salario_diario*proyectos_subelemento_gastos.valor)*0.0909+ (especialistas.salario_diario*proyectos_subelemento_gastos.valor) as gastosalariocon909,
+            especialistas.salario_diario,
+        proyectos_subelemento_gastos.valor as gastosalario,
+        (proyectos_subelemento_gastos.valor)*0.0909 as vacaciones,
+        (proyectos_subelemento_gastos.valor)*0.0909+ (proyectos_subelemento_gastos.valor) as gastosalariocon909,
         proyectos_subelemento_gastos.valor,
         subelemento_gastos.nombre,
         especialistas.nombre_completo

@@ -32,6 +32,7 @@
 
 						
 						<?php foreach($js_files as $file): ?>
+							<?php echo $file.'<br>';?>
 							<script src="<?php echo $file; ?>"></script>
 						<?php endforeach; ?>  
 
@@ -58,24 +59,29 @@
 					</main>
 	</div>
 
+
+	
 <!-- MODALS -->
 <!-- Trigger the modal with a button -->
+
+
+
 
 <script language="javascript">
 $(document).ready(function()
 {
-	alert('ducumento listo');
+//	alert('ducumento listo');
 // 	function prueba(param)
 // 	{
 // 		alert (param);
 // 	}
-// 	$('.openBtn').on('click',function(){alert('ddfgdfgdfg');
-//     $('.modal-body').html('content.html',function(){
-//         $('#myModal').modal({show:true});
-//     });
-// });
+	$('.openBtn').live('click',function(){
+    $('.modal-body').html('content.html',function(){
+        $('#myModal').modal({show:true});
+    });
+ });
 
-}
+})
 </script>
 
 	

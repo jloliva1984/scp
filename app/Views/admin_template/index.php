@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="<?php echo base_url('/assets/admin_template/');?>/fontawesome/css/all.min.css">
         
         <link href="<?php echo base_url('/assets/admin_template/');?>/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
-        <script src="<?php echo base_url('/assets/admin_template/');?>/font-awesome/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="<?php echo base_url('/assets/admin_template/');?>/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
         
     </head>
     <body class="sb-nav-fixed">
@@ -69,10 +69,28 @@
                                     <a class="nav-link" href="<?= base_url() ?>/Especialistas/especialistas_management">Especialistas</a>
                                 </nav>
                             </div>
+
+                            <div class="sb-sidenav-menu-heading">Reportes</div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsReportes" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Reportes
+                                <div class="sb-sidenav-collapse-arrow"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayoutsReportes" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?= base_url() ?>/Proyectos/prorrateo_show">Prorrateo</a>
+                                    <a class="nav-link" href="<?= base_url() ?>/SubElementosGastos/SubElementosGastos_management">Subelementos Gastos</a>
+                                    <a class="nav-link" href="<?= base_url() ?>/Especialidades/especialidades_management">Especialidades</a>
+                                    <a class="nav-link" href="<?= base_url() ?>/Especialistas/especialistas_management">Especialistas</a>
+                                </nav>
+                            </div>
+
+
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
+                                Authentication
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
@@ -80,6 +98,7 @@
                                         Authentication
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
+                                    
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
                                             <a class="nav-link" href="login.html">Login</a>
@@ -113,7 +132,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logueado como:</div>
-                        Jorge Luis<?php echo base_url('/assets/')?>/datatables.bootstrap4.min.js
+                        Jorge Luis
                     </div>
                 </nav>
             </div>
@@ -155,10 +174,10 @@
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-area-demo.js"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-bar-demo.js"></script>-->
         <script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
-        <script src="<?php echo base_url('/assets/')?>/datatables/datatables.bootstrap4.min" crossorigin="anonymous"></script>
+        <script src="<?php echo base_url('/assets/')?>/datatables/datatables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/datatables-demo.js"></script>
-        <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/brands.js" integrity="sha384-sCI3dTBIJuqT6AwL++zH7qL8ZdKaHpxU43dDt9SyOzimtQ9eyRhkG3B7KMl6AO19" crossorigin="anonymous"></script>
-        <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+        <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/brands.js" crossorigin="anonymous"></script>
+        <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/fontawesome.js" crossorigin="anonymous"></script>
 
     </body>
 </html>

@@ -22,6 +22,7 @@ class Proyectos extends BaseController
         $crud->setSubject('Proyectos');
         $crud->setTexteditor(['descripcion']);
         $crud->fieldType('estado', 'hidden',1);
+        
        
         $crud->setRead();
         //$crud->setActionButton('Descarga', "$imgDescarga", 'Proyectos/descarga');
@@ -39,8 +40,7 @@ class Proyectos extends BaseController
         $crud->callbackColumn('Desglose', array($this, '_desglose'));
 
 	    $output = $crud->render();
-
-		return $this->_exampleOutput($output);
+        return $this->_exampleOutput($output);
     }
 
     public function _INCIDENCIAS($value, $row)
@@ -74,7 +74,7 @@ class Proyectos extends BaseController
          $produccionProceso=$subelementos->sumaSubelementosPorProyecto($id_proyecto);
          //dd($produccionProceso);
          $gastosalariototalarray=$subelementos->gastoSalarioPorProyecto($id_proyecto);
-         dd($gastosalariototalarray);
+         //dd($gastosalariototalarray);
          $totalSalarioCon909=0;
          //recorro el arreglo que me devuelve la cnsulta sumando el valor de salario909 de cada fila
         //  for($i=0;$i < count($gastosalariototalarray);$i++)
@@ -110,11 +110,13 @@ class Proyectos extends BaseController
         if($produccionProceso!=0)
         {
           return
-          '<a href="' . base_url() . '/Proyectos/descarga_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
-          $'.$gastoTotal.'
-          <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Subelementos de gasto + Salario + 9.09"> $'.$gastoTotal.'</button>
+          '<a href="' . base_url() . '/Proyectos/resumen_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
+          
+          <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Subelementos de gasto + Salario + 9.09"> $'.round($gastoTotal,2).'</button>
           <!-- Botón -->
-          </a>' ;
+          </a>
+
+          ' ;
         }
         else
         {
@@ -179,8 +181,8 @@ class Proyectos extends BaseController
                 $especialistas = new EspecialistasModel();  
                 $esp=$especialistas->find($especialista[$count]);
                 $valorEsp=($esp['salario_diario'])*$valor[$count];
-                
-                $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count], $valorEsp,$fecha[$count]);
+                //estados = 1 pendiente ,0 descargado
+                $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count], $valorEsp,$fecha[$count],1);
                
                 if($inserted_id !=0)//buscando los datos de la descarga una vez insertada para mostrarla concatenando la variale html
                 {
@@ -191,7 +193,7 @@ class Proyectos extends BaseController
                 }
                 else
                 {
-                    $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count],$valor[$count],$fecha[$count]);
+                    $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count],$valor[$count],$fecha[$count],1);
 
                     if($inserted_id !=0)//buscando los datos de la descarga una vez insertada para mostrarla concatenando la variale html
                     {
@@ -242,8 +244,49 @@ class Proyectos extends BaseController
         $gastoTotal=$totalSalarioCon909 + $produccionProceso[0]->valor;
     }
     
-   
+   public function resumen_show($id_proyecto)
+   {
+    $useKint = true;//para debug
+    $resultArray= Array();   
+    $subelementos = new SubelementoGastosModel();
+    $proyectos = new ProyectosModel();
+    $datosproyectos=$proyectos->find($id_proyecto);
+    $resultArray[0]=$datosproyectos;
+    $subelementos = $subelementos->findAll();
+    
+   // dd($subelementos);
+    foreach($subelementos as $subelem)
+    {
+      $result=$proyectos->resumen_proyecto_subelemento($id_proyecto,$subelem['id_subelemento_gasto']);
+      $resultArray[$subelem['nombre']]=$result[0]['valor'];
+    }
+    $data=['resultados'=> $resultArray];
+    
+    return view('resumen_view',$data);
+   }
     private function _exampleOutput($output = null) {
         return view('proyectos_view', (array)$output);
+    }
+
+    public function prorrateo_show()
+    {
+        return view('prorrateo_view');
+    }
+
+    public function descarga_real()
+    {
+        $request = service('request');//para poder usar $request->getPost
+        $useKint = true;//para debug
+        $proyectos = new ProyectosModel();
+        // var_dump($_POST);
+        // print_r(json_decode($_POST["ids"],TRUE));
+        $result=0;
+        $ids=json_decode($request->getPost('ids'));
+        $totalids=count( $ids);
+          foreach ($ids as $id) {
+           $result+=$proyectos->descarga_real($id->value);
+           
+        }
+        if($result==$totalids){echo 1;}else{echo 0;}//aqui valido que todos los ids enviados fueron modificados
     }
 }
