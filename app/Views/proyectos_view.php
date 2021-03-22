@@ -5,7 +5,7 @@
 	foreach($css_files as $file): ?>
 		<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
 	<?php endforeach; ?>
-	<div id="layoutSidenav_content" style="height: 100%">
+	<div id="layoutSidenav_content" style="height: 100%" class="small">
 					<main>
 						<div class="container-fluid">
 							<h1 class="mt-4">Proyectos</h1>

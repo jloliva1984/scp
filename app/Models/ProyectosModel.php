@@ -69,12 +69,33 @@ class ProyectosModel extends Model
         ");
         if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
     }
+    public function prorrateo($fechaInicio,$fechaFin)
+    {//busca la suma de los subelem de gasto sin descargar(prod en proceso) de todos los proyectos por meses de los proyectos activos
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        Sum(proyectos_subelemento_gastos.valor) AS produccionProceso,
+        proyectos.codigo,
+        proyectos.descripcion
+        FROM
+        proyectos_subelemento_gastos
+        Inner Join proyectos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
+        Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
+        WHERE
+        proyectos_subelemento_gastos.estado =  '1' AND
+        proyectos.estado =  '1' AND
+        proyectos_subelemento_gastos.fecha BETWEEN  '$fechaInicio' AND '$fechaFin'
+        GROUP BY
+        proyectos.codigo,
+        proyectos.descripcion
+        ");
+        if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
+    }
 
     public function descarga_real($id)
     {
         $db      = \Config\Database::connect();
         $builder = $db->table('proyectos_subelemento_gastos');
-        $data = ['estado' => 0];
+        $data = ['estado' => 0];//pendiente 1 ,descargado 0
         
         $builder->where('id_proyectos_subelemento_gastos', $id);
         $builder->update($data);

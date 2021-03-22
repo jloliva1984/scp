@@ -33,10 +33,10 @@ class Proyectos extends BaseController
         
         
         
-        $crud->columns(['codigo','descripcion','valor','Prod./Proc.','fecha_fin','descarga','Desglose']);
+        $crud->columns(['codigo','descripcion','valor','Insert./Descar.','fecha_fin','descarga','Desglose']);
 
         $crud->callbackColumn('descarga', array($this, '_INCIDENCIAS'));
-        $crud->callbackColumn('Prod./Proc.', array($this, '_produccionProceso'));
+        $crud->callbackColumn('Insert./Descar.', array($this, '_produccionProceso'));
         $crud->callbackColumn('Desglose', array($this, '_desglose'));
 
 	    $output = $crud->render();
@@ -63,7 +63,11 @@ class Proyectos extends BaseController
           '
            <a href="' . base_url() . '/Proyectos/desglose_show/' . $id_proyecto . '" style="align-content: center">
            <i class="fas fa-layer-group fa-2x"></i>
-           </a>' ;
+           </a>
+           <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+            </div>
+           ' ;
     }
     public function _produccionProceso($value, $row)
     { 
@@ -71,6 +75,9 @@ class Proyectos extends BaseController
         //sumar todos los elementos de gasto de un proyecto
          $id_proyecto=$row->id_proyecto;
          $subelementos = new SubelementoGastosModel();
+         //para determinar lo real descargado para mostrar en el grid
+         $totalRealDescargado=$subelementos->totalGastoDescargado($id_proyecto);
+
          $produccionProceso=$subelementos->sumaSubelementosPorProyecto($id_proyecto);
          //dd($produccionProceso);
          $gastosalariototalarray=$subelementos->gastoSalarioPorProyecto($id_proyecto);
@@ -109,14 +116,23 @@ class Proyectos extends BaseController
         // return '<a>'.$valor.'</a>';
         if($produccionProceso!=0)
         {
+          if($gastoTotal!=0){  
           return
           '<a href="' . base_url() . '/Proyectos/resumen_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
           
-          <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Subelementos de gasto + Salario + 9.09"> $'.round($gastoTotal,2).'</button>
-          <!-- Botón -->
+          '.round($gastoTotal,2).'/'.$totalRealDescargado[0]['totalDescargado'].'
           </a>
-
+          <div class="progress">
+          
+          <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" 
+          style="width:'.round((round($totalRealDescargado[0]['totalDescargado']*100,2))/round($gastoTotal,2),2).'%">
+            '.round((round($totalRealDescargado[0]['totalDescargado']*100,2))/round($gastoTotal,2),2).'%
+          </div>
+          
+          </div>
+          
           ' ;
+          }
         }
         else
         {
@@ -270,15 +286,67 @@ class Proyectos extends BaseController
 
     public function prorrateo_show()
     {
-        var_dump($_POST);die;
-        if(isset($_POST) && $_POST!='')//si hay evio de datos se procesa
+        
+        if(!empty($_POST))//si hay evio de datos se procesa
         {
-        echo 'si';
+            $request = service('request');//para poder usar $request->getPost
+            $useKint = true;//para debug 
+            $mes=$request->getPost('mes') ;
+            $anno=$request->getPost('anno') ;
+            $valor731=$request->getPost('valor731') ;
+            $cantDias = cal_days_in_month(CAL_GREGORIAN, $mes, $anno); // determiandno la cantidad de dias del mes y año seleccionado
+            $fechaInicio=$anno.'-'.$mes.'-01';
+            $fechaFin=$anno.'-'.$mes.'-'.$cantDias;
+            $proyectos=new ProyectosModel();
+            $resultados=$proyectos->prorrateo($fechaInicio,$fechaFin);
+            $totalProduccionProceso=0;
+            if(isset($resultados) && $resultados!=0)
+            {
+            foreach($resultados as $resultado){$totalProduccionProceso+=$resultado['produccionProceso'];}
+            }else{$totalProduccionProceso=0;}
+            $data=['resultados'=>$resultados,'mes'=>$mes,'anno'=>$anno,'valor731'=>$valor731,'totalProduccionProceso'=>$totalProduccionProceso];
+            return view('prorrateo_view',$data);
+
+            
+           
+        
         }
         else // si no hay envio de datos muestro la vista inicial
         {
           return view('prorrateo_view');
         }
+    }
+
+    public function descargados($id_proyecto)
+    {
+        $proyectos=new ProyectosModel();
+        $subelementos = new SubelementoGastosModel();
+        $proyectos= $proyectos->find($id_proyecto);
+        $totalDescargado= $subelementos->totalGastoDescargado($id_proyecto);
+        
+	    $crud = new GroceryCrud();
+      
+        $crud->setTable('proyectos_subelemento_gastos');
+        $crud->setSubject('Gastos descargados - <strong>TOTAL :</strong> $'.$totalDescargado[0]['totalDescargado']);
+        $crud->setRelation('id_subelemento_gasto','subelemento_gastos','nombre');
+        $crud->displayAs('id_subelemento_gasto','Elemento de Gasto');
+        $crud->setRelation('id_especialista','especialistas','nombre_completo');
+        $crud->displayAs('id_especialista','Especialista');
+        $crud->where('id_proyecto',$id_proyecto);
+        $crud->where('estado',0);
+        $crud->unsetColumns(['id_proyecto','estado']);
+        $crud->columns(['id_subelemento_gasto','id_especialista','valor','fecha']);
+
+        $crud->unsetOperations();
+
+      
+
+        $output = $crud->render();
+        $data['proyectos']=$proyectos;
+        $data['totalDescargado']=$totalDescargado;
+        $output->data = $data;
+
+        return view('descargados_view',(array)$output);
     }
 
     public function descarga_real()

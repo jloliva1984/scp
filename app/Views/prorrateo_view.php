@@ -17,49 +17,93 @@ echo form_open('Proyectos/prorrateo_show', 'class="" id="prorrateo_form"');
 
 			<div class="form-row container-fluid form-inline">
 				<div class="form-group col-md-3 float-right" >
-				Mes  :<select id="mes" class="form-control" placeholder="Mes">
-						<option selected>Seleccionar...</option>
-						<option value="01">Enero</option>
-						<option value="02">Febrero</option>
-						<option value="03">Marzo</option>
-						<option value="04">Abril</option>
-						<option value="05">Mayo</option>
-						<option value="06">Junio</option>
-						<option value="07">Julio</option>
-						<option value="08">Agosto</option>
-						<option value="09">Septiembre</option>
-						<option value="10">Octubre</option>
-						<option value="11">Noviembre</option>
-						<option value="12">Diciembre</option>
-					</select>
+				<?php 
+				$options = [
+					''  => 'SELECCIONE',
+					'01'  => 'Enero',
+					'02'    => 'Febrero',
+					'03'  => 'Marzo',
+					'04' => 'Abril',
+					'05' => 'Mayo',
+					'06' => 'Junio',
+					'07' => 'Julio',
+					'08' => 'Agosto',
+					'09' => 'Septiembre',
+					'10' => 'Octubre',
+					'11' => 'Noviembre',
+					'12' => 'Diciembre',
+				];
+				$attrs = ['id'=> 'mes','style'=>'width:150px','required'=>true];
+				echo 'Mes :'.form_dropdown('mes', $options, '00',$attrs);
+				?>
+				
 				</div>
 				<div class="form-group col-md-3">
-				
-				Año : <select id="anno" class="form-control" placeholder="Año">
-						<option selected>Seleccionar...</option>
-						<?php 
-						$year = date("Y");
-						$yearanterior = $year-1;
-							for ($i= $yearanterior; $i < $year+5 ; $i++) {
-
-							echo "<option VALUE='$i'>$i</option>";
-
-								}
+					<?php 
+							$options = [
+								''=>'Seleccione',
+								'2020'  => '2020',
+								'2021'  => '2021',
+								'2022'    => '2022',
+								'2023'  => '2023',
+								'2024' => '2024',
+								'2025' => '2025',
+								'2026' => '2026',
+								'2027' => '2027',
+								
+							];
+							$attrs = ['id'=> 'anno','class'=>'form-group','style'=>'width:150px','required'=>true];
+							echo 'Año :'.form_dropdown('anno', $options, '00',$attrs);
 
                         ?>
 					</select>
 				</div>
 				<div class="form-group col-md-3">
-				Valor 731 :	<input type="text" class="form-control" required id="inputZip" placeholder="Valor 731">
+				<input type="text" class="form-control" required id="valor731" name="valor731" placeholder="Valor 731">
 				</div>
 				<div class="col-md-2">
 				<button type="submit" class="btn btn-primary">Prorratear</button>
 				</div>
 			</div>
 					
-						
-		<hr>				
-<?php form_close() ?>
+<?php form_close() ?>						
+<hr>				
+<div class="container-fluid text-right">
+   
+<?php if(isset($mes,$anno,$valor731,$totalProduccionProceso)){?>
+<h6 class="small" >
+<strong>ÍNDICE PRORRATEO</strong>- <?=($totalProduccionProceso!=0) ? $valor731/$totalProduccionProceso : '' ?>||<strong>Mes</strong> - <?= $mes?> || <strong>Año</strong> - <?= $anno ?>|| <strong>Valor 731</strong> - <?= $valor731 ?>
+</h6>
+<?php }?>
+</div>
+<hr>
+<?php if(isset($resultados) && $resultados!=0){
+$totalProduccioProceso=0;
+$totalCostosIndirectos=0;	
+	?>
+<table class="table table-striped table-hover table-sm small">
+<thead>
+<th>Código</th>
+<th>Descripcion</th>
+<th>Saldo Inicial</th>
+<th>Costos Directos</th><!--la seuma de los subelem de gasto-->
+<th>Costos Indirec.</th>
+<th>Prod. Proce.</th>
+<th></th>
+</thead>
+<?php foreach($resultados as $result) {?>
+<tr><td><?=$result['codigo']?></td><td><?=$result['descripcion']?>
+</td><td>
+</td><td>
+<?=$result['produccionProceso'];$totalProduccioProceso+=$result['produccionProceso'];?></td>
+<td><?php $totalCostosIndirectos+=($result['produccionProceso']*($valor731/$totalProduccionProceso));echo round($result['produccionProceso']*($valor731/$totalProduccionProceso),2);  ?></td>
+<td><?php echo $result['produccionProceso'] + round($result['produccionProceso']*($valor731/$totalProduccionProceso),2)  ?></td>
+<td></td>
+</tr>
+<?php }?>
+<tr><td><strong>Totales</strong></td></td><td></td><td><td><?= '<strong>'. $totalProduccioProceso.'</strong>' ?></td><td><?= '<strong>'.$totalCostosIndirectos.'</strong>'?></td><td><?= '<strong>'.($totalProduccioProceso+$totalCostosIndirectos).'</strong>'?></td><td></td></tr>
+</table>	
+<?php }else{echo '<div class="text-center">No hay resultados que mostrar</div>';} ?>
  </main>
 </div>
 <link rel="stylesheet" href="<?php echo base_url('/assets/select2/');?>/css/select2.min.css">

@@ -2,8 +2,8 @@
 
 <?= $this->section('content') ?>
 <div id="layoutSidenav_content" style="height: 100%">
-<div class="card mb-4">
-                            <div class="card-header text-right">
+<div class="card mb-4" style="padding: 10px">
+                            <div class="card-header text-right" >
                                							
                                 <h6 id="id_proyecto" data-id_proyecto='<?= $proyecto['id_proyecto'] ?>'>    
                                 <strong>Proyecto</strong> - <?= $proyecto['descripcion']?> || <strong>Código</strong> - <?= $proyecto['codigo']?>
@@ -26,17 +26,28 @@
                                                 <th></th>
                                                 <th></th>
                                                 <th>
-                                                <div class="text-right">
+                                                
+                                                  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                                  
+                                                </div>
+                                                <div class="container-fluid text-right">
                                                     <button type="button" name="add_descarga" id="add_descarga" class="btn btn-success btn-sm add_descarga ">
                                                       <!-- <i class="fa fa-plus-circle">+ Agregar</i>
                                                       <i class="fa fa-plus" aria-hidden="true">agregar</i> -->
                                                         <strong>+ Agregar</strong>
                                                     </button>
-                                                    <button type="button" name="descarga_real" id="descarga_real" class="btn btn-warning btn-sm descarga_real ">
+                                                    <button type="button" name="descarga_real" id="descarga_real" class="btn btn-warning btn-sm  descarga_real ">
                                                       <!-- <i class="fa fa-plus-circle">+ Agregar</i>
                                                       <i class="fa fa-plus" aria-hidden="true">agregar</i> -->
                                                         <strong>Descargar</strong>
                                                     </button>
+                                                    <a href="<?php echo base_url().'/Proyectos/descargados/'.$proyecto['id_proyecto'] ?>
+                                                    <button type="button" name="descarga_real" id="descarga_real" class="btn btn-info  btn-sm descarga_real ">
+                                                      <!-- <i class="fa fa-plus-circle">+ Agregar</i>
+                                                      <i class="fa fa-plus" aria-hidden="true">agregar</i> -->
+                                                        <strong>Descargados</strong>
+                                                    </button>
+                                                    </a>
                                                     </div>
                                                 </th>
                                             </tr>

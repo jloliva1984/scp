@@ -22,6 +22,7 @@ class SubelementoGastosModel extends Model
         $builder->join('especialistas', 'proyectos_subelemento_gastos.id_especialista = especialistas.id_especialista');
         $builder->join('subelemento_gastos', 'proyectos_subelemento_gastos.id_subelemento_gasto = subelemento_gastos.id_subelemento_gasto');
         $builder->having('proyectos.id_proyecto',$id_proyecto);
+        $builder->having('proyectos_subelemento_gastos.estado',1);// el que tenga estado 1 esta pendiente ,el 0 esta descargado
         //dd($builder->getCompiledSelect());
         $query = $builder->get();
         $useKint = true;//para debug
@@ -56,6 +57,7 @@ class SubelementoGastosModel extends Model
         $builder->join('especialistas', 'proyectos_subelemento_gastos.id_especialista = especialistas.id_especialista');
         $builder->join('subelemento_gastos', 'proyectos_subelemento_gastos.id_subelemento_gasto = subelemento_gastos.id_subelemento_gasto');
         $builder->where('proyectos.id_proyecto',$id_proyecto);
+        $builder->where('proyectos_subelemento_gastos.estado',1);
         $builder->where('subelemento_gastos.nombre!=','salario');
         $query=$builder->get();
         
@@ -82,6 +84,20 @@ class SubelementoGastosModel extends Model
         WHERE
         proyectos.id_proyecto =  '$id_proyecto' AND
         subelemento_gastos.nombre =  'salario'
+        ");
+        if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
+        
+    }
+    public function totalGastoDescargado($id_proyecto)
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        Sum(proyectos_subelemento_gastos.valor) as totalDescargado
+        FROM
+        proyectos_subelemento_gastos
+        WHERE
+        proyectos_subelemento_gastos.id_proyecto =  '$id_proyecto' AND
+        proyectos_subelemento_gastos.estado =  '0'
         ");
         if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
         
