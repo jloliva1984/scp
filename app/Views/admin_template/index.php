@@ -24,6 +24,8 @@
   <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>
 </svg></button>
             <!-- Navbar Search-->
+            <div><FONT COLOR="white" class="text-center"><?php echo date('d/m/Y'); ?></font></div>
+
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
@@ -170,9 +172,9 @@
         
         <script src="<?php echo base_url('/assets/admin_template/')?>/js/scripts.js"></script>
         
-       <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-area-demo.js"></script>
-        <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-bar-demo.js"></script>-->
+        <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-bar-demo.js"></script>
         <script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
         <script src="<?php echo base_url('/assets/')?>/datatables/datatables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/datatables-demo.js"></script>

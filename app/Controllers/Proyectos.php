@@ -17,7 +17,6 @@ class Proyectos extends BaseController
 	{
         $imgDescarga=base_url().'/assets/images/descarga.png';
 	    $crud = new GroceryCrud();
-        //$crud->setSkin('bootstrap-v4');
         $crud->setTable('proyectos');
         $crud->setSubject('Proyectos');
         $crud->setTexteditor(['descripcion']);
@@ -25,10 +24,7 @@ class Proyectos extends BaseController
         
        
         $crud->setRead();
-        //$crud->setActionButton('Descarga', "$imgDescarga", 'Proyectos/descarga');
-        // $crud->setActionButton('Descarga', 'el el-file', function ($primaryKey) { 
-        //     return site_url('Proyectos/descarga/' . $primaryKey); 
-        // }, true);
+
 
         
         
@@ -364,5 +360,10 @@ class Proyectos extends BaseController
            
         }
         if($result==$totalids){echo 1;}else{echo 0;}//aqui valido que todos los ids enviados fueron modificados
+    }
+
+    public function guardar_prorrateo()
+    {
+        var_dump($_POST);
     }
 }
