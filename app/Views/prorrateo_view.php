@@ -173,10 +173,10 @@ function(isConfirm) {
                 data: {'mes': mes,'anno':anno,'valor731':valor731,'indice_prorrateo':indice_prorrateo},
                 url: "<?php echo base_url();?>/Proyectos/guardar_prorrateo",
                 success : function(data) {
-                  if(data==1)
+                  if(data!=0)
                   {
-                    swal("Confirmación!", "Los elementos seleccionados fueron llevados al costo satisfactoriamente.", "success");
-                    window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+                    swal("Confirmación!", "El índice de prorrateo para el mes y año seleccionado fue almacenado correctamente ,ahora puede efectuar la descarga para los registros de ese mes.", "success");
+                    window.location.assign("<?php echo base_url();?>/scp/public/Proyectos/proyectos_management/");
                   }
 
                 }

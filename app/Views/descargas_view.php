@@ -37,14 +37,12 @@
                                                         <strong><i class="fas fa-plus fa-fw"></i> Agregar</strong>
                                                     </button>
                                                     <button type="button" name="descarga_real" id="descarga_real" class="btn btn-warning btn-sm  descarga_real ">
-                                                      <!-- <i class="fa fa-plus-circle">+ Agregar</i>
-                                                      <i class="fa fa-plus" aria-hidden="true">agregar</i> -->
+                                                    
                                                         <strong><i class="fas fa-download fa-fw"></i>Descargar</strong>
                                                     </button>
                                                     <a href="<?php echo base_url().'/Proyectos/descargados/'.$proyecto['id_proyecto'] ?>
                                                     <button type="button" name="descarga_real" id="descarga_real" class="btn btn-info  btn-sm descarga_real ">
-                                                      <!-- <i class="fa fa-plus-circle">+ Agregar</i>
-                                                      <i class="fa fa-plus" aria-hidden="true">agregar</i> -->
+                                                      
                                                         <strong><i class="fas fa-search fa-fw"></i>Descargados</strong>
                                                     </button>
                                                     </a>
@@ -461,7 +459,7 @@ function(isConfirm) {
 
                 data: {'ids': JSON.stringify($('[name="checkDescarga[]"]').serializeArray())},
                 url: "<?php echo base_url();?>/Proyectos/descarga_real",
-                success : function(data) {
+                success : function(data) {console.log(data.insertados);exit();
                   if(data==1)
                   {
                     swal("Confirmación!", "Los elementos seleccionados fueron llevados al costo satisfactoriamente.", "success");

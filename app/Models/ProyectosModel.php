@@ -102,6 +102,113 @@ class ProyectosModel extends Model
 
         if($db->affectedRows()>0){return 1;}else{return 0; }//retorna 1 si la consulta de modificacion fue ok ,0 si no
     }
+    public function buscar_indice_prorrateo($mes,$anno)//function que busca si esta definido el indice para un mes  y anno
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        indices_prorrateo.valor_indice_prorrateo,
+        indices_prorrateo.id_indice_prorrateo
+        FROM
+        indices_prorrateo
+        WHERE
+        indices_prorrateo.mes =  '$mes' AND
+        indices_prorrateo.anno =  '$anno'
+        
+        ");
+        if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}    
+    }
+
+    public function validar_existencia_indice($id)
+    {
+//aqui cojo el id del gasto registrado y valido que este el indice de prorrqateo definido para su fecha
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        proyectos_subelemento_gastos.fecha,
+        proyectos_subelemento_gastos.valor
+
+        FROM
+        proyectos_subelemento_gastos
+        WHERE
+        proyectos_subelemento_gastos.id_proyectos_subelemento_gastos =  '$id'
+        ");
+        if($db->affectedRows()>0) {
+             $fecha= $query->getResultArray();
+             $valor= $fecha[0]['valor'];
+             $fecha= $fecha[0]['fecha'];
+             $data=array();
+             $fechaComoEntero = strtotime($fecha);//convirtiendo la fecha a formato entero para poder buscar mes y anno
+             $anno = date("Y", $fechaComoEntero);
+             $mes = date("m", $fechaComoEntero);
+             $result=$this->buscar_indice_prorrateo($mes,$anno);
+             
+            if($result!=0)
+            {
+                $data['result']=$result;$data['valor']=$valor;//aqui devuielvo el valor del gasto y el resultado de buscar prorrateo
+                return $data;
+            }
+            else {return 0;}
+            }
+         else { return 0;}
+
+    }
+    
+    public function insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo)
+    {   
+       
+        $db      = \Config\Database::connect();
+        $builder = $db->table('indices_prorrateo');
+
+        //$this->db->transStart(true); // Query will be rolled back
+        $data = [
+            'mes' => $mes,
+            'anno' => $anno,
+            'valor731' => $valor731,
+            'valor_indice_prorrateo'  => $valor_indice_prorrateo,
+         ];
+        
+        $builder->insert($data);
+       // $this->db->transComplete();
+        if($db->affectedRows()>0)
+            {
+            return $db->insertID();	
+            }
+            else
+            {
+                return 0;
+            }
+    }
+
+    public function insert_descarga_real($id_proyectos_subelemento_gastos,$id_indice_prorrateo,$valorReal)
+    {
+        $result=$this->descarga_real($id_proyectos_subelemento_gastos);//antes de insertar la descarga real le cambio el estado a la descarga
+        if($result==1)//si efectivamente se cambio el estado
+        {
+            $db      = \Config\Database::connect();
+            $builder = $db->table('proyectos_subelemento_gastos_real');
+
+            //$this->db->transStart(true); // Query will be rolled back
+            $data = [
+                'id_proyectos_subelemento_gastos' => $id_proyectos_subelemento_gastos,
+                'id_indice_prorrateo' => $id_indice_prorrateo,
+                'valor' => $valorReal
+            ];
+            
+            $builder->insert($data);
+        // $this->db->transComplete();
+            if($db->affectedRows()>0)
+                {
+                return $db->insertID();	
+                }
+                else
+                {
+                    return 0;
+                }
+        } 
+        else
+        {
+            return 0;
+        }   
+    }
 
 }
 ?>

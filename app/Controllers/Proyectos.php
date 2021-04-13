@@ -350,20 +350,55 @@ class Proyectos extends BaseController
         $request = service('request');//para poder usar $request->getPost
         $useKint = true;//para debug
         $proyectos = new ProyectosModel();
+        $insercion=-1;
+        $noInsercion=0;
+        $resultadoGeneral=array();
         // var_dump($_POST);
         // print_r(json_decode($_POST["ids"],TRUE));
         $result=0;
         $ids=json_decode($request->getPost('ids'));
         $totalids=count( $ids);
           foreach ($ids as $id) {
-           $result+=$proyectos->descarga_real($id->value);
-           
+           $resultado=$proyectos->validar_existencia_indice($id->value);  //function que veririfica que exista el Indice de prorrateo para las fechas de las descargas seleccionadas
+          
+           if($resultado!=0)
+           {
+                if($proyectos->descarga_real($id->value)!=0)
+                {
+                        //cambio el estado a descargado del registro
+                        $result+=$proyectos->descarga_real($id->value);//cambio el estado a descargado del registro y cuento para despues comparar si se inserrtaron todos
+                        //aqui insertare en la tabla descarga real el valor * indice de prorrateo
+                        $r=$proyectos->insert_descarga_real($id->value,$resultado['result'][0]['id_indice_prorrateo'],$resultado['valor']*$resultado['result'][0]['valor_indice_prorrateo']);
+                        if($r!=0){$insercion+=1;}//cuento cada vez que inserto
+                }  
+           }
+           else
+           {
+            $noInsercion+=1;//devuelvo 2 sin no existe indice de prorrateo para la descarga que se intenta pasar
+           }   
         }
-        if($result==$totalids){echo 1;}else{echo 0;}//aqui valido que todos los ids enviados fueron modificados
+        $resultadoGeneral['insertados']=$insercion;
+        $resultadoGeneral['noInsertados']=$noInsercion;
+        echo json_encode($resultadoGeneral);
+        //if($result==$totalids){echo 1;}else{echo 0;}//aqui valido que todos los ids enviados fueron modificados
     }
 
     public function guardar_prorrateo()
     {
-        var_dump($_POST);
+        $request = service('request');
+        $mes=$request->getPost('mes');$anno=$request->getPost('anno');$valor_indice_prorrateo=$request->getPost('indice_prorrateo');
+        $valor731=$request->getPost('valor731');
+        
+        $proyectos=new ProyectosModel();
+        $result=$proyectos->insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo);
+        if($result!=0)//inserto
+        {
+         echo 1;
+        }
+        {
+            echo 0;       
+        } 
+
+       
     }
 }
