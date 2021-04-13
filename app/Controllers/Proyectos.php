@@ -230,7 +230,7 @@ class Proyectos extends BaseController
     {
         $useKint = true;//para debug
         //sumar todos los elementos de gasto de un proyecto
-         
+        $gastosalario=0;
          $subelementos = new SubelementoGastosModel();
          $produccionProceso=$subelementos->sumaSubelementosPorProyecto($id_proyecto);
          $gastosalariototalarray=$subelementos->gastoSalarioPorProyecto($id_proyecto);
@@ -350,7 +350,7 @@ class Proyectos extends BaseController
         $request = service('request');//para poder usar $request->getPost
         $useKint = true;//para debug
         $proyectos = new ProyectosModel();
-        $insercion=-1;
+        $insercion=0;
         $noInsercion=0;
         $resultadoGeneral=array();
         // var_dump($_POST);
@@ -358,7 +358,8 @@ class Proyectos extends BaseController
         $result=0;
         $ids=json_decode($request->getPost('ids'));
         $totalids=count( $ids);
-          foreach ($ids as $id) {
+          foreach ($ids as $id) 
+          {
            $resultado=$proyectos->validar_existencia_indice($id->value);  //function que veririfica que exista el Indice de prorrateo para las fechas de las descargas seleccionadas
           
            if($resultado!=0)
@@ -366,9 +367,11 @@ class Proyectos extends BaseController
                 if($proyectos->descarga_real($id->value)!=0)
                 {
                         //cambio el estado a descargado del registro
-                        $result+=$proyectos->descarga_real($id->value);//cambio el estado a descargado del registro y cuento para despues comparar si se inserrtaron todos
+                        $result+=1;//cambio el estado a descargado del registro y cuento para despues comparar si se inserrtaron todos
                         //aqui insertare en la tabla descarga real el valor * indice de prorrateo
                         $r=$proyectos->insert_descarga_real($id->value,$resultado['result'][0]['id_indice_prorrateo'],$resultado['valor']*$resultado['result'][0]['valor_indice_prorrateo']);
+                        
+                        
                         if($r!=0){$insercion+=1;}//cuento cada vez que inserto
                 }  
            }
@@ -379,6 +382,7 @@ class Proyectos extends BaseController
         }
         $resultadoGeneral['insertados']=$insercion;
         $resultadoGeneral['noInsertados']=$noInsercion;
+        //var_dump($resultadoGeneral);die;
         echo json_encode($resultadoGeneral);
         //if($result==$totalids){echo 1;}else{echo 0;}//aqui valido que todos los ids enviados fueron modificados
     }

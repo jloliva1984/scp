@@ -459,10 +459,29 @@ function(isConfirm) {
 
                 data: {'ids': JSON.stringify($('[name="checkDescarga[]"]').serializeArray())},
                 url: "<?php echo base_url();?>/Proyectos/descarga_real",
-                success : function(data) {console.log(data.insertados);exit();
-                  if(data==1)
+                success : function(data) 
+                {
+                  if(data.insertados>=0 && data.noInsertados==0)
                   {
-                    swal("Confirmación!", "Los elementos seleccionados fueron llevados al costo satisfactoriamente.", "success");
+                    swal({
+              title: "Confirmación",
+              text: "Los elementos seleccionados fueron llevados al costo de venta satisfactoriamente.",
+              type: "success",
+              timer: 12000
+                   });
+                   
+
+                    // swal("Confirmación!", "Los elementos seleccionados fueron llevados al costo de venta satisfactoriamente.", "success");
+                    window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+                  }
+                  else if(data.insertados>=0 && data.noInsertados>0)
+                  {
+                    swal("Confirmación!", "No todos los elementos seleccionados fueron llevados al costo de venta satisfactoriamente.", "warning");
+                    window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+                  }
+                  else if(data.insertados==0 && data.noInsertados>0)
+                  {
+                    swal("Confirmación!", "Error al llevar los elementos seleccionados al costo de venta, revise que este establecido el índice de prorrateo para el mes deseado.", "error");
                     window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
                   }
 

@@ -180,9 +180,10 @@ class ProyectosModel extends Model
 
     public function insert_descarga_real($id_proyectos_subelemento_gastos,$id_indice_prorrateo,$valorReal)
     {
-        $result=$this->descarga_real($id_proyectos_subelemento_gastos);//antes de insertar la descarga real le cambio el estado a la descarga
-        if($result==1)//si efectivamente se cambio el estado
-        {
+        
+        // $result=$this->descarga_real($id_proyectos_subelemento_gastos);//antes de insertar la descarga real le cambio el estado a la descarga
+        // if($result==1)//si efectivamente se cambio el estado
+        // {
             $db      = \Config\Database::connect();
             $builder = $db->table('proyectos_subelemento_gastos_real');
 
@@ -190,7 +191,7 @@ class ProyectosModel extends Model
             $data = [
                 'id_proyectos_subelemento_gastos' => $id_proyectos_subelemento_gastos,
                 'id_indice_prorrateo' => $id_indice_prorrateo,
-                'valor' => $valorReal
+                'valor' => round($valorReal,2),
             ];
             
             $builder->insert($data);
@@ -203,11 +204,11 @@ class ProyectosModel extends Model
                 {
                     return 0;
                 }
-        } 
-        else
-        {
-            return 0;
-        }   
+        // } 
+        // else
+        // {
+        //     return 0;
+        // }   
     }
 
 }
