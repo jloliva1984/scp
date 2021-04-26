@@ -27,6 +27,18 @@
 						<a href='<?php echo site_url('examples/employees_management')?>'>Employees</a> |		 
 						<a href='<?php echo site_url('examples/film_management')?>'>Films</a>
 					</div>
+
+					<div class="container-fluid text-right">
+                                                   
+                                                    
+                     <a href="<?php echo base_url().'/Proyectos/descarga_show/'.$data['proyectos']['id_proyecto'] ?>
+                     <button type="button" name="descarga_real" id="descarga_real" class="btn btn-info  btn-sm descarga_real ">
+                       
+                         <strong><i class="fas fa-search fa-fw"></i>Atrás</strong>
+                     </button>
+                     </a>
+                     </div>
+
 						<div style='height:20px;'></div>  
 						<div style="padding: 10px">
 							<?php echo $output; ?>
@@ -34,7 +46,7 @@
 						<tr>
 						<td></td>
 						<td></td>
-						<td><?= $data['totalDescargado'][0]['totalDescargado']?></td>
+						<td><?= round($data['totalDescargado'][0]['totalDescargado'],2)?></td>
 						<td></td>
 						</tr>
 

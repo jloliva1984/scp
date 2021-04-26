@@ -92,12 +92,13 @@ class SubelementoGastosModel extends Model
     {
         $db      = \Config\Database::connect();
         $query = $db->query("SELECT
-        Sum(proyectos_subelemento_gastos.valor) as totalDescargado
+        Sum(proyectos_subelemento_gastos_real.valor) AS totalDescargado
         FROM
         proyectos_subelemento_gastos
+        Inner Join proyectos_subelemento_gastos_real ON proyectos_subelemento_gastos.id_proyectos_subelemento_gastos = proyectos_subelemento_gastos_real.id_proyectos_subelemento_gastos
         WHERE
-        proyectos_subelemento_gastos.id_proyecto =  '$id_proyecto' AND
-        proyectos_subelemento_gastos.estado =  '0'
+                proyectos_subelemento_gastos.id_proyecto =  '$id_proyecto' AND
+                proyectos_subelemento_gastos.estado =  '0'
         ");
         if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
         

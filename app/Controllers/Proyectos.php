@@ -322,16 +322,12 @@ class Proyectos extends BaseController
         
 	    $crud = new GroceryCrud();
       
-        $crud->setTable('proyectos_subelemento_gastos');
+        $crud->setTable('proyectos_subelemento_gastos_real');
         $crud->setSubject('Gastos descargados - <strong>TOTAL :</strong> $'.$totalDescargado[0]['totalDescargado']);
-        $crud->setRelation('id_subelemento_gasto','subelemento_gastos','nombre');
-        $crud->displayAs('id_subelemento_gasto','Elemento de Gasto');
-        $crud->setRelation('id_especialista','especialistas','nombre_completo');
-        $crud->displayAs('id_especialista','Especialista');
-        $crud->where('id_proyecto',$id_proyecto);
-        $crud->where('estado',0);
-        $crud->unsetColumns(['id_proyecto','estado']);
-        $crud->columns(['id_subelemento_gasto','id_especialista','valor','fecha']);
+        $crud->setRelation('id_proyectos_subelemento_gastos','proyectos_subelemento_gastos','valor');
+        $crud->columns(['Subelemento Gasto','Especialista','valor']);
+        $crud->callbackColumn('Subelemento Gasto',array($this,'getSubelementoGasto'));
+        $crud->callbackColumn('Especialista',array($this,'getEspecialista'));
 
         $crud->unsetOperations();
 
@@ -343,6 +339,41 @@ class Proyectos extends BaseController
         $output->data = $data;
 
         return view('descargados_view',(array)$output);
+    }
+    public function getSubelementoGasto($value, $row)
+    { 
+        $id_proyectos_subelemento_gastos_real=$row->id_proyectos_subelemento_gastos_real;
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        subelemento_gastos.nombre,
+        subelemento_gastos.codigo
+        FROM
+        proyectos_subelemento_gastos_real
+        Inner Join proyectos_subelemento_gastos ON proyectos_subelemento_gastos.id_proyectos_subelemento_gastos = proyectos_subelemento_gastos_real.id_proyectos_subelemento_gastos
+        Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
+        WHERE
+        proyectos_subelemento_gastos_real.id_proyectos_subelemento_gastos_real =  ' $id_proyectos_subelemento_gastos_real'
+        ");
+
+         return ($query->getResult()[0]->codigo.' - '.$query->getResult()[0]->nombre);
+     
+    }
+    public function getEspecialista($value, $row)
+    { 
+        $id_proyectos_subelemento_gastos_real=$row->id_proyectos_subelemento_gastos_real;
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        especialistas.nombre_completo
+        FROM
+        proyectos_subelemento_gastos_real
+        Inner Join proyectos_subelemento_gastos ON proyectos_subelemento_gastos.id_proyectos_subelemento_gastos = proyectos_subelemento_gastos_real.id_proyectos_subelemento_gastos
+        Inner Join especialistas ON especialistas.id_especialista = proyectos_subelemento_gastos.id_especialista
+        WHERE
+        proyectos_subelemento_gastos_real.id_proyectos_subelemento_gastos_real =  ' $id_proyectos_subelemento_gastos_real'
+        ");
+
+         return ($query->getResult()[0]->nombre_completo);
+     
     }
 
     public function descarga_real()
