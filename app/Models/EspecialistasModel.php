@@ -13,5 +13,7 @@ class EspecialistasModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
+    
+
 }
 ?>

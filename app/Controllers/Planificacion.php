@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 use App\Libraries\GroceryCrud;
 use App\Models\ProyectosModel;
+use App\Models\EspecialistasModel;
 
 class Planificacion extends BaseController
 {
@@ -31,9 +32,9 @@ class Planificacion extends BaseController
         
         
         
-        $crud->columns(['codigo','descripcion','valor','Plan']);
+        $crud->columns(['codigo','descripcion','valor','Plan (H/D)']);
 
-        $crud->callbackColumn('Plan', array($this, '_plan'));
+        $crud->callbackColumn('Plan (H/D)', array($this, '_plan'));
         
 
 	    $output = $crud->render();
@@ -103,7 +104,7 @@ class Planificacion extends BaseController
         		
 		$crud->displayAs('id_especialista','Especialista');
 
-        $crud->columns(['id_especialista','hombre_dia','fecha_inicio','fecha_fin']);
+        $crud->columns(['id_especialista','hombre_dia','Salario Plan','9.09','Plan sal.tot.','fecha_inicio','fecha_fin']);
 
 	   $crud->fieldType('id_proyecto', 'hidden',$id_proyecto);
  
@@ -115,12 +116,36 @@ class Planificacion extends BaseController
         
        
 
-       // $crud->callbackColumn('Plan', array($this, '_plan'));
+        $crud->callbackColumn('Salario Plan', array($this, '_salario_plan'));
+        $crud->callbackColumn('9.09', array($this, '_vacaciones_plan'));
+        $crud->callbackColumn('Plan sal.tot.', array($this, '_plan_salario_total'));
         
 
 	    $output = $crud->render();
         return $this->_exampleOutput($output);	
 	}
+
+    public function _salario_plan($value, $row)
+    {
+        $especialistas=new EspecialistasModel();
+		$especialistas=$especialistas->find($row->id_especialista);
+        $plan_salario=$row->hombre_dia*$especialistas['salario_diario'];
+        return  $plan_salario      ;
+    }
+    public function _vacaciones_plan($value, $row)
+    {
+        $especialistas=new EspecialistasModel();
+		$especialistas=$especialistas->find($row->id_especialista);
+        $plan_salario=$row->hombre_dia*$especialistas['salario_diario'];
+        $plan_vacaciones=$plan_salario*0.09;
+        return  $plan_vacaciones    ;
+    }
+
+    public function _plan_salario_total($value, $row)
+    {
+     return ($this->_salario_plan($value, $row)+$this->_vacaciones_plan($value, $row));
+    
+    }
 
 
 
