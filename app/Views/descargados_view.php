@@ -31,13 +31,13 @@
 					<div class="container-fluid text-right">
                                                    
                                                     
-                     <a href="<?php echo base_url().'/Proyectos/descarga_show/'.$data['proyectos']['id_proyecto'] ?>
-                     <button type="button" name="descarga_real" id="descarga_real" class="btn btn-info  btn-sm descarga_real ">
-                       
-                         <strong><i class="fas fa-search fa-fw"></i>Atrás</strong>
-                     </button>
-                     </a>
-                     </div>
+                     s<a href="<?php echo base_url().'/Proyectos/descarga_show/'.$data['proyectos']['id_proyecto'] ?>
+                     s<button type="button" name="descarga_real" id="descarga_real" class="btn btn-info  btn-sm descarga_real ">
+                     s  
+                     s    <strong><i class="fas fa-search fa-fw"></i>Atrás</strong>
+                     s</button>
+                     s</a>
+                     s</div>
 
 						<div style='height:20px;'></div>  
 						<div style="padding: 10px">

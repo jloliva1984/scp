@@ -15,7 +15,8 @@ class Especialistas extends BaseController
         $crud->setRelation('id_especialidad','especialidades','nombre');
         $crud->displayAs('id_especialidad','Especialidad');
         $crud->setTable('especialistas');
-        $crud->setSubject('Especialista');
+		$crud->setSubject('Especialista');
+		
         
         
 

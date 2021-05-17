@@ -49,7 +49,11 @@ class Planificacion extends BaseController
           '
            <a href="' . base_url() . '/Planificacion/plan_show/' . $id_proyecto . '" style="align-content: center">
            <i class="fas fa-file-invoice-dollar fa-2x"></i>
-           </a>' ;
+           </a>--
+           <a href="' . base_url() . '/Planificacion/plan_especialistas_show/' . $id_proyecto . '" style="align-content: center">
+           <i class="fas fa-users fa-2x"></i>
+           </a>
+           ' ;
     }
 
 	public function plan_show($id_proyecto)
@@ -63,24 +67,55 @@ class Planificacion extends BaseController
 		$crud->setSubject('Planificación - <strong>Proyecto :</strong> $'.$proyectos['codigo'].' - '.$proyectos['descripcion']);
                 
         $crud->setRelation('id_subelemento_gasto','subelemento_gastos','nombre');
-		
+        		
 		$crud->displayAs('id_subelemento_gasto','Subelemento Gasto');
 
         $crud->columns(['id_subelemento_gasto','plan_valor']);
 
 	   $crud->fieldType('id_proyecto', 'hidden',$id_proyecto);
-        
+ 
 
 		$crud->where('id_proyecto',$id_proyecto);//solo los proyectos en ejecucion
-
-
-
+        //$crud->where('nombre!=','Salario');//solo los proyectos en ejecucion
         
-        
+          
         
        
 
-        $crud->callbackColumn('Plan', array($this, '_plan'));
+       // $crud->callbackColumn('Plan', array($this, '_plan'));
+        
+
+	    $output = $crud->render();
+        return $this->_exampleOutput($output);	
+    }
+    
+    public function plan_especialistas_show($id_proyecto)
+	{
+		$proyectos=new ProyectosModel();
+		$proyectos=$proyectos->find($id_proyecto);
+		
+		$crud = new GroceryCrud();
+        $crud->setTable('plan_proyectos_especialistas');
+        
+		$crud->setSubject('Planificación || Especialistas - <strong>Proyecto :</strong> $'.$proyectos['codigo'].' - '.$proyectos['descripcion']);
+                
+        $crud->setRelation('id_especialista','especialistas','{nombre_completo}-{salario_diario}');
+        		
+		$crud->displayAs('id_especialista','Especialista');
+
+        $crud->columns(['id_especialista','hombre_dia','fecha_inicio','fecha_fin']);
+
+	   $crud->fieldType('id_proyecto', 'hidden',$id_proyecto);
+ 
+
+		$crud->where('id_proyecto',$id_proyecto);//solo los proyectos en ejecucion
+        //$crud->where('nombre!=','Salario');//solo los proyectos en ejecucion
+        
+          
+        
+       
+
+       // $crud->callbackColumn('Plan', array($this, '_plan'));
         
 
 	    $output = $crud->render();
