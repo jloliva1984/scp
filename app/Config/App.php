@@ -22,7 +22,7 @@ class App extends BaseConfig
 	|
 	*/
 	//public $baseURL = 'http://localhost:3359/learnci4/public';
-	public $baseURL = 'http://localhost:3359/scp/public';
+	public $baseURL = 'http://localhost/scp/public';
 
 	/*
 	|--------------------------------------------------------------------------

@@ -93,10 +93,12 @@ $totalCostosIndirectos=0;
 <th>Prod. Proce.</th>
 <th></th>
 </thead>
-<?php foreach($resultados as $result) {?>
-<tr><td><?=$result['codigo']?></td><td><?=$result['descripcion']?>
-</td><td>
-</td><td>
+<?php foreach($resultados as $key =>$result) {?>
+<tr>
+<td><?=$result['codigo']?></td>
+<td><?=$result['descripcion']?></td>
+<td><?=$saldosInicio[$key]?></td>
+<td>
 <?=$result['produccionProceso'];$totalProduccioProceso+=$result['produccionProceso'];?></td>
 <td><?php $totalCostosIndirectos+=($result['produccionProceso']*($valor731/$totalProduccionProceso));echo round($result['produccionProceso']*($valor731/$totalProduccionProceso),2);  ?></td>
 <td><?php echo $result['produccionProceso'] + round($result['produccionProceso']*($valor731/$totalProduccionProceso),2)  ?></td>

@@ -289,6 +289,8 @@ class Proyectos extends BaseController
             $useKint = true;//para debug 
             $mes=$request->getPost('mes') ;
             $anno=$request->getPost('anno') ;
+            $saldoInicio=array();
+            
             $valor731=$request->getPost('valor731') ;
             $cantDias = cal_days_in_month(CAL_GREGORIAN, $mes, $anno); // determiandno la cantidad de dias del mes y año seleccionado
             $fechaInicio=$anno.'-'.$mes.'-01';
@@ -298,9 +300,14 @@ class Proyectos extends BaseController
             $totalProduccionProceso=0;
             if(isset($resultados) && $resultados!=0)
             {
-            foreach($resultados as $resultado){$totalProduccionProceso+=$resultado['produccionProceso'];}
+            foreach($resultados as $resultado)
+            {
+                $totalProduccionProceso+=$resultado['produccionProceso'];
+                $saldoInicio[]=$this->saldoInicial($resultado['id_proyecto'],$mes,$anno);
+            }
+            
             }else{$totalProduccionProceso=0;}
-            $data=['resultados'=>$resultados,'mes'=>$mes,'anno'=>$anno,'valor731'=>$valor731,'totalProduccionProceso'=>$totalProduccionProceso];
+            $data=['resultados'=>$resultados,'mes'=>$mes,'anno'=>$anno,'valor731'=>$valor731,'totalProduccionProceso'=>$totalProduccionProceso,'saldosInicio'=>$saldoInicio];
             return view('prorrateo_view',$data);
 
             
@@ -311,6 +318,29 @@ class Proyectos extends BaseController
         {
           return view('prorrateo_view');
         }
+    }
+
+    public function saldoInicial($id_proyecto,$mes,$anno)
+    {
+     $fecha=$this->mesAnterior($mes,$anno);
+     $proyectos = new ProyectosModel();
+      //determinando la cantidad de dias del mes anterior para determinar la fechainicio y fin para la consulta de busqueda
+      $cantDias = cal_days_in_month(CAL_GREGORIAN,substr($fecha,5,2),substr($fecha,0,4)); // determiandno la cantidad de dias del mes y año seleccionado
+      $fechaInicio=$anno.'-'.$mes.'-01';
+      $fechaFinMesAnterior=substr($fecha,0,4).'-'.substr($fecha,5,2).'-'.$cantDias;
+      $saldo_inicio=$proyectos->saldoInicial($id_proyecto,$fechaFinMesAnterior);
+      if($saldo_inicio[0]['saldoInicial']!=0){return $saldo_inicio[0]['saldoInicial'];}else {return 0;}
+     // return ($saldo_inicio[0]['saldoInicial']);//tengo que devolver 0 si no me trae nada
+    //  saldoInicio($mes,$anno,$id_proyecto);
+
+    }
+
+    public function mesAnterior($mes,$anno)
+    {  
+        $fecha=$anno.'-'.$mes.'-01';
+        $date=date_create($fecha);
+        date_sub( $date,date_interval_create_from_date_string("1 MONTH"));
+        return date_format($date,"Y-m");
     }
 
     public function descargados($id_proyecto)

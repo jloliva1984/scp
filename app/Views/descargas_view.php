@@ -71,10 +71,10 @@
                                           <input type="checkbox" value=<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" /><br/>
                                           </div>
                                         </td>
-											<td><?= $dato->nombre ?></td>
-											<td><?= $dato->nombre_completo ?></td>
-											<td class="valor"><?= $dato->valor ?></td>
-											<td class=""><?= $dato->fecha ?></td>
+                                        <td><?= $dato->nombre ?></td>
+                                        <td><?= $dato->nombre_completo ?></td>
+                                        <td class="valor"><?= $dato->valor ?></td>
+                                        <td class=""><?= $dato->fecha ?></td>
 
                                             <td><button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato->id_proyectos_subelemento_gastos ?>" id="<?= $dato->id_proyectos_subelemento_gastos ?>" onclick="eliminar_descarga(<?= $dato->id_proyectos_subelemento_gastos ?>)"> <i class="fa fa-minus-circle"></i>
 											</td>

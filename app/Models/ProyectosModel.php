@@ -75,7 +75,8 @@ class ProyectosModel extends Model
         $query = $db->query("SELECT
         Sum(proyectos_subelemento_gastos.valor) AS produccionProceso,
         proyectos.codigo,
-        proyectos.descripcion
+        proyectos.descripcion,
+        proyectos.id_proyecto
         FROM
         proyectos_subelemento_gastos
         Inner Join proyectos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
@@ -90,7 +91,22 @@ class ProyectosModel extends Model
         ");
         if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
     }
-
+    public function saldoInicial($id_proyecto,$fechaFinMesAnterior)//buscar el saldo inicio de un proyecto ,que es lo quedo sin descargar dle mes anterior
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        Sum(proyectos_subelemento_gastos.valor) as saldoInicial
+        FROM
+        proyectos_subelemento_gastos
+        Inner Join proyectos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
+        WHERE
+        proyectos_subelemento_gastos.fecha <=  '$fechaFinMesAnterior' AND
+        proyectos.id_proyecto =  '$id_proyecto' AND
+        proyectos_subelemento_gastos.estado =  '1'
+        
+        ");
+        if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
+    }
     public function descarga_real($id)
     {
         $db      = \Config\Database::connect();
