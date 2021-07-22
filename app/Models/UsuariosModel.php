@@ -4,5 +4,6 @@ use CodeIgniter\Model;
  
 class UsuariosModel extends Model{
     protected $table = 'usuarios';
-    protected $allowedFields = ['user','password'];
+    protected $primaryKey = ['id_usuario'];
+    protected $allowedFields = ['user','password','id_rol'];
 }

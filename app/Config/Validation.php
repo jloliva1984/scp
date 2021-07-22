@@ -30,6 +30,12 @@ class Validation
 		'single' => 'CodeIgniter\Validation\Views\single',
 	];
 
+	public $usuarios = [
+		'usuario'          => 'required|min_length[4]|is_unique[usuarios.user]',
+	    'password '        => 'required|min_length[6]',
+	    'verify_password'  => 'required|matches[password]',
+	    'rol'              => 'required',
+	];
 	//--------------------------------------------------------------------
 	// Rules
 	//--------------------------------------------------------------------

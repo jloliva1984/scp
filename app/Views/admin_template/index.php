@@ -74,6 +74,7 @@
                                     <a class="nav-link" href="<?= base_url() ?>/SubElementosGastos/SubElementosGastos_management">Subelementos Gastos</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Especialidades/especialidades_management">Especialidades</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Especialistas/especialistas_management">Especialistas</a>
+                                    <a class="nav-link" href="<?= base_url() ?>/Usuarios/usuarios_management">Usuarios</a>
                                 </nav>
                             </div>
 
@@ -89,6 +90,7 @@
                                     <a class="nav-link" href="<?= base_url() ?>/SubElementosGastos/SubElementosGastos_management">Subelementos Gastos</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Especialidades/especialidades_management">Especialidades</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Especialistas/especialistas_management">Especialistas</a>
+                                    <a class="nav-link" href="<?= base_url() ?>/Usuarios/usuarios_management">Usuarios</a>
                                 </nav>
                             </div>
 

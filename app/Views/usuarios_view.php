@@ -26,6 +26,10 @@
 						<a href='<?php echo site_url('examples/film_management')?>'>Films</a>
 					</div>
 						<div style='height:20px;'></div>  
+
+						<a href="<?php echo base_url()?>/Usuarios/addUser">
+							<div class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> Nuevo Usuario</div>
+						</a>
 						<div style="padding: 10px">
 							<?php echo $output; ?>
 						</div>

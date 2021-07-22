@@ -29,7 +29,7 @@ class Login extends BaseController
 		ldap_set_option($ds, LDAP_OPT_NETWORK_TIMEOUT, 10);
 		
 		$dn="cn=".$username.",".$ldapconfig['usersdn'].",".$ldapconfig['basedn'];
-		die($dn);
+		//die($dn);
 		if(isset($username)){
 		if (@ldap_bind($ds, $dn, $password)) {
 		  echo("Login correct");//REPLACE THIS WITH THE CORRECT FUNCTION LIKE A REDIRECT;
@@ -115,7 +115,7 @@ class Login extends BaseController
 
 		}
 		else{
-		return view('login_view');
+		return view('login\login_view');
 	    }
 	}
 
