@@ -32,10 +32,12 @@ class Validation
 
 	public $usuarios = [
 		'usuario'          => 'required|min_length[4]|is_unique[usuarios.user]',
-	    'password '        => 'required|min_length[6]',
-	    'verify_password'  => 'required|matches[password]',
+	    'password '        => 'required|min_length[5]',
+	    'verify_password'  => 'required|min_length[5]|matches[password]',
 	    'rol'              => 'required',
 	];
+
+	
 	//--------------------------------------------------------------------
 	// Rules
 	//--------------------------------------------------------------------

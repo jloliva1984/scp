@@ -44,7 +44,8 @@
                                 <input type="text" name="usuario" value="<?= set_value('usuario'); ?>" class="form-control" required   />
 
 
-               <span class="text-danger"><?=($validation->getError('usuario')!='')  ? $validation->getError('usuario') :'' ?></span>
+               <span class="text-danger"><?=isset($validation)  ? $validation->getError('usuario') :'' ?></span>
+               	
 
                               
                               
@@ -62,13 +63,9 @@
                             <div class="col-md-8">
                                 <label for="password" class="col-sm-2">Password</label>
                                 <input type="password" name="password" value="" class="form-control" required  /><!--las contraseñas no se recuerdan ,por eso no puse old-->
-                                <span class="text-danger"><?=($validation->getError('password')!='')  ? $validation->getError('password') :'' ?></span>
+                                <span class="text-danger"><?= isset($validation)  ? $validation->getError('password') :'' ?></span>
 
-                                <?php if (session('validation.password')){?>
-                                  <div class="alert alert-danger" role="alert">
-                                      <?= session('validation.password')?>
-                                  </div>
-                                  <?php } ?>
+                               
                              </div>                        
                              </div>
                            

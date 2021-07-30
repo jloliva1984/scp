@@ -25,9 +25,43 @@ class Usuarios extends BaseController
         $crud->setTable('usuarios');
 		$crud->setSubject('usuarios');
 		$crud->unsetAdd();
-        
-		$crud->columns(['user','password']);
+		//$crud->columns(['usuario','id_rol']);
+		$crud->unsetColumns(['password']);
+		$crud->fieldType('password', 'password');
+
+		$crud->setRelation('id_rol','roles','rol');
+		$crud->displayAs('id_rol','Rol');
+
 		$crud->displayAs('user','Usuario');
+		
+		$crud->callbackBeforeUpdate(function ($stateParameters)
+		 {
+			$id=$stateParameters->primaryKeyValue;
+			$editPassword=$stateParameters->data['password'];
+
+			$usuarios= new UsuariosModel();
+			
+			$storedPassword = $usuarios->where('id_usuario', $id)->find();
+			$storedPassword = $storedPassword[0]['password'];
+
+			if($editPassword!=$storedPassword)
+			{
+				$newPassword=Hash::hash_password($editPassword);
+				$stateParameters->data['password'] = $newPassword;
+				return $stateParameters;	
+			}
+			
+			
+		
+			
+		});
+
+		$crud->callbackEditField('verify_password', function ($fieldValue, $primaryKeyValue, $rowData) {
+			return '+30 <input name="verify_password" value="' . 1 . '"  />';
+		});
+        
+		
+		
 	    $output = $crud->render();
 
 		return $this->_exampleOutput($output);
@@ -97,15 +131,7 @@ class Usuarios extends BaseController
 		}	
 	}
 	
-	public function GestionarUsuariosShow()
-	{
-
-	//buscar los roles para pasarlos a la vista
-	$rolesModel = new RolesModel();
-	$roles = $rolesModel->findAll();
-	var_dump($roles);die;
-	//mostrar la vista	
-	}
+	
    
 
 

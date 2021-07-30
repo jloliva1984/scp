@@ -66,6 +66,10 @@ a{color:inherit;text-decoration:none}
 	perspective:1000px;
 	transform-style:preserve-3d;
 }
+
+.text-centered{
+	
+}
 .login-form .group{
 	margin-bottom:15px;
 }
@@ -73,8 +77,8 @@ a{color:inherit;text-decoration:none}
 .login-form .group .input,
 .login-form .group .button{
 	width:100%;
-	color:#fff;
-	display:block;
+	/*color:#fff;
+	display:block;*/
 }
 .login-form .group .input,
 .login-form .group .button{
@@ -151,30 +155,70 @@ a{color:inherit;text-decoration:none}
 }
 </style>
 <title>Sistema de Costos por proyectos</title>
+
 <div class="login-wrap">
+
+
 	<div class="login-html">
 		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Login</label>
 		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
 		<div class="login-form">
+		<?php helper('form');?>
+		<?php session();?>
+					<?php echo form_open('Login/index', 'class="form-group" id=login" method="POST"'); ?>
+					<?= csrf_field() ?>
+					
+					
 			<div class="sign-in-htm">
 				<div class="group">
 					<label for="user" class="label"><strong>Usuario</strong></label>
-					<input id="usuario" name="usuario" type="text" class="input">
+					<input id="usuario" name="usuario" type="text" class="input" value="<?= set_value('usuario'); ?>">
+					<span class="text-danger"><?=isset($validation)  ? $validation->getError('usuario') :'' ?></span>	
+					
 				</div>
+
+							
+				
 				<div class="group">
 					<label for="pass" class="label">Password</label>
-					<input id="password" name="password" type="password" class="input" data-type="password">
+					<input id="password" name="password" type="password" class="input" data-type="password" value="<?= set_value('password'); ?>">
+					<span class="text-danger"><?=isset($validation)  ? $validation->getError('password') :'' ?></span>	
 				</div>
+				
 				
 				<div class="group">
 					<input type="submit" class="button" value="Entrar">
 				</div>
-				<div class="hr enter"> <h5>  Sistema de Costos por Proyectos</h5></div>
+				<div class="container"> <h5>  
+				<?php if(!empty(session()->getFlashdata('fail'))) : ?>
+
+				
+                        <hr>
+						<div class="row">
+						<div class="col-md-4 "></div>
+						
+                          <div class="alert alert-danger col-md-4" style="color:red;text-align:center">
+                          <?= session()->getFlashdata('fail')?>
+                          </div>
+                        </div> 
+						<div class="col-md-4 "></div>
+						<hr> 
+                      <?php endif ?>
+				
+				</h5></div>
+
+
+		
+
+
                
 				
 				
 			</div>
-			
+		
+		<?= form_close() ?>	
 		</div>
 	</div>
+	
 </div>
+

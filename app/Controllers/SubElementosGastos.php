@@ -1,15 +1,16 @@
 <?php namespace App\Controllers;
 use App\Libraries\GroceryCrud;
 
+
 class SubElementosGastos extends BaseController
 {
 	public function index()
 	{
 		return view('welcome_message');
 	}
-    public function SubElementosGastos_management()
+    public function subelementosgastos_management()
 	{
-        
+       
 	    $crud = new GroceryCrud();
 
         $crud->setTable('subelemento_gastos');
