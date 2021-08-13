@@ -24,9 +24,20 @@ class CheckIfLoggedFilter implements FilterInterface
            // $url=current_url(); //devuelve la url actual
             $url='/'.uri_string();//devuelve la url despues del base_url ej 
             //dd($url);
+            $result=explode("/",  $url);//formateando la url paa solo comparar los dos primeros segmentos
+            $url='/'.$result[1].'/'.(isset($result[2])? $result[2]:'' );
+
             $alloweActions= new RolesModel();
             $alloweActions=  $alloweActions->GetAllowedActionsPerUserRol(session()->get('loggedUser'));
-            //dd($alloweActions);
+            // dd($url,$alloweActions);
+
+            //comprobando que sea administrador
+            $admin_privilege=array_search('*', array_column( $alloweActions, 'url'));
+            if(is_numeric($admin_privilege) && $admin_privilege!==false)//encontro el * entonces es admin
+            {
+                return ;
+            }
+
             $resultado = array_search($url, array_column( $alloweActions, 'url'));//devuelve false si no encuentra ,el indice numerico si encuentra
             //dd($resultado);
             if($resultado===false)
@@ -35,7 +46,7 @@ class CheckIfLoggedFilter implements FilterInterface
             }
             else
             {
-
+               return ;
             }
         }
     }

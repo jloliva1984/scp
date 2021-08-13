@@ -19,7 +19,10 @@ class Especialistas extends BaseController
 		  
         
 
-	    $output = $crud->render();
+		$output = $crud->render();
+		$data['title']='Especialistas';
+		 
+		$output->data = $data;
 
 		return $this->_exampleOutput($output);
 	}

@@ -60,9 +60,9 @@ class Login extends BaseController
 			$password=$request->getPost('password');
 			
 			$userInfo = new UsuariosModel();
-			$userInfo = $userInfo->where('user',$username)->first();
-			
-			$checkPassword=Hash::check_password($password,$userInfo['password']);
+			$userInfo = $userInfo->userInfo($username);
+			//$userInfo = $userInfo->where('user',$username)->first();
+			$checkPassword=Hash::check_password($password,$userInfo[0]->password);
 			
 			if(!$checkPassword)
 			{
@@ -72,10 +72,12 @@ class Login extends BaseController
 			}
 			else
 			{
-				$userId=$userInfo['id_usuario'];
-				$userName=$userInfo['user'];
+				$userId=$userInfo[0]->id_usuario;
+				$userName=$userInfo[0]->user;
+				$rol=$userInfo[0]->rol;
 				session()->set('loggedUser',$userId);
 				session()->set('loggedUserName',$userName);
+				session()->set('loggedrol',$rol);
 				return redirect()->to(base_url().'/Home');
 			}
 

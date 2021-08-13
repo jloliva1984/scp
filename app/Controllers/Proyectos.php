@@ -3,6 +3,7 @@ use App\Libraries\GroceryCrud;
 use App\Models\ProyectosModel;
 use App\Models\SubelementoGastosModel;
 use App\Models\EspecialistasModel;
+use App\Models\ResumenProrrateoMensualModel;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -453,17 +454,78 @@ class Proyectos extends BaseController
         $request = service('request');
         $mes=$request->getPost('mes');$anno=$request->getPost('anno');$valor_indice_prorrateo=$request->getPost('indice_prorrateo');
         $valor731=$request->getPost('valor731');
+
+         $generalResult = json_decode($request->getPost('generalResult'));//  reciviendolo como array
+         $generalResult=array_chunk($generalResult, 6);//divide el resultado en arreglos de 6 posiciones wue son los datos que envio desde html
+      
         
+         $db      = \Config\Database::connect();
+         $db->transBegin(); 
+         
         $proyectos=new ProyectosModel();
-        $result=$proyectos->insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo);
-        if($result!=0)//inserto
+        try
         {
-         echo 1;
+        $insertedId=$proyectos->insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo);
+        }
+        catch(\Exception $e)
+        {
+         echo -1;die; 
+        }
+        if($insertedId!=0)//inserto
+        {
+            $resumen=new ResumenProrrateoMensualModel();
+
+            foreach($generalResult as $resultRow)
+            {
+            $data = ['saldo_inicial'=>$resultRow[2],'costos_directos'=>$resultRow[3],'costos_indirectos'=>$resultRow[4],
+            'produccion_proceso'=>$resultRow[5],'id_proyecto'=>$resultRow[0],'id_indice_prorrateo'=>$insertedId];//
+            try
+            {
+                $result=$resumen->insert($data);
+            }
+            catch (\Exception $e)
+            {
+               echo -1;die;
+            }
+           
+          
+            if($result!=0){echo 1;}else{echo 0;}
+             }
+            
+         
         }
         {
             echo 0;       
         } 
-
+        if ($db->transStatus() === FALSE)
+        {
+           $db->transRollback();
+           echo (-1);
+        }
+        else
+        {
+            $db->transCommit();
+            
+        }  
        
+    }
+
+  
+
+    public function verificar_prorrateo()
+    {
+        $request = service('request');
+        $mes=$request->getPost('mes');$anno=$request->getPost('anno');
+
+        $proyectos=new ProyectosModel();
+        $result=$proyectos->verificar_prorrateo($mes,$anno);
+        if($result==1)//ya exsite el indice para el mes y ano enviado
+        {
+         echo 1;
+        }
+        else
+        {
+            echo 0;       
+        } 
     }
 }

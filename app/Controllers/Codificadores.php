@@ -13,10 +13,14 @@ class Codificadores extends BaseController
 	    $crud = new GroceryCrud();
         $crud->setTable('actions');
 		$crud->setSubject('Acciones del sistema');
+		$crud->setClone('Acciones del sistema');
 		  
         
 
-	    $output = $crud->render();
+		$output = $crud->render();
+		$data['title']='Acciones del sistema';
+		 
+		 $output->data = $data;
 
 		return $this->_exampleOutput($output);
 	}
@@ -24,11 +28,7 @@ class Codificadores extends BaseController
 	public function user_rol_show()
   {
 	   
-	 //if($this->validation()!=0 )
-	 if(1==1 )
-	 {
-	  // $this->validate_access();
-		 
+	
 	  $crud = new GroceryCrud();
 
 		$crud->setTable('roles')
@@ -41,14 +41,13 @@ class Codificadores extends BaseController
 		 $crud->setRelationNtoN('actions','actions_roles','actions','id_rol','id_action','url');
 
 		 $output = $crud->render();
+		 $data['title']='Acciones por roles';
+		 
+		 $output->data = $data;
 
 		 return $this->_exampleOutput($output);
 			
-	 }
-	  else
-	  {
-	    $this->load->view('login/bootstrap/login.php');
-	  }
+	
   }
 
 

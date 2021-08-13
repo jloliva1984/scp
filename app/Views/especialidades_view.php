@@ -14,7 +14,7 @@
 							</ol>
 						</div>
 						
-					<div>
+					<!-- <div>
 						<a href='<?php echo site_url('proyectos/proyectos_management')?>'>Proyectos</a> |
 						<a href='<?php echo site_url('SubElementosGastos/SubElementosGastos_management')?>'>Subelementos de gasto</a> |
 						<a href='<?php echo site_url('Especialidades/especialidades_management')?>'>Especialidades</a> |
@@ -24,7 +24,10 @@
 						<a href='<?php echo site_url('examples/offices_management')?>'>Offices</a> | 
 						<a href='<?php echo site_url('examples/employees_management')?>'>Employees</a> |		 
 						<a href='<?php echo site_url('examples/film_management')?>'>Films</a>
-					</div>
+					</div> -->
+ 
+					<?= view_cell('App\Libraries\ViewComponents::getMenu') ?> 
+
 						<div style='height:20px;'></div>  
 						<div style="padding: 10px">
 							<?php echo $output; ?>

@@ -74,6 +74,7 @@ class ProyectosModel extends Model
         $db      = \Config\Database::connect();
         $query = $db->query("SELECT
         Sum(proyectos_subelemento_gastos.valor) AS produccionProceso,
+        proyectos.id_proyecto,
         proyectos.codigo,
         proyectos.descripcion,
         proyectos.id_proyecto
@@ -170,20 +171,35 @@ class ProyectosModel extends Model
     
     public function insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo)
     {   
-       
+        $data = ['mes' => $mes,'anno' => $anno,'valor731' => $valor731,'valor_indice_prorrateo'  => $valor_indice_prorrateo, ]; 
+
         $db      = \Config\Database::connect();
         $builder = $db->table('indices_prorrateo');
 
-        //$this->db->transStart(true); // Query will be rolled back
-        $data = [
-            'mes' => $mes,
-            'anno' => $anno,
-            'valor731' => $valor731,
-            'valor_indice_prorrateo'  => $valor_indice_prorrateo,
-         ];
+        $query = $builder->getWhere(['mes' => $mes,'anno'=>$anno]);
         
+        if(!empty($query->getResult()))//si no se ha definido indice de prorrateo para el mes y el anno especificado
+        {
+            $builder->resetQuery();
+
+            $builder->where('mes',$mes);
+            $builder->where('anno',$anno);
+            $result=$builder->update($data);
+           //die($result);
+        //    dd($db->affectedRows());
+            if($db->affectedRows()>0)
+            {
+            return $db->insertID();;	
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
         $builder->insert($data);
-       // $this->db->transComplete();
+        // $this->db->transComplete();
         if($db->affectedRows()>0)
             {
             return $db->insertID();	
@@ -192,7 +208,28 @@ class ProyectosModel extends Model
             {
                 return 0;
             }
+        }
+       
+
+     
     }
+    public function verificar_prorrateo($mes,$anno)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('indices_prorrateo');
+
+        $query = $builder->getWhere(['mes' => $mes,'anno'=>$anno]); 
+
+        if(!empty($query->getResult()))
+        {
+            return 1; //ya existe un indice de prorrateo para el mes y anno enviado
+        }
+        {
+            return 0;//no existe
+        }
+    }
+
+    
 
     public function insert_descarga_real($id_proyectos_subelemento_gastos,$id_indice_prorrateo,$valorReal)
     {

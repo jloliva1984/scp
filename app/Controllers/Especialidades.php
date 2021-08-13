@@ -16,9 +16,13 @@ class Especialidades extends BaseController
         $crud->setSubject('Especialidades');
         
 
-	    $output = $crud->render();
+		$output = $crud->render();
+		$data['title']='Especialidades';
+		 
+		$output->data = $data;
 
 		return $this->_exampleOutput($output);
+
 	}
 
 

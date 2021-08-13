@@ -39,7 +39,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i>
                     <?php 
-                    if(session()->has('loggedUserName')){ echo session()->get('loggedUserName');} 
+                    if(session()->has('loggedUserName')){ echo session()->get('loggedrol').'/'.session()->get('loggedUserName');} 
                     ?>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
@@ -73,7 +73,7 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?= base_url() ?>/proyectos/proyectos_management">Proyectos</a>
-                                    <a class="nav-link" href="<?= base_url() ?>/SubElementosGastos/SubElementosGastos_management">Subelementos Gastos</a>
+                                    <a class="nav-link" href="<?= base_url() ?>/SubElementosGastos/subelementosgastos_management">Subelementos Gastos</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Especialidades/especialidades_management">Especialidades</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Especialistas/especialistas_management">Especialistas</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Usuarios/usuarios_management">Usuarios</a>
@@ -91,12 +91,12 @@
                             <div class="collapse" id="collapseLayoutsReportes" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?= base_url() ?>/Proyectos/prorrateo_show">Prorrateo</a>
-                                    <a class="nav-link" href="<?= base_url() ?>/SubElementosGastos/SubElementosGastos_management">Subelementos Gastos</a>
+                                    <!-- <a class="nav-link" href="<?= base_url() ?>/SubElementosGastos/SubElementosGastos_management">Subelementos Gastos</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Especialidades/especialidades_management">Especialidades</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Especialistas/especialistas_management">Especialistas</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Usuarios/usuarios_management">Usuarios</a>
                                     <a class="nav-link" href="<?= base_url() ?>/Codificadores/roles_management">Roles</a>
-                                    <a class="nav-link" href="<?= base_url() ?>/actions_management">Acciones</a>
+                                    <a class="nav-link" href="<?= base_url() ?>/actions_management">Acciones</a> -->
                                 </nav>
                             </div>
 
@@ -185,7 +185,7 @@
         
         <script src="<?php echo base_url('/assets/admin_template/')?>/js/scripts.js"></script>
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script> -->
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-area-demo.js"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-bar-demo.js"></script>
         <script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>

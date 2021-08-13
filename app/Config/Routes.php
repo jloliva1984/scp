@@ -38,13 +38,32 @@ $routes->group('',['filter'=>'CheckIfLogged'],function($routes)//llama al filtro
 	$routes->get('/', 'Home::index');
 	
       
-	 $routes->match(['get', 'post'],'/proyectos/(:any)', 'Proyectos::proyectos_management');
-
-	   
-	 $routes->get('/planificacion/(:any)', 'Planificacion::proyectos_management');
+	 $routes->match(['get', 'post'],'/proyectos/(:any)', 'Proyectos::proyectos_management',['as'=>'proyectos']);
 	 
-   
-	 $routes->get('/subelementos_gasto/(:any)','SubElementosGastos::SubElementosGastos_management');
+
+     $routes->get('/planificacion/(:any)', 'Planificacion::proyectos_management');
+	 $routes->get('/planificacion', 'Planificacion::proyectos_management');
+	 
+	 $routes->post('/SubElementosGastos/(:any)','SubElementosGastos::subelementosgastos_management');
+	 $routes->get('/SubElementosGastos','SubElementosGastos::subelementosgastos_management');
+
+	 $routes->post('/Especialidades/(:any)','Especialidades::especialidades_management');
+	 $routes->get('/Especialidades','Especialidades::especialidades_management');
+
+	 //$routes->get('/Especialistas/(:any)','Especialistas::especialistas_management');
+
+	 $routes->get('/Usuarios/(:any)','Usuarios::usuarios_management');
+
+	 $routes->get('/Codificadores','Codificadores::user_rol_show');
+
+	//  $routes->post('/proyectos/(:any)','Proyectos::proyectos_management');
+	//  $routes->get('/proyectos/(:any)','Proyectos::proyectos_management');
+	 $routes->match(['get', 'post'],'/proyectos/(:any)', 'Proyectos::proyectos_management');
+	 $routes->match(['get', 'post'],'/proyectos/(:any)', 'Proyectos::proyectos_management');
+	 $routes->post('/proyectos/delete/(:any)', 'Proyectos::proyectos_management/delete/(:any)');
+	
+	 
+	 //$routes->get('/SubElementosGastos/','SubElementosGastos::SubElementosGastos_management');
 
 
 
