@@ -9,7 +9,71 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Dashboard</li>
                         </ol>
+                       
                         <div class="row">
+                            <div class="col-md-4 col-xl-3">
+                                <div class="card bg-c-blue order-card">
+                                    <div class="card-block">
+                                        <h6 class="m-b-20">Proyectos Abiertos</h6>
+                                        <h2 class="text-right"><i class="fa fa-folder-open f-left"></i><span>486</span></h2>
+                                        <p class="m-b-0">Proyectos sin Planif.<span class="f-right">351</span></p>
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">Detalles</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-md-4 col-xl-3">
+                                <div class="card bg-c-green order-card">
+                                    <div class="card-block">
+                                        <h6 class="m-b-20">Proyectos cerca a Fecha fin</h6>
+                                        <h2 class="text-right"><i class="fa fa-clock f-left"></i><span>486</span></h2>
+                                        <p class="m-b-0">Completed Orders<span class="f-right">351</span></p>
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">Detalles</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-md-4 col-xl-3">
+                                <div class="card bg-c-yellow order-card">
+                                    <div class="card-block">
+                                        <h6 class="m-b-20">Proyectos fuera de presupuesto</h6>
+                                        <h2 class="text-right"><i class="fa fa-donate f-left"></i><span>486</span></h2>
+                                        <p class="m-b-0">Completed Orders<span class="f-right">351</span></p>
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">Detalles</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class="col-md-4 col-xl-3">
+                                <div class="card bg-c-pink order-card">
+                                    <div class="card-block">
+                                        <h6 class="m-b-20">Orders Received</h6>
+                                        <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>486</span></h2>
+                                        <p class="m-b-0">Completed Orders<span class="f-right">351</span></p>
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">Detalles</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+	                    </div>
+
+
+
+
+
+                       
+                        <!-- <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
                                     <div class="card-body">7 Proyectos Activos en ejecución</div>
@@ -46,7 +110,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="card mb-4">

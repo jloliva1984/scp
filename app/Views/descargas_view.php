@@ -27,7 +27,7 @@
                                                 <th></th>
                                                 <th>
                                                 
-                                                  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                                 
                                                   
                                                 </div>
                                                 <div class="container-fluid text-right">
@@ -139,6 +139,8 @@
   
 <script src="<?php echo base_url('/assets/select2/');?>/js/select2.min.js"></script><!--EL PLUGIN SELECT2 DEBE SER CARGADO DESPUES DE CARGAR JQUERY-->
 
+<script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('/assets/')?>/datatables/DataTables-1.10.25/js/datatables.bootstrap4.min.js" crossorigin="anonymous"></script>
 
 <script language="javascript" >
 

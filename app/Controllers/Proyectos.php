@@ -309,7 +309,10 @@ class Proyectos extends BaseController
             
             }else{$totalProduccionProceso=0;}
             $data=['resultados'=>$resultados,'mes'=>$mes,'anno'=>$anno,'valor731'=>$valor731,'totalProduccionProceso'=>$totalProduccionProceso,'saldosInicio'=>$saldoInicio];
+            // return view('prorrateo_datatable_view',$data);
             return view('prorrateo_view',$data);
+
+            
 
             
            
@@ -454,8 +457,9 @@ class Proyectos extends BaseController
         $request = service('request');
         $mes=$request->getPost('mes');$anno=$request->getPost('anno');$valor_indice_prorrateo=$request->getPost('indice_prorrateo');
         $valor731=$request->getPost('valor731');
-
+        
          $generalResult = json_decode($request->getPost('generalResult'));//  reciviendolo como array
+         
          $generalResult=array_chunk($generalResult, 6);//divide el resultado en arreglos de 6 posiciones wue son los datos que envio desde html
       
         
@@ -466,6 +470,7 @@ class Proyectos extends BaseController
         try
         {
         $insertedId=$proyectos->insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo);
+        
         }
         catch(\Exception $e)
         {
@@ -477,6 +482,8 @@ class Proyectos extends BaseController
 
             foreach($generalResult as $resultRow)
             {
+
+            //    var_dump($resultRow);
             $data = ['saldo_inicial'=>$resultRow[2],'costos_directos'=>$resultRow[3],'costos_indirectos'=>$resultRow[4],
             'produccion_proceso'=>$resultRow[5],'id_proyecto'=>$resultRow[0],'id_indice_prorrateo'=>$insertedId];//
             try

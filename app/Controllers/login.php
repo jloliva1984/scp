@@ -58,7 +58,6 @@ class Login extends BaseController
 		{
 			$username=$request->getPost('usuario');
 			$password=$request->getPost('password');
-			
 			$userInfo = new UsuariosModel();
 			$userInfo = $userInfo->userInfo($username);
 			//$userInfo = $userInfo->where('user',$username)->first();
@@ -71,7 +70,7 @@ class Login extends BaseController
 			  return view('login\login_view');
 			}
 			else
-			{
+			{ echo
 				$userId=$userInfo[0]->id_usuario;
 				$userName=$userInfo[0]->user;
 				$rol=$userInfo[0]->rol;

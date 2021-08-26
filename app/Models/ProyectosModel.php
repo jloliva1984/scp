@@ -172,7 +172,7 @@ class ProyectosModel extends Model
     public function insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo)
     {   
         $data = ['mes' => $mes,'anno' => $anno,'valor731' => $valor731,'valor_indice_prorrateo'  => $valor_indice_prorrateo, ]; 
-
+        
         $db      = \Config\Database::connect();
         $builder = $db->table('indices_prorrateo');
 
@@ -185,10 +185,9 @@ class ProyectosModel extends Model
             $builder->where('mes',$mes);
             $builder->where('anno',$anno);
             $result=$builder->update($data);
-           //die($result);
-        //    dd($db->affectedRows());
+           
             if($db->affectedRows()>0)
-            {
+            {dd('ya inserto');
             return $db->insertID();;	
             }
             else

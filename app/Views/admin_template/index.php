@@ -13,6 +13,8 @@
         <link href="<?php echo base_url('/assets/admin_template/');?>/css/styles.css" rel="stylesheet" />
         <link rel="stylesheet" href="<?php echo base_url('/assets/admin_template/');?>/fontawesome/css/all.min.css">
         
+        <link rel="stylesheet" href="<?php echo base_url('/assets/admin_template/');?>/css/cards.css">
+        
         <link href="<?php echo base_url('/assets/admin_template/');?>/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="<?php echo base_url('/assets/admin_template/');?>/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
         
@@ -188,11 +190,16 @@
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script> -->
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-area-demo.js"></script>
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-bar-demo.js"></script>
-        <script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
-        <script src="<?php echo base_url('/assets/')?>/datatables/datatables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <!-- <script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
+        <script src="<?php echo base_url('/assets/')?>/datatables/datatables.bootstrap4.min.js" crossorigin="anonymous"></script> -->
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/datatables-demo.js"></script>
         <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/brands.js" crossorigin="anonymous"></script>
         <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/fontawesome.js" crossorigin="anonymous"></script>
 
+
+        <!-- <script src="<?php //echo base_url('public'); ?>/js/all.min.js"></script>
+        <script src="<?//= base_url('public'); ?>/js/bootstrap.bundle.min.js"></script>
+        <script src="<?//= base_url('public'); ?>/js/scripts.js"></script> -->
+        <!-- <script src="<?= base_url(); ?>/assets/demo/datatables-demo.js"></script> -->
     </body>
 </html>
