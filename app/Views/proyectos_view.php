@@ -22,10 +22,10 @@
 						</div>
 
 						
-						<?php foreach($js_files as $file): ?>
-							<?php echo $file.'<br>';?>
+						 <?php foreach($js_files as $file): ?>
+							
 							<script src="<?php echo $file; ?>"></script>
-						<?php endforeach; ?>  
+						<?php endforeach; ?>   -->
 
 <button type="button" class="btn btn-success openBtn" onclick="prueba(1)">Open Modal</button>
 
@@ -59,20 +59,7 @@
 
 
 <script language="javascript">
-$(document).ready(function()
-{
-//	alert('ducumento listo');
-// 	function prueba(param)
-// 	{
-// 		alert (param);
-// 	}
-	$('.openBtn').live('click',function(){
-    $('.modal-body').html('content.html',function(){
-        $('#myModal').modal({show:true});
-    });
- });
 
-})
 </script>
 
 	

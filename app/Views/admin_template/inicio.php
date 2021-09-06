@@ -2,6 +2,9 @@
 <?= $this->extend('admin_template/index') ?>
 
 <?= $this->section('content') ?>
+
+
+
 <div id="layoutSidenav_content">
                 <main>
                      <div class="container-fluid">
@@ -15,8 +18,8 @@
                                 <div class="card bg-c-blue order-card">
                                     <div class="card-block">
                                         <h6 class="m-b-20">Proyectos Abiertos</h6>
-                                        <h2 class="text-right"><i class="fa fa-folder-open f-left"></i><span>486</span></h2>
-                                        <p class="m-b-0">Proyectos sin Planif.<span class="f-right">351</span></p>
+                                        <h2 class="text-right"><i class="fa fa-folder-open f-left"></i><span><?= $cantProyectosActivos?></span></h2>
+                                        <p class="m-b-0">Proyectos Cerrados<span class="f-right"><?= $cantProyectosCerrados?></span></p>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="#">Detalles</a>
@@ -118,7 +121,15 @@
                                         <i class="fas fa-chart-area mr-1"></i>
                                         Area Chart Example
                                     </div>
-                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                    <div class="card-body">
+                                    
+<figure class="highcharts-figure">
+    <div id="graficos"></div>
+   
+</figure>
+
+
+                                   </div>
                                 </div>
                             </div>
                             <div class="col-xl-6">
@@ -136,9 +147,9 @@
                                 <i class="fas fa-table mr-1"></i>
                                 DataTable Example
                             </div>
-                            <!--<div class="card-body">
+                            <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <!-- <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
@@ -227,18 +238,93 @@
                                                 <td>$112,000</td>
                                             </tr>
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                 </div>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                 </main>
 
-                <script src="<?php echo base_url('/assets/admin_template/')?>/js/jquery-3.5.1.slim.min.js"></script>  
+
+
+                <script src="<?php echo base_url('/assets/admin_template/')?>/js/jquery-3.5.1.slim.min.js"></script> 
+  
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script> 
+
+<script type="text/javascript">
+ Highcharts.chart('graficos', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Plan vs Real'
+    },
+    subtitle: {
+        text: 'Comparacion entre el gasto real y lo planificado en proyectos activos'
+    },
+    xAxis: {
+        categories: ['IPU-03-20210312 ', 'IPU-03-2015487', 'IPU-03-2145 ', 'IPU-09-252 ', 'IPU-2521-21 '],
+        title: {
+            text: null
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Gastos ($)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    tooltip: {
+        valueSuffix: ' $'
+       
+    },
+    plotOptions: {
+        bar: {
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Plan',
+        data: [25480, 15210, 14000, 21213, 65456]
+    }, {
+        name: 'Real',
+        data: [24010, 16525, 14521, 20145, 45121]
+    }]
+}); 
+</script>
                 <script language="javascript">
                 (document).ready(function{
                  ('#dataTable').DataTable();
+                 
+                    
+
                     
                 });
+
+
                 </script>
                 <?= $this->endSection() ?>

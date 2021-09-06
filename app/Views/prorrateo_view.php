@@ -8,6 +8,7 @@
 						<div class="col-md-5">
 							<h1 class="mt-4">Prorrateo</h1>
 						</div>
+						<hr>
 						</div>
 				    
 <?php
@@ -337,6 +338,8 @@ function crear_datatable()
 													if(data>0)
 													{
 														swal("Confirmación!", "El índice de prorrateo para el mes y año seleccionado fue almacenado correctamente ,ahora puede efectuar la descarga para los registros de ese mes.", "success");
+														
+														
 														window.location.assign("<?php echo base_url();?>/scp/public/Proyectos/proyectos_management/");
 													}
 													if(data==-1)

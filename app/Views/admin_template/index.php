@@ -26,7 +26,7 @@
   <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>
 </svg></button>
             <!-- Navbar Search-->
-            <div><FONT COLOR="white" class="text-center"><?php echo date('d/m/Y'); ?></font></div>
+            <div><font COLOR="white" class="text-center"><?php echo date('d/m/Y'); ?></font></div>
 
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <!-- <div class="input-group">
@@ -46,7 +46,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                      <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="<?= base_url().'/login/logout' ?>">Cerrar sesión</a>
+                        <a class="dropdown-item" href="<?= base_url().'/login/logout' ?>"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
                     </div>
                 </li>
             </ul>
@@ -84,6 +84,12 @@
                                 </nav>
                             </div>
 
+                            <div class="sb-sidenav-menu-heading">Prorrateo</div>
+                            <a class="nav-link" href="<?= base_url()?>/Proyectos/prorrateo_show">
+                                <div class="sb-nav-link-icon"><i class="fas fa-share-alt"></i></div>
+                                Prorrateo
+                            </a>
+
                             <div class="sb-sidenav-menu-heading">Reportes</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsReportes" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -92,13 +98,7 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsReportes" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?= base_url() ?>/Proyectos/prorrateo_show">Prorrateo</a>
-                                    <!-- <a class="nav-link" href="<?= base_url() ?>/SubElementosGastos/SubElementosGastos_management">Subelementos Gastos</a>
-                                    <a class="nav-link" href="<?= base_url() ?>/Especialidades/especialidades_management">Especialidades</a>
-                                    <a class="nav-link" href="<?= base_url() ?>/Especialistas/especialistas_management">Especialistas</a>
-                                    <a class="nav-link" href="<?= base_url() ?>/Usuarios/usuarios_management">Usuarios</a>
-                                    <a class="nav-link" href="<?= base_url() ?>/Codificadores/roles_management">Roles</a>
-                                    <a class="nav-link" href="<?= base_url() ?>/actions_management">Acciones</a> -->
+                                    <a class="nav-link" href="<?= base_url() ?>/Proyectos/reporte_prorrateo">Prorrateo</a>
                                 </nav>
                             </div>
 
@@ -192,10 +192,16 @@
         <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/chart-bar-demo.js"></script>
         <!-- <script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
         <script src="<?php echo base_url('/assets/')?>/datatables/datatables.bootstrap4.min.js" crossorigin="anonymous"></script> -->
-        <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/datatables-demo.js"></script>
+        <!-- <script src="<?php echo base_url('/assets/admin_template/')?>/assets/demo/datatables-demo.js"></script> -->
         <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/brands.js" crossorigin="anonymous"></script>
         <script defer src="<?php echo base_url('/assets/admin_template/')?>/fontawesome/js/fontawesome.js" crossorigin="anonymous"></script>
 
+        
+        <!-- highcharts -->
+        <!-- <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/data.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script> -->
 
         <!-- <script src="<?php //echo base_url('public'); ?>/js/all.min.js"></script>
         <script src="<?//= base_url('public'); ?>/js/bootstrap.bundle.min.js"></script>

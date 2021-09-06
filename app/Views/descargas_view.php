@@ -5,7 +5,7 @@
 <div class="card mb-4" style="padding: 10px">
                             <div class="card-header text-right" >
                                							
-                                <h6 id="id_proyecto" data-id_proyecto='<?= $proyecto['id_proyecto'] ?>'>    
+                                <h6 id="id_proyecto" data-id_proyecto='<?= $proyecto['id_proyecto'] ?>' data-nombre_proyecto='<?= $proyecto['descripcion'] ?>' class="proyecto">    
                                 <strong>Proyecto</strong> - <?= $proyecto['descripcion']?> || <strong>Código</strong> - <?= $proyecto['codigo']?>
 								</h6>
                             </div>
@@ -51,7 +51,8 @@
                                             </tr>
                                         </thead>
                                    </table>
-                                    <table class="table table-striped table-hover table-sm" id="descargas" name="descargas" width="100%" cellspacing="0">
+                                   <hr>
+                                    <table class="table table-striped table-condensed table-hover table-sm" id="descargas" name="descargas" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Seleccionar</th>
@@ -63,12 +64,13 @@
                                                 
                                             </tr>
                                         </thead>
+                                        <tbody>
                                         <?php if(isset($datos) && $datos!=0){ ?>
                                         <?php foreach($datos as $dato): ?>
                                         <tr>
                                         <td>
                                           <div class="custom-control custom-checkbox">
-                                          <input type="checkbox" value=<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" /><br/>
+                                          <input type="checkbox" value="<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" /><br/>
                                           </div>
                                         </td>
                                         <td><?= $dato->nombre ?></td>
@@ -81,7 +83,7 @@
 									    </tr>
                                         <?php endforeach ?>
                                         <?php } ?>
-
+                                        </tbody>
                                         <tfoot>
                                             <tr>
                                             <th>Total</th>
@@ -139,8 +141,21 @@
   
 <script src="<?php echo base_url('/assets/select2/');?>/js/select2.min.js"></script><!--EL PLUGIN SELECT2 DEBE SER CARGADO DESPUES DE CARGAR JQUERY-->
 
-<script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
-<script src="<?php echo base_url('/assets/')?>/datatables/DataTables-1.10.25/js/datatables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<!-- <script src="<?php echo base_url('/assets/')?>/datatables/datatables.min.js" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('/assets/')?>/datatables/DataTables-1.10.25/js/datatables.bootstrap4.min.js" crossorigin="anonymous"></script> -->
+
+<!-- datatables -->
+<link rel="stylesheet" href="<?php echo base_url('/assets/datatables/');?>/DataTables-1.10.25/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="<?php echo base_url('/assets/datatables/');?>/DataTables-1.10.25/css/buttons.dataTables.min.css"/>
+
+<script src="<?php echo base_url('/assets/datatables/');?>/JSZip-2.5.0/jszip.min.js"></script>
+<script src="<?php echo base_url('/assets/datatables/');?>/pdfmake-0.1.36/pdfmake.min.js"></script>
+<script src="<?php echo base_url('/assets/datatables/');?>/pdfmake-0.1.36/vfs_fonts.js"></script>
+<script src="<?php echo base_url('/assets/datatables/');?>/DataTables-1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url('/assets/datatables/');?>/Buttons-1.7.1/js/dataTables.buttons.min.js"></script>
+<script src="<?php echo base_url('/assets/datatables/');?>/Buttons-1.7.1/js/buttons.html5.min.js"></script>
+<script src="<?php echo base_url('/assets/datatables/');?>/Buttons-1.7.1/js/buttons.print.min.js"></script>
+<!-- //end datatables -->
 
 <script language="javascript" >
 
@@ -150,6 +165,7 @@ $(document).ready(function()
 
     crear_datatable();
     getValorTotal();
+    cambiar_planceHolder();
     //descargas
     $(document).on('click', '.add_descarga', function () {
         var html = '';
@@ -175,7 +191,7 @@ $(document).ready(function()
         <?php }}   ?>
         html += '</select></td>';
      
-        html += '<td><input type="text" name="valor[]" id="valor"  size="4" class="form-control valor" placeholder="$ o H/D" ></td>';
+        html += '<td><input type="text" name="valor[]" id="valor"  size="4" class="form-control valor" placeholder="" ></td>';
         html += '<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="fecha[]" id="fecha"  size="2" class="form-control fecha" placeholder="" ></td>';
         html += '<td><button type="button" name="remove_descarga" id="-1" onclick="eliminar_descarga(-1)" class="btn btn-danger btn-sm remove_descarga eliminar "><i class="fa fa-minus-circle"></i>';
         html += '</tr>';
@@ -184,6 +200,7 @@ $(document).ready(function()
         $('#formulario_insercion').prepend(html);
         crear_select2();
         //getValorTotal();
+        cambiar_planceHolder();
         
 
     });
@@ -233,6 +250,30 @@ $(document).ready(function()
         // });
     }
 
+    function cambiar_planceHolder()
+    {
+     
+      $('.subelementos').on('change', function(){
+        current_subelemto_gasto=$(this);
+        current_subelemto_gasto_id=$(this).val();
+        var texto=$("#subelementos option[value="+current_subelemto_gasto_id+"]").text();
+        
+        
+        var ocurrencia=texto.indexOf('Salario'); //Retorna posicion de Salario dentro de var texto
+        var ocurrencia1=texto.indexOf('salario'); 
+        console.log(ocurrencia);
+        console.log(ocurrencia1);
+        if(ocurrencia!=-1 || ocurrencia1!=-1)
+          {
+             current_subelemto_gasto.closest("td").next().next().find('.valor').attr("placeholder","H/D");
+          }
+         else
+         {
+          current_subelemto_gasto.closest("td").next().next().find('.valor').attr("placeholder","$"); 
+         } 
+      });
+    }
+
     function crear_select2()
      {
       $('#subelementos').select2();
@@ -240,8 +281,8 @@ $(document).ready(function()
    }
    function crear_datatable()
    {
-   // $('#descargas').DataTable({});
-
+    var proyecto = $('.proyecto').attr('data-nombre_proyecto');
+	  
     jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     return this.flatten().reduce( function ( a, b ) {
       if ( typeof a === 'string' ) {
@@ -257,6 +298,7 @@ $(document).ready(function()
   });
   var table = $('#descargas').DataTable(
     {
+      
       drawCallback: function () {
         var api = this.api();
         var total = api.column( 3, {"filter":"applied"}).data().sum();
@@ -269,7 +311,154 @@ $(document).ready(function()
             info: "Mostrando página _PAGE_ de _PAGES_",
             infoEmpty: "No records available",
             infoFiltered: "(filtrado de _MAX_ total de registros)"
-                   }
+                   },
+
+        dom:"Bfrtilp",       
+        // buttons: ['copy', 'excel', 'pdf']    
+        buttons: [
+          {
+					extend:'excelHtml5',
+					footer:true,//para que imprima el foot
+					text:'<i class="fas fa-file-excel"></i>',
+					titleAttr:'Exportar a Excel',
+					className:'btn btn-success',
+					exportOptions: {
+						columns: [ 1, 2, 3, 4 ]
+									},
+					excelStyles:{
+						template:'header_blue' 
+									},
+					title:'Gastos Proyecto -'+proyecto ,
+					filename:'Gastos Proyecto -'+proyecto,
+				 
+				 } ,
+				 
+                 {
+						extend:'print',
+						footer:true,
+						text:'<i class="fas fa-print"></i>',
+						titleAttr:'Imprimir',
+						className:'btn btn-warning',
+						exportOptions: {
+							columns: [ 1, 2, 3, 4 ]
+						},
+						title:'Gastos Proyecto -'+proyecto ,
+						
+						
+						customize: function ( win ) {
+							$(win.document.body)
+								.css( 'font-size', '10pt' );
+							
+		
+							$(win.document.body).find( 'table' )
+								.addClass( 'compact' ).css( 'font-size', 'inherit' );
+
+							$(win.document.body).find( 'h1' ) .css( 'font-size', '10pt' ).css('text-align','center');
+							
+						}	
+
+
+         },
+         {
+						extend: 'pdfHtml5',
+            title:'Gastos Proyecto -'+proyecto ,
+            filename:'Gastos Proyecto -'+proyecto,
+						customize: function(doc) {
+											doc.defaultStyle.fontSize = 8; 
+											doc.defaultStyle.alignment= 'center';
+											doc.styles.tableHeader.fontSize = 8; 
+											doc.styles.tableFooter.fontSize = 8; 
+											doc.styles.title.fontSize = 10; 
+											doc.styles.title.alignment = 'center'; 
+
+											doc.content[1].margin = [ 40, 20, 40, 0 ] //left, top, right, bottom
+
+											//doc.pageMargins = [10, 10, 10,10 ];
+											//  doc.content[0].alignment= 'center';
+											console.log( doc);
+												} ,
+						footer:true,
+						text: '<i class="fas fa-file-pdf"></i>',
+						className:'btn btn-primary',
+						exportOptions: {
+						modifier: {
+							page: 'current'
+									},
+									
+						columns: [ 1, 2, 3, 4 ],
+                           }		   
+                }
+                ,
+				{
+					text: '<i class="fas fa-download"></i>',
+					titleAttr:'Descargar',
+                    action: function ( e, dt, node, config )
+                  {
+                    var id_proyecto = $('#id_proyecto').attr('data-id_proyecto');
+    var ids = $('[name="checkDescarga[]"]').serializeArray();
+                if(ids!='')
+                {
+              
+                swal({
+
+                        title: "Esta seguro que desea descargar estos registros?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Sí",
+                        cancelButtonText: "No",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
+                      },
+            function(isConfirm) {
+                    if (isConfirm) {
+                      $.ajax({
+                            type: "POST",
+                            dataType: 'json',
+
+                            data: {'ids': JSON.stringify($('[name="checkDescarga[]"]').serializeArray())},
+                            url: "<?php echo base_url();?>/Proyectos/descarga_real",
+                            success : function(data) 
+                            {
+                              if(data.insertados>=0 && data.noInsertados==0)
+                              {
+                                swal({
+                          title: "Confirmación",
+                          text: "Los elementos seleccionados fueron llevados al costo de venta satisfactoriamente.",
+                          type: "success",
+                          timer: 12000
+                              });
+                              
+
+                                // swal("Confirmación!", "Los elementos seleccionados fueron llevados al costo de venta satisfactoriamente.", "success");
+                                window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+                              }
+                              else if(data.insertados>=0 && data.noInsertados>0)
+                              {
+                                swal("Confirmación!", "No todos los elementos seleccionados fueron llevados al costo de venta satisfactoriamente.", "warning");
+                                window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+                              }
+                              else if(data.insertados==0 && data.noInsertados>0)
+                              {
+                                swal("Confirmación!", "Error al llevar los elementos seleccionados al costo de venta, revise que este establecido el índice de prorrateo para el mes deseado.", "error");
+                                window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+                              }
+
+                            }
+                        });
+
+                    }
+                    else {
+                      swal("Cancelado", "Se ha cancelado la descarga de los elementos seleccionados :)", "error");
+                          }
+
+            });
+            }
+          else
+                { swal("Error", "Debe seleccionar al menos un elemento", "error");}            
+                                  }
+         }
+        ]    
         
     });
 
@@ -498,7 +687,7 @@ function(isConfirm) {
 });
 }
 else
-{ swal("Error", "Debe seleccionar al menos un elemento :)", "error");;}
+{ swal("Error", "Debe seleccionar al menos un elemento", "error");}
 
 
 

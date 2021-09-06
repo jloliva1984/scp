@@ -323,7 +323,42 @@ class Proyectos extends BaseController
           return view('prorrateo_view');
         }
     }
+    public function reporte_prorrateo()
+    {
+        
+        if(!empty($_POST))//si hay evio de datos se procesa
+        {
+            $request = service('request');//para poder usar $request->getPost
+            $useKint = true;//para debug 
+            $mes=$request->getPost('mes') ;
+            $anno=$request->getPost('anno') ;
+            $saldoInicio=array();
+            
+            // $valor731=$request->getPost('valor731') ;
+            $cantDias = cal_days_in_month(CAL_GREGORIAN, $mes, $anno); // determiandno la cantidad de dias del mes y año seleccionado
+            $fechaInicio=$anno.'-'.$mes.'-01';
+            $fechaFin=$anno.'-'.$mes.'-'.$cantDias;
+            $proyectos=new ProyectosModel();
+            // $resultados=$proyectos->prorrateo($fechaInicio,$fechaFin);
+            $resultados=$proyectos->reporte_prorrateo($mes,$anno);
+            
+            // $totalProduccionProceso=0;
+           
+            $data=['resultados'=>$resultados,'mes'=>$mes,'anno'=>$anno];
+            // return view('prorrateo_datatable_view',$data);
+            return view('reportes/prorrateo_view',$data);
 
+            
+
+            
+           
+        
+        }
+        else // si no hay envio de datos muestro la vista inicial
+        {
+          return view('reportes/prorrateo_view');
+        }
+    }
     public function saldoInicial($id_proyecto,$mes,$anno)
     {
      $fecha=$this->mesAnterior($mes,$anno);
@@ -357,7 +392,7 @@ class Proyectos extends BaseController
 	    $crud = new GroceryCrud();
       
         $crud->setTable('proyectos_subelemento_gastos_real');
-        $crud->setSubject('Gastos descargados - <strong>TOTAL :</strong> $'.$totalDescargado[0]['totalDescargado']);
+        $crud->setSubject('Gastos descargados - <strong>TOTAL :</strong> $'.round($totalDescargado[0]['totalDescargado'],2));
         $crud->setRelation('id_proyectos_subelemento_gastos','proyectos_subelemento_gastos','valor');
         $crud->columns(['Subelemento Gasto','Especialista','valor']);
         $crud->callbackColumn('Subelemento Gasto',array($this,'getSubelementoGasto'));

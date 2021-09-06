@@ -8,16 +8,17 @@
 	<div id="layoutSidenav_content" style="height: 100% " >
 					<main>
 						<div class="container-fluid" style="padding: 10px">
-							
-							<div class="card-header text-right bg-info" >
+							<div class="card">
+							                           <div class="card-header text-right" >
                                							
 														   <h6 id="id_proyecto" data-id_proyecto='<?= $data['proyectos']['id_proyecto'] ?>'>    
 														   <strong>Gastos Descargados - Proyecto</strong> - <?= $data['proyectos']['descripcion']?> || <strong>Código</strong> - <?= $data['proyectos']['codigo']?>
 														   </h6>
 													   </div>
-						</div>
 						
-					<div>
+						
+					    <div class="card-body">
+					    <div>
 						<a href='<?php echo site_url('proyectos/proyectos_management')?>'>Proyectos</a> |
 						<a href='<?php echo site_url('SubElementosGastos/SubElementosGastos_management')?>'>Subelementos de gasto</a> |
 						<a href='<?php echo site_url('Especialidades/especialidades_management')?>'>Especialidades</a> |
@@ -31,13 +32,13 @@
 					<div class="container-fluid text-right">
                                                    
                                                     
-                     s<a href="<?php echo base_url().'/Proyectos/descarga_show/'.$data['proyectos']['id_proyecto'] ?>
+                     <a href="<?php echo base_url().'/Proyectos/descarga_show/'.$data['proyectos']['id_proyecto'] ?>
                      s<button type="button" name="descarga_real" id="descarga_real" class="btn btn-info  btn-sm descarga_real ">
-                     s  
-                     s    <strong><i class="fas fa-search fa-fw"></i>Atrás</strong>
-                     s</button>
-                     s</a>
-                     s</div>
+                       
+                         <strong><i class="fas fa-arrow-left"></i>Atrás</strong>
+                     </button>
+                     </a>
+                     </div>
 
 						<div style='height:20px;'></div>  
 						<div style="padding: 10px">
@@ -46,10 +47,11 @@
 						<tr>
 						<td></td>
 						<td></td>
-						<td><?= round($data['totalDescargado'][0]['totalDescargado'],2)?></td>
+						<td></td>
 						<td></td>
 						</tr>
-
+						</div>
+						</div>
 						
 						<?php foreach($js_files as $file): ?>
 							<script src="<?php echo $file; ?>"></script>

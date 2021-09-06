@@ -168,6 +168,37 @@ class ProyectosModel extends Model
          else { return 0;}
 
     }
+
+    public function reporte_prorrateo($mes,$anno)
+    {
+//aqui cojo el id del gasto registrado y valido que este el indice de prorrqateo definido para su fecha
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        resumen_prorrateo_mensual.saldo_inicial,
+        resumen_prorrateo_mensual.costos_directos,
+        resumen_prorrateo_mensual.costos_indirectos,
+        resumen_prorrateo_mensual.produccion_proceso,
+        proyectos.codigo,
+        proyectos.descripcion,
+        indices_prorrateo.mes,
+        indices_prorrateo.anno,
+        indices_prorrateo.valor731,
+        indices_prorrateo.valor_indice_prorrateo
+        FROM
+        resumen_prorrateo_mensual
+        Inner Join proyectos ON proyectos.id_proyecto = resumen_prorrateo_mensual.id_proyecto
+        Inner Join indices_prorrateo ON indices_prorrateo.id_indice_prorrateo = resumen_prorrateo_mensual.id_indice_prorrateo
+        WHERE
+        indices_prorrateo.mes =  '$mes' AND
+        indices_prorrateo.anno =  '$anno'
+        ");
+        if($db->affectedRows()>0)
+         {
+          return $query->getResult();
+         }
+         else { return 0;}
+
+    }
     
     public function insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo)
     {   
