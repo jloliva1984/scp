@@ -249,10 +249,12 @@
 
                 <script src="<?php echo base_url('/assets/admin_template/')?>/js/jquery-3.5.1.slim.min.js"></script> 
   
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script> 
+
+<script src="<?php echo base_url('/assets/highcharts/')?>/highcharts.js"></script> 
+<script src="<?php echo base_url('/assets/highcharts/')?>/exporting.js"></script> 
+<script src="<?php echo base_url('/assets/highcharts/')?>/export-data.js"></script> 
+<script src="<?php echo base_url('/assets/highcharts/')?>/accessibility.js"></script> 
+ 
 
 <script type="text/javascript">
  Highcharts.chart('graficos', {

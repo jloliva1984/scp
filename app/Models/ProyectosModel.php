@@ -199,6 +199,30 @@ class ProyectosModel extends Model
          else { return 0;}
 
     }
+    //funcion para los planes que se muestran en los graficos
+    public function plan_subelementos()
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        proyectos.codigo,
+        proyectos.descripcion,
+        Sum(plan_proyectos_subelemento_gastos.plan_valor) AS totalPlanSubelemento
+        FROM
+        proyectos
+        Inner Join plan_proyectos_subelemento_gastos ON proyectos.id_proyecto = plan_proyectos_subelemento_gastos.id_proyecto
+        WHERE
+        proyectos.estado =  '1'
+        GROUP BY
+        proyectos.codigo,
+        proyectos.descripcion
+        ");
+        if($db->affectedRows()>0)
+         {
+          return $query->getResult();
+         }
+         else { return 0;}
+
+    }
     
     public function insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo)
     {   
