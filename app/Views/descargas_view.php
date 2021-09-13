@@ -31,28 +31,27 @@
                                                   
                                                 </div>
                                                 <div class="container-fluid text-right">
-                                                    <button type="button" name="add_descarga" id="add_descarga" class="btn btn-success btn-sm add_descarga ">
-                                                      <!-- <i class="fa fa-plus-circle">+ Agregar</i>
-                                                      <i class="fa fa-plus" aria-hidden="true">agregar</i> -->
+                                                    <!-- <button type="button" name="add_descarga" id="add_descarga" class="btn btn-success btn-sm add_descarga ">
+                                                      
                                                         <strong><i class="fas fa-plus fa-fw"></i> Agregar</strong>
                                                     </button>
                                                     <button type="button" name="descarga_real" id="descarga_real" class="btn btn-warning btn-sm  descarga_real ">
                                                     
                                                         <strong><i class="fas fa-download fa-fw"></i>Descargar</strong>
-                                                    </button>
-                                                    <a href="<?php echo base_url().'/Proyectos/descargados/'.$proyecto['id_proyecto'] ?>
+                                                    </button> -->
+                                                    <!-- <a href="<?php echo base_url().'/Proyectos/descargados/'.$proyecto['id_proyecto'] ?>
                                                     <button type="button" name="descarga_real" id="descarga_real" class="btn btn-info  btn-sm descarga_real ">
                                                       
                                                         <strong><i class="fas fa-search fa-fw"></i>Descargados</strong>
                                                     </button>
-                                                    </a>
+                                                    </a> -->
                                                     </div>
                                                 </th>
                                             </tr>
                                         </thead>
                                    </table>
-                                   <hr>
-                                    <table class="table table-striped table-condensed table-hover table-sm" id="descargas" name="descargas" width="100%" cellspacing="0">
+                                   <!-- <hr> -->
+                                    <table class="table table-striped table-condensed table-hover table-sm small" id="descargas" name="descargas" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
                                                 <th>Seleccionar</th>
@@ -70,15 +69,15 @@
                                         <tr>
                                         <td>
                                           <div class="custom-control custom-checkbox">
-                                          <input type="checkbox" value="<?=$dato->id_proyectos_subelemento_gastos?>" name="checkDescarga[]" /><br/>
+   <input type="checkbox" value="<?=$dato['id_proyectos_subelemento_gastos']?>" name="checkDescarga[]" <?=($dato['existeIndice'])? '':'Disabled' ?> /><br/>
                                           </div>
                                         </td>
-                                        <td><?= $dato->nombre ?></td>
-                                        <td><?= $dato->nombre_completo ?></td>
-                                        <td class="valor"><?= $dato->valor ?></td>
-                                        <td class=""><?= $dato->fecha ?></td>
+                                        <td><?= $dato['nombre'] ?></td>
+                                        <td><?= $dato['nombre_completo'] ?></td>
+                                        <td class="valor"><?= $dato['valor'] ?></td>
+                                        <td class=""><?= $dato['fecha'] ?></td>
 
-                                            <td><button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato->id_proyectos_subelemento_gastos ?>" id="<?= $dato->id_proyectos_subelemento_gastos ?>" onclick="eliminar_descarga(<?= $dato->id_proyectos_subelemento_gastos ?>)"> <i class="fa fa-minus-circle"></i>
+                                            <td><button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" onclick="eliminar_descarga(<?= $dato['id_proyectos_subelemento_gastos'] ?>)"> <i class="fa fa-minus-circle fa"></i>
 											</td>
 									    </tr>
                                         <?php endforeach ?>
@@ -282,6 +281,7 @@ $(document).ready(function()
    function crear_datatable()
    {
     var proyecto = $('.proyecto').attr('data-nombre_proyecto');
+    var id_proyecto = $('.proyecto').attr('data-id_proyecto');
 	  
     jQuery.fn.dataTable.Api.register( 'sum()', function ( ) {
     return this.flatten().reduce( function ( a, b ) {
@@ -316,6 +316,59 @@ $(document).ready(function()
         dom:"Bfrtilp",       
         // buttons: ['copy', 'excel', 'pdf']    
         buttons: [
+          {
+            text: '<i class="fas fa-arrow-left"></i>',
+            titleAttr:'Atras',
+             action: function ( e, dt, node, config )
+            {
+              history.go(-1);
+            }
+          },
+          {
+            text: '<i class="fas fa-plus"></i>',
+					  titleAttr:'Agregar Gastos',
+                    action: function ( e, dt, node, config )
+                  {
+                   
+        var html = '';
+        html += '<tr>';
+        html += '<td><select name="subelementos[]" id="subelementos" class="form-control subelementos"><option value="0">Subelementos de Gasto</option>';
+        
+        <?php
+        if(isset($subelementos) && $subelementos != 0)
+        {
+        foreach ($subelementos as $subelemento)
+        {?>
+            html += '<option value="<?= $subelemento['id_subelemento_gasto'] ?>"><?= $subelemento['codigo'].' - '.$subelemento['nombre'] ?></option>'
+        <?php }}   ?>
+        html += '</select></td>';
+
+        html += '<td><select name="especialistas[]" id="especialistas" class="form-control especialistas"><option value="0">Especialistas</option>';
+        <?php
+        if(isset($especialistas) && $especialistas != 0)
+        {
+        foreach ($especialistas as $especialista)
+        {?>
+        html += '<option value="<?= $especialista['id_especialista'] ?>"><?= $especialista['nombre_completo']?></option>'
+        <?php }}   ?>
+        html += '</select></td>';
+     
+        html += '<td><input type="text" name="valor[]" id="valor"  size="4" class="form-control valor" placeholder="" ></td>';
+        html += '<td><input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="fecha[]" id="fecha"  size="2" class="form-control fecha" placeholder="" ></td>';
+        html += '<td><button type="button" name="remove_descarga" id="-1" onclick="eliminar_descarga(-1)" class="btn btn-danger btn-sm remove_descarga eliminar "><i class="fa fa-minus-circle"></i>';
+        html += '</tr>';
+
+        // $('#descargas').prepend(html);
+        $('#formulario_insercion').prepend(html);
+        crear_select2();
+        //getValorTotal();
+        cambiar_planceHolder();
+        
+
+           
+                  } 
+          }
+          ,
           {
 					extend:'excelHtml5',
 					footer:true,//para que imprima el foot
@@ -391,7 +444,7 @@ $(document).ready(function()
                 ,
 				{
 					text: '<i class="fas fa-download"></i>',
-					titleAttr:'Descargar',
+					titleAttr:'Descargar | Debe seleccionar los elementos a descargar',
                     action: function ( e, dt, node, config )
                   {
                     var id_proyecto = $('#id_proyecto').attr('data-id_proyecto');
@@ -457,6 +510,13 @@ $(document).ready(function()
           else
                 { swal("Error", "Debe seleccionar al menos un elemento", "error");}            
                                   }
+         },
+         {
+        text: '<i class="fas fa-search"></i> Descargados',
+        action: function ( e, dt, button, config )
+                 {
+                  window.location = "<?php echo base_url().'/Proyectos/descargados/'?>"+id_proyecto;
+                 }        
          }
         ]    
         

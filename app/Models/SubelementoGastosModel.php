@@ -26,7 +26,7 @@ class SubelementoGastosModel extends Model
         //dd($builder->getCompiledSelect());
         $query = $builder->get();
         $useKint = true;//para debug
-        return $query->getResult();
+        return $query->getResultArray();
     }
     public function SubElementosGastosxId($inserted_id)
     {
@@ -40,6 +40,7 @@ class SubelementoGastosModel extends Model
         //echo ($builder->getCompiledSelect());die;
         $query = $builder->get();
         $useKint = true;//para debug
+        
         return $query->getResult();
     }
 
@@ -84,6 +85,35 @@ class SubelementoGastosModel extends Model
         WHERE
         proyectos.id_proyecto =  '$id_proyecto' AND
         subelemento_gastos.nombre =  'salario'
+        ");
+        if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
+        
+    }
+    public function resumenDescargardosPorProyecto($id_proyecto)
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        proyectos_subelemento_gastos.valor AS valorSubelementoGasto,
+        proyectos_subelemento_gastos_real.valor AS valorSubelementoGastoDescargado,
+        indices_prorrateo.valor_indice_prorrateo,
+        especialistas.nombre_completo,
+        especialistas.salario_diario,
+        subelemento_gastos.codigo,
+        subelemento_gastos.nombre,
+        proyectos_subelemento_gastos.estado,
+        proyectos.codigo,
+        proyectos.descripcion
+        FROM
+        proyectos
+        Inner Join proyectos_subelemento_gastos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
+        Inner Join proyectos_subelemento_gastos_real ON proyectos_subelemento_gastos.id_proyectos_subelemento_gastos = proyectos_subelemento_gastos_real.id_proyectos_subelemento_gastos
+        Inner Join indices_prorrateo ON indices_prorrateo.id_indice_prorrateo = proyectos_subelemento_gastos_real.id_indice_prorrateo
+        Inner Join especialistas ON especialistas.id_especialista = proyectos_subelemento_gastos.id_especialista
+        Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
+        WHERE
+        proyectos_subelemento_gastos.estado =  '0' AND
+        proyectos.id_proyecto =  '$id_proyecto'
+        
         ");
         if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}
         

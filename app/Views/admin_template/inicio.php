@@ -265,7 +265,7 @@
         text: 'Plan vs Real'
     },
     subtitle: {
-        text: 'Comparacion entre el gasto real y lo planificado en proyectos activos'
+        text: 'Comparación entre el gasto real y lo planificado en proyectos activos'
     },
     xAxis: {
         categories: ['IPU-03-20210312 ', 'IPU-03-2015487', 'IPU-03-2145 ', 'IPU-09-252 ', 'IPU-2521-21 '],

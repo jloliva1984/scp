@@ -115,18 +115,19 @@ class Proyectos extends BaseController
         {
           if($gastoTotal!=0){  
           return
-          '<a href="' . base_url() . '/Proyectos/resumen_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
+          '
+          <a href="' . base_url() . '/Proyectos/resumen_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
           
-          '.round($gastoTotal,2).'/'.$totalRealDescargado[0]['totalDescargado'].'
-          </a>
           <div class="progress">
-          
-          <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" 
-          style="width:'.round((round($totalRealDescargado[0]['totalDescargado']*100,2))/round($gastoTotal,2),2).'%">
-            '.round((round($totalRealDescargado[0]['totalDescargado']*100,2))/round($gastoTotal,2),2).'%
+          <div class="progress-bar bg-success progress-bar-animated" style="width:'.round($gastoTotal,2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)).'%">
+            '.round($gastoTotal,2).' ('.round(round($gastoTotal,2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)),2).'%)
           </div>
-          
+          <div class="progress-bar bg-warning progress-bar-animated" style="width:'.round($totalRealDescargado[0]['totalDescargado'],2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)).'%">
+          '.round($totalRealDescargado[0]['totalDescargado'],2).'  ( '.round(round($totalRealDescargado[0]['totalDescargado'],2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)),2).'%)
           </div>
+         
+        </div> 
+        </a>
           
           ' ;
           }
@@ -146,6 +147,13 @@ class Proyectos extends BaseController
 
         $datos= $subelementos->SubElementosGastosxProyecto($id_proyecto);
 
+        //reccoriendo arreglo ,verificando sis existe indice para el mes de la fecha y creando indice con 0 o 1 dependiende de si existe el IP o no
+        for($i=0;$i<count($datos);$i++)
+        {                    
+           $existeIndice=$proyecto->existe_indice_prorrateo(substr($datos[$i]['fecha'],5,2),substr($datos[$i]['fecha'],0,4));
+           $datos[$i]['existeIndice']= $existeIndice;
+        }
+  
         $data = ['proyecto' => $proyecto->find($id_proyecto),'subelementos'=>$subelementos->findAll(),'especialistas'=>$especialistas->findAll(),
                  'datos'=>$datos];
         //dd($datos);
@@ -201,18 +209,21 @@ class Proyectos extends BaseController
                 {
                 $subelementos = new SubelementoGastosModel();
                 $datos= $subelementos->SubElementosGastosxId($inserted_id);
-                $html[0].='<tr><td>'.$datos[0]->nombre.'</td><td>'.$datos[0]->nombre_completo.'</td><td class="valor">'.$datos[0]->valor.'</td><td>'.$datos[0]->fecha.'</td><td><button type="button" name="remove_descarga" class="btn btn-danger  btn-sm" value="'.$datos[0]->id_proyectos_subelemento_gastos.'" remove_descarga" id="'.$datos[0]->id_proyectos_subelemento_gastos.'" onclick="eliminar_descarga('.$datos[0]->id_proyectos_subelemento_gastos.')"><i class="fa fa-minus-circle"></i></td></tr>';
+                $nombre_completo='';
+               
+                $html[0].='<tr><td>'.$datos[0]->nombre.'</td><td>'.$nombre_completo.'</td><td class="valor">'.$datos[0]->valor.'</td><td>'.$datos[0]->fecha.'</td><td><button type="button" name="remove_descarga" class="btn btn-danger  btn-sm" value="'.$datos[0]->id_proyectos_subelemento_gastos.'" remove_descarga" id="'.$datos[0]->id_proyectos_subelemento_gastos.'" onclick="eliminar_descarga('.$datos[0]->id_proyectos_subelemento_gastos.')"><i class="fa fa-minus-circle"></i></td></tr>';
                 }
                 }
                 else
                 {
                     $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count],$valor[$count],$fecha[$count],1);
-
+                    
                     if($inserted_id !=0)//buscando los datos de la descarga una vez insertada para mostrarla concatenando la variale html
                     {
                     $subelementos = new SubelementoGastosModel();
                     $datos= $subelementos->SubElementosGastosxId($inserted_id);
-                    $html[0].='<tr><td>'.$datos[0]->nombre.'</td><td>'.$datos[0]->nombre_completo.'</td><td class="valor">'.$datos[0]->valor.'</td><td>'.$datos[0]->fecha.'</td><td><button type="button" name="remove_descarga" class="btn btn-danger  btn-sm" value="'.$datos[0]->id_proyectos_subelemento_gastos.'" remove_descarga" id="'.$datos[0]->id_proyectos_subelemento_gastos.'" onclick="eliminar_descarga('.$datos[0]->id_proyectos_subelemento_gastos.')"><i class="fa fa-minus-circle"></i></td></tr>';
+                   // echo($datos);die;
+                    $html[0].='<tr><td>'.$datos[0]->nombre.'</td><td>'.'$datos[0]->nombre_completo'.'</td><td class="valor">'.$datos[0]->valor.'</td><td>'.$datos[0]->fecha.'</td><td><button type="button" name="remove_descarga" class="btn btn-danger  btn-sm" value="'.$datos[0]->id_proyectos_subelemento_gastos.'" remove_descarga" id="'.$datos[0]->id_proyectos_subelemento_gastos.'" onclick="eliminar_descarga('.$datos[0]->id_proyectos_subelemento_gastos.')"><i class="fa fa-minus-circle"></i></td></tr>';
                     }
                 }
               
@@ -387,27 +398,31 @@ class Proyectos extends BaseController
         $proyectos=new ProyectosModel();
         $subelementos = new SubelementoGastosModel();
         $proyectos= $proyectos->find($id_proyecto);
-        $totalDescargado= $subelementos->totalGastoDescargado($id_proyecto);
+        $resumenDescargardosPorProyecto= $subelementos->resumenDescargardosPorProyecto($id_proyecto);
+       // dd($resumenDescargardosPorProyecto);
+        // $totalDescargado= $subelementos->totalGastoDescargado($id_proyecto);
         
-	    $crud = new GroceryCrud();
+	    // $crud = new GroceryCrud();
       
-        $crud->setTable('proyectos_subelemento_gastos_real');
-        $crud->setSubject('Gastos descargados - <strong>TOTAL :</strong> $'.round($totalDescargado[0]['totalDescargado'],2));
-        $crud->setRelation('id_proyectos_subelemento_gastos','proyectos_subelemento_gastos','valor');
-        $crud->columns(['Subelemento Gasto','Especialista','valor']);
-        $crud->callbackColumn('Subelemento Gasto',array($this,'getSubelementoGasto'));
-        $crud->callbackColumn('Especialista',array($this,'getEspecialista'));
+        // $crud->setTable('proyectos_subelemento_gastos_real');
+        // $crud->setSubject('Gastos descargados - <strong>TOTAL :</strong> $'.round($totalDescargado[0]['totalDescargado'],2));
+        // $crud->setRelation('id_proyectos_subelemento_gastos','proyectos_subelemento_gastos','valor');
+        // $crud->columns(['Subelemento Gasto','Especialista','valor']);
+        // $crud->callbackColumn('Subelemento Gasto',array($this,'getSubelementoGasto'));
+        // $crud->callbackColumn('Especialista',array($this,'getEspecialista'));
 
-        $crud->unsetOperations();
+        // $crud->unsetOperations();
 
       
 
-        $output = $crud->render();
-        $data['proyectos']=$proyectos;
-        $data['totalDescargado']=$totalDescargado;
-        $output->data = $data;
+        // $output = $crud->render();
+        // $data['proyectos']=$proyectos;
+        // $data['totalDescargado']=$totalDescargado;
+        // $output->data = $data;
 
-        return view('descargados_view',(array)$output);
+        // return view('descargados_view',(array)$output);
+        $data=['resumenDescargardosPorProyecto'=>$resumenDescargardosPorProyecto];
+        return view('descargados_view',$data);
     }
     public function getSubelementoGasto($value, $row)
     { 

@@ -121,6 +121,7 @@ class ProyectosModel extends Model
     }
     public function buscar_indice_prorrateo($mes,$anno)//function que busca si esta definido el indice para un mes  y anno
     {
+        
         $db      = \Config\Database::connect();
         $query = $db->query("SELECT
         indices_prorrateo.valor_indice_prorrateo,
@@ -132,7 +133,26 @@ class ProyectosModel extends Model
         indices_prorrateo.anno =  '$anno'
         
         ");
+       
         if($db->affectedRows()>0) { return $query->getResultArray();} else { return 0;}    
+    }
+    public function existe_indice_prorrateo($mes,$anno)//function que busca si esta definido el indice para un mes  y anno
+    {
+        
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        indices_prorrateo.valor_indice_prorrateo,
+        indices_prorrateo.id_indice_prorrateo
+        FROM
+        indices_prorrateo
+        WHERE
+        indices_prorrateo.mes =  '$mes' AND
+        indices_prorrateo.anno =  '$anno'
+        
+        ");
+        
+       
+        if($db->affectedRows()>0) { return 1;} else { return 0;}    
     }
 
     public function validar_existencia_indice($id)
