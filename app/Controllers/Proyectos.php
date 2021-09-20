@@ -580,8 +580,6 @@ class Proyectos extends BaseController
        
     }
 
-  
-
     public function verificar_prorrateo()
     {
         $request = service('request');
@@ -597,5 +595,13 @@ class Proyectos extends BaseController
         {
             echo 0;       
         } 
+    }
+
+    public function reporte_resumen_especialista()
+    {
+        die('hrelloooo');
+        $request = service('request');
+        $especialistas = $request->getPost('especialistas');
+        var_dump($especialistas);die;
     }
 }

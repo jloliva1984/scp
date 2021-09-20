@@ -219,6 +219,33 @@ class ProyectosModel extends Model
          else { return 0;}
 
     }
+    public function reporte_resumen_especialista($especialistas)
+    {
+//aqui cojo el id del gasto registrado y valido que este el indice de prorrqateo definido para su fecha
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT DISTINCT
+        proyectos.codigo,
+        proyectos.descripcion,
+        especialistas.nombre_completo,
+        proyectos_subelemento_gastos.fecha,
+        subelemento_gastos.nombre,
+        subelemento_gastos.codigo
+        FROM
+        proyectos
+        Inner Join proyectos_subelemento_gastos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
+        Inner Join especialistas ON especialistas.id_especialista = proyectos_subelemento_gastos.id_especialista
+        Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
+        WHERE
+        especialistas.id_especialista =  '1' OR
+        especialistas.id_especialista =  '2'
+        ");
+        if($db->affectedRows()>0)
+         {
+          return $query->getResult();
+         }
+         else { return 0;}
+
+    }
     //funcion para los planes que se muestran en los graficos
     public function plan_subelementos()
     {

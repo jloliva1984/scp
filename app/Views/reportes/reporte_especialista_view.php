@@ -15,7 +15,7 @@
 				    
 <?php
 helper('form');
-echo form_open('Proyectos/prorrateo_show', 'class="" id="prorrateo_form"');
+echo form_open('/Proyectos/reporte_resumen_especialista', 'class="" id="reporte_resumen_especialista_form"');
  ?>	
 
 			<div class="row">
@@ -47,10 +47,11 @@ echo form_open('Proyectos/prorrateo_show', 'class="" id="prorrateo_form"');
 <?php form_close() ?>						
 <hr>
 
+<div class="reporte_resumen_especialista" id="reporte_resumen_especialista"></div>
+
 </main>
 
 <script src="<?php echo base_url('/assets/jquery3.5.1.js');?>"></script>
-
 <link rel="stylesheet" href="<?php echo base_url('/assets/select2/');?>/css/select2.min.css">
 <script src="<?php echo base_url('/assets/sweetalert/');?>/js/sweetalert.js"></script>
 <link rel="stylesheet" href="<?php echo base_url('/assets/sweetalert/');?>/css/sweetalert.css" />
@@ -60,7 +61,49 @@ echo form_open('Proyectos/prorrateo_show', 'class="" id="prorrateo_form"');
 
 <script defer src="<?php echo base_url('/assets/fontawesome/');?>/all.js"></script>
 <script language="javascript">
+
 $('#especialistas').select2();
+
+$('#reporte_resumen_especialista_form').on('submit',function(event){
+	   event.preventDefault();
+		var error='';
+		
+	    if($('.especialistas').val()=='')
+		{
+					error+="<p>Debe seleccionar al menos un especialista </p>";
+					return false;
+		}
+
+				
+		var form_data=$(this).serialize();
+		var especialistas=$('#especialistas').val();
+		var base_url='<?php echo base_url() ?>';
+		
+		alert(base_url+'/Proyectos/reporte_resumen_especialista/');exit;
+		if(error=='')
+			{
+			//$('#trabajadores_hidden').val(trabajadores);	
+			 $.ajax({
+				url: base_url+'/Proyectos/reporte_resumen_especialista/',
+				method:"POST",
+				data:{especialistas:especialistas},
+				 success:function(data)
+				 {  
+					$('#reporte_resumen_especialista').html(data);
+					// $('#print').removeAttr('disabled');
+					// $('#pay').removeAttr('disabled');
+					
+
+				 }
+			 })	;
+			}
+		else
+			{
+            alert(error);
+			}
+		
+		
+	});	
 </script>
 
 
