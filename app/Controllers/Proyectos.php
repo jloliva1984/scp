@@ -153,6 +153,7 @@ class Proyectos extends BaseController
            $existeIndice=$proyecto->existe_indice_prorrateo(substr($datos[$i]['fecha'],5,2),substr($datos[$i]['fecha'],0,4));
            $datos[$i]['existeIndice']= $existeIndice;
         }
+  // TODO: ssssssssssssssssssssssssssssssssssssssssssss
   
         $data = ['proyecto' => $proyecto->find($id_proyecto),'subelementos'=>$subelementos->findAll(),'especialistas'=>$especialistas->findAll(),
                  'datos'=>$datos];
@@ -383,6 +384,18 @@ class Proyectos extends BaseController
      // return ($saldo_inicio[0]['saldoInicial']);//tengo que devolver 0 si no me trae nada
     //  saldoInicio($mes,$anno,$id_proyecto);
 
+    }
+//todo revisar prrotateo por meses
+    public function reportes_dashboard()
+    {
+        return view('reportes/reportes_dashboard');
+    }
+    public function reporte_especialista_show()
+    {
+        $especialistas = new EspecialistasModel();
+        $especialistas=$especialistas->findAll();
+        $data=['especialistas'=>$especialistas];
+        return view('reportes/reporte_especialista_view',$data);
     }
 
     public function mesAnterior($mes,$anno)

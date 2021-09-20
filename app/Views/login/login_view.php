@@ -154,7 +154,10 @@ a{color:inherit;text-decoration:none}
 	text-align:center;
 }
 </style>
-<title>Sistema de Costos por proyectos</title>
+<title>SCP || IPROYAZ</title>
+<link rel="shortcut icon" href="<?php echo base_url('assets/images/')?>/favicon.ico"  />
+
+
 
 <div class="login-wrap">
 

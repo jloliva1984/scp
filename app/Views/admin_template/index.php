@@ -90,7 +90,13 @@
                                 Prorrateo
                             </a>
 
-                            <div class="sb-sidenav-menu-heading">Reportes</div>
+                            <div class="sb-sidenav-menu-heading">REPORTES</div>
+                            <a class="nav-link" href="<?= base_url()?>/Proyectos/reportes_dashboard">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Reportes
+                            </a>
+
+                            <!-- <div class="sb-sidenav-menu-heading">Reportes</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayoutsReportes" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Reportes
@@ -100,7 +106,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?= base_url() ?>/Proyectos/reporte_prorrateo">Prorrateo</a>
                                 </nav>
-                            </div>
+                            </div> -->
 
 
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
