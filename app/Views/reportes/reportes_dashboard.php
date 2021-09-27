@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-md-4 col-xl-3">
                                 <div class="card bg-c-blue order-card">
-                                <a class="small text-white stretched-link" href="<?php echo base_url()?>Proyectos/prorrateo_show">
+                                <a class="small text-white stretched-link" href="<?php echo base_url()?>/Proyectos/reporte_prorrateo">
                                     <div class="card-block">
                                         <h6 class="m-b-20">Prorrateo</h6>
                                         <h2 class="text-right"><i class="fas fa-share-alt f-left"></i><span><?//= '$cantProyectosActivos'?></span></h2>

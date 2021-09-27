@@ -392,10 +392,38 @@ class Proyectos extends BaseController
     }
     public function reporte_especialista_show()
     {
-        $especialistas = new EspecialistasModel();
-        $especialistas=$especialistas->findAll();
-        $data=['especialistas'=>$especialistas];
-        return view('reportes/reporte_especialista_view',$data);
+        if(!empty($_POST))
+        {
+            $request = service('request');
+            $especialistas = $request->getPost('especialistas');
+            
+
+            $resultRow = array();
+            if(isset($especialistas) && $especialistas!='')
+            {
+                // foreach($especialistas as $especialista)
+                // {
+
+                // }
+                $resultados = new ProyectosModel();
+                $resultados = $resultados->reporte_resumen_especialista($especialistas);
+
+                $especialistas = new EspecialistasModel();
+                $especialistas=$especialistas->findAll();
+
+                $data=['resultados'=>$resultados,'especialistas'=> $especialistas];
+               return view('reportes/reporte_especialista_view',$data);
+                
+
+            }
+        }
+        else
+        {
+            $especialistas = new EspecialistasModel();
+            $especialistas=$especialistas->findAll();
+            $data=['especialistas'=>$especialistas];
+            return view('reportes/reporte_especialista_view',$data);
+        }
     }
 
     public function mesAnterior($mes,$anno)
@@ -599,9 +627,25 @@ class Proyectos extends BaseController
 
     public function reporte_resumen_especialista()
     {
-        die('hrelloooo');
-        $request = service('request');
-        $especialistas = $request->getPost('especialistas');
-        var_dump($especialistas);die;
+                  
+            $request = service('request');
+            $especialistas = $request->getPost('especialistas');
+            
+
+            $resultRow = array();
+            if(isset($especialistas) && $especialistas!='')
+            {
+                // foreach($especialistas as $especialista)
+                // {
+
+                // }
+                $resultados = new ProyectosModel();
+                $resultados = $resultados->reporte_resumen_especialista($especialistas);
+                dd($resultados);
+                
+
+            }
+
+            
     }
 }

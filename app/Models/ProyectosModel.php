@@ -219,26 +219,58 @@ class ProyectosModel extends Model
          else { return 0;}
 
     }
-    public function reporte_resumen_especialista($especialistas)
+    public function reporte_indices_prorrateo()
     {
 //aqui cojo el id del gasto registrado y valido que este el indice de prorrqateo definido para su fecha
         $db      = \Config\Database::connect();
-        $query = $db->query("SELECT DISTINCT
-        proyectos.codigo,
-        proyectos.descripcion,
-        especialistas.nombre_completo,
-        proyectos_subelemento_gastos.fecha,
-        subelemento_gastos.nombre,
-        subelemento_gastos.codigo
+        $query = $db->query("SELECT
+        indices_prorrateo.mes,
+        indices_prorrateo.anno,
+        indices_prorrateo.valor731,
+        indices_prorrateo.valor_indice_prorrateo
         FROM
-        proyectos
-        Inner Join proyectos_subelemento_gastos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
-        Inner Join especialistas ON especialistas.id_especialista = proyectos_subelemento_gastos.id_especialista
-        Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
-        WHERE
-        especialistas.id_especialista =  '1' OR
-        especialistas.id_especialista =  '2'
+        indices_prorrateo
         ");
+        if($db->affectedRows()>0)
+         {
+          return $query->getResult();
+         }
+         else { return 0;}
+
+    }
+    public function reporte_resumen_especialista($especialistas)
+    {
+      $consulta="SELECT DISTINCT
+      proyectos.codigo,
+      proyectos.descripcion,
+      especialistas.nombre_completo,
+      proyectos_subelemento_gastos.fecha,
+      subelemento_gastos.nombre,
+      subelemento_gastos.codigo,
+      proyectos_subelemento_gastos.valor
+      FROM
+      proyectos
+      Inner Join proyectos_subelemento_gastos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
+      Inner Join especialistas ON especialistas.id_especialista = proyectos_subelemento_gastos.id_especialista
+      Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
+      WHERE";    
+      
+      $cantEspecialistas= count($especialistas);
+      
+      $counter=1;
+      foreach($especialistas as $especialista)
+      {
+        $especialista = explode("-", $especialista);//especialsita[0] es id ,especialsita[1] es nombre completo
+        if($counter<$cantEspecialistas)
+        $consulta.=" especialistas.id_especialista = ".$especialista[0]." OR";
+        else
+        $consulta.=" especialistas.id_especialista = ".$especialista[0];
+        $counter++;
+      }
+      
+
+        $db      = \Config\Database::connect();
+        $query = $db->query($consulta);
         if($db->affectedRows()>0)
          {
           return $query->getResult();

@@ -13,7 +13,8 @@ class Home extends BaseController
         $proyectosActivos=new ProyectosModel(); 
 		$cantProyectosActivos=count($proyectosActivos->where('estado', 1)->findAll());
 		$cantProyectosCerrados=count($proyectosActivos->where('estado', 0)->findAll());
-		$data=['cantProyectosActivos'=>$cantProyectosActivos,'cantProyectosCerrados'=>$cantProyectosCerrados];
+		$indicesProrrateo=$proyectosActivos->reporte_indices_prorrateo();
+		$data=['cantProyectosActivos'=>$cantProyectosActivos,'cantProyectosCerrados'=>$cantProyectosCerrados,'indicesProrrateo'=>$indicesProrrateo];
 		return view('admin_template/inicio',$data);
 	}
 

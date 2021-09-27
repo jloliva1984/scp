@@ -119,7 +119,7 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area mr-1"></i>
-                                        Area Chart Example
+                                        Plan vs Real
                                     </div>
                                     <div class="card-body">
                                     
@@ -136,9 +136,14 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-bar mr-1"></i>
-                                        Bar Chart Example
+                                        Indices Prorrateo
                                     </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                    <div class="card-body">
+                                            <figure class="highcharts-figure">
+                                               <div id="indices_prorrateo"></div>
+                                            </figure>    
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -315,6 +320,80 @@
     }, {
         name: 'Real',
         data: [24010, 16525, 14521, 20145, 45121]
+    }]
+}); 
+Highcharts.chart('indices_prorrateo', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Indices Prorrateo'
+    },
+    subtitle: {
+        text: 'Indices de Prorrateo por Mes/Año'
+    },
+    xAxis: {
+       //  categories: ['01/2021 ', '02/2021', '03/2021 ', '04/2021 ', '005/2021 ',],
+        categories: [
+            <?php foreach($indicesProrrateo as $ip)
+            {
+               echo $ip->mes.$ip->anno.','; 
+             
+          } ?>
+        ],
+        title: {
+            text: 'Mes/Año'
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'IP',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    tooltip: {
+        valueSuffix: ' '
+       
+    },
+    plotOptions: {
+        bar: {
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Indices Prorrateo',
+        data: [
+            <?php 
+            foreach ($indicesProrrateo as $ip)
+            {?>
+            ["<?php echo $ip->mes.'/'.$ip->anno ?>",<?php echo $ip->valor_indice_prorrateo ?>],
+
+            <?php } ?>
+//            ['Firefox',   45.0],
+//            ['IE',       26.8],
+
+          ]
     }]
 }); 
 </script>
