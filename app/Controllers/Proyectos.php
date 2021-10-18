@@ -23,8 +23,8 @@ class Proyectos extends BaseController
         $crud->setTexteditor(['descripcion']);
         $crud->fieldType('estado', 'hidden',1);
 
-        $crud->setActionButton('Cerrar', 'fa fa-user', function ($row) {
-            return '#/avatar/' . 1;
+        $crud->setActionButton('Cerrar', 'fa fa-check', function ($row) {;
+            return base_url().'/Proyectos/cerrar_proyecto/' . $row;
         }, false);
         
        
@@ -42,6 +42,12 @@ class Proyectos extends BaseController
 
 	    $output = $crud->render();
         return $this->_exampleOutput($output);
+    }
+    public function cerrar_proyecto($idProyecto)
+    {   $session = \Config\Services::session(); 
+        $proyecto = new ProyectosModel();
+        $proyecto = $proyecto->cerrarProyecto($idProyecto);
+        ($proyecto==1)? $session->setFlashdata('confirmacion', 'Proyecto cerrado correctamente') :$session->setFlashdata('confirmacion', 'Error al cerrar proyecto');
     }
 
     public function _INCIDENCIAS($value, $row)

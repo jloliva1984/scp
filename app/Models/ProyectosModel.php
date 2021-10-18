@@ -52,7 +52,17 @@ class ProyectosModel extends Model
             }
     }
 
+    public function cerrarProyecto($idProyecto)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('proyectos');
 
+        $data = ['estado' => 0];
+        $builder->where('id_proyecto', $idProyecto);
+        
+        $builder->update($data);
+        if($db->affectedRows()>0) { return 1;} else { return 0;}//1 si modifica , 0 si no
+    }
     public function resumen_proyecto_subelemento($id_proyecto,$id_subelemento)
     {
         $db      = \Config\Database::connect();

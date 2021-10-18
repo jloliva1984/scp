@@ -16,7 +16,15 @@
 						
 			            <?= view_cell('App\Libraries\ViewComponents::getMenu') ?>
                    
-						<div style='height:20px;'></div>  
+						<div style='height:20px;'></div> 
+						
+						<?php if (session()->getFlashdata('confirmacion') !== NULL) : ?>
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								<?php echo session()->getFlashdata('message'); ?>
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							</div>
+						<?php endif; ?> 
+
 						<div style="padding: 10px">
 							<?php echo $output; ?>
 						</div>
