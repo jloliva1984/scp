@@ -22,6 +22,10 @@ class Proyectos extends BaseController
         $crud->setSubject('Proyectos');
         $crud->setTexteditor(['descripcion']);
         $crud->fieldType('estado', 'hidden',1);
+
+        $crud->setActionButton('Cerrar', 'fa fa-user', function ($row) {
+            return '#/avatar/' . 1;
+        }, false);
         
        
         $crud->setRead();
