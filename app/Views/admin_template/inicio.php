@@ -32,8 +32,8 @@
                                 <div class="card bg-c-green order-card">
                                     <div class="card-block">
                                         <h6 class="m-b-20">Proyectos cerca a Fecha fin</h6>
-                                        <h2 class="text-right"><i class="fa fa-clock f-left"></i><span>486</span></h2>
-                                        <p class="m-b-0">Completed Orders<span class="f-right">351</span></p>
+                                        <h2 class="text-right"><i class="fa fa-clock f-left"></i><span><?= $cantProyectosProximosVencimiento?></span></h2>
+                                        <p class="m-b-0">Proyectos Vencidos<span class="f-right"><?= $cantProyectosVencidos?></span></p>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="#">Detalles</a>

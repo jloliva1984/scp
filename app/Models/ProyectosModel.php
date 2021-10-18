@@ -302,6 +302,72 @@ class ProyectosModel extends Model
          else { return 0;}
 
     }
+    public function reporte_proyectosProximosVencimiento()
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        TIMESTAMPDIFF(Day,'2021-10-17',proyectos.fecha_fin),
+        proyectos.codigo,
+        proyectos.descripcion,
+        proyectos.valor,
+        proyectos.fecha_inicio,
+        proyectos.fecha_fin,
+        Count(proyectos.id_proyecto) AS proyectosalvencer
+        FROM
+        proyectos
+        where 
+        (TIMESTAMPDIFF(Day,NOW(),proyectos.fecha_fin)) < 30
+        and
+        (TIMESTAMPDIFF(Day, NOW(),proyectos.fecha_fin)) > 0
+        and proyectos.estado =1
+        GROUP BY
+        proyectos.codigo,
+        proyectos.descripcion,
+        proyectos.valor,
+        proyectos.fecha_inicio,
+        proyectos.fecha_fin
+        ");
+        if($db->affectedRows()>0)
+         {
+          return $query->getResult();
+         }
+         else { return 0;}
+
+    }
+    public function reporte_proyectosVencidos()
+    {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT
+        TIMESTAMPDIFF(Day,'2021-10-17',proyectos.fecha_fin),
+        proyectos.codigo,
+        proyectos.descripcion,
+        proyectos.valor,
+        proyectos.fecha_inicio,
+        proyectos.fecha_fin,
+        Count(proyectos.id_proyecto) AS proyectosalvencer,
+        proyectos.estado
+        FROM
+        proyectos
+        where 
+        (TIMESTAMPDIFF(Day,NOW(),proyectos.fecha_fin)) = 0
+        or
+        (TIMESTAMPDIFF(Day, NOW(),proyectos.fecha_fin)) < 0
+        and proyectos.estado =1
+        GROUP BY
+        proyectos.codigo,
+        proyectos.descripcion,
+        proyectos.valor,
+        proyectos.fecha_inicio,
+        proyectos.fecha_fin
+        
+        ");
+        if($db->affectedRows()>0)
+         {
+          return $query->getResult();
+         }
+         else { return 0;}
+
+    }
     
     public function insert_indice_prorrateo($mes,$anno,$valor731,$valor_indice_prorrateo)
     {   
