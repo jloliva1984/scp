@@ -19,10 +19,26 @@ class Home extends BaseController
 		// $current_date=date("Y-m-d");
 		// $current_date= new DateTime($current_date);
 		$proyectosProximosVencimiento=$proyectosActivos->reporte_proyectosProximosVencimiento();
-		$cantProyectosProximosVencimiento=count($proyectosProximosVencimiento); 
+		if($proyectosProximosVencimiento!=0)
+		{
+			$cantProyectosProximosVencimiento=count($proyectosProximosVencimiento); 	
+		}
+		else
+		{
+			$cantProyectosProximosVencimiento=0;	
+		}
+		
+		
 
 		$proyectosVencidos=$proyectosActivos->reporte_proyectosVencidos();
-        $cantProyectosVencidos=count($proyectosVencidos);
+		$cantProyectosVencidos=count($proyectosVencidos);
+		if($cantProyectosVencidos!=0)
+		{
+			$cantProyectosVencidos=count($proyectosVencidos);	
+		}
+		else{
+			$cantProyectosVencidos=0;
+		}
 
         //end proyectos proximos a vencer
 
