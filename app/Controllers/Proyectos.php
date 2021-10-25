@@ -23,8 +23,9 @@ class Proyectos extends BaseController
         $crud->setTexteditor(['descripcion']);
         $crud->fieldType('estado', 'hidden',1);
 
-        $crud->setActionButton('Cerrar', 'fa fa-check', function ($row) {;
-            return base_url().'/Proyectos/cerrar_proyecto/' . $row;
+        $crud->setActionButton('Cerrar', 'fa fa-check cerrar_proyecto', function ($row) {;
+            // return base_url().'/Proyectos/cerrar_proyecto/' . $row;
+          //  return true;
         }, false);
         
        
@@ -34,11 +35,11 @@ class Proyectos extends BaseController
         
         
         
-        $crud->columns(['codigo','descripcion','valor','Insert./Descar.','fecha_fin','descarga','Desglose']);
+        $crud->columns(['codigo','descripcion','valor','Insert./Descar.','fecha_fin','descarga','Cerrar']);
 
         $crud->callbackColumn('descarga', array($this, '_INCIDENCIAS'));
         $crud->callbackColumn('Insert./Descar.', array($this, '_produccionProceso'));
-        $crud->callbackColumn('Desglose', array($this, '_desglose'));
+        $crud->callbackColumn('Cerrar', array($this, '_desglose'));
 
 	    $output = $crud->render();
         return $this->_exampleOutput($output);
@@ -64,16 +65,14 @@ class Proyectos extends BaseController
     public function _desglose($value, $row)
     {
         $id_proyecto=$row->id_proyecto;
-         $icono = base_url() . '/assets/images/descarga.png';
+        
          
           return
           '
-           <a href="' . base_url() . '/Proyectos/desglose_show/' . $id_proyecto . '" style="align-content: center">
-           <i class="fas fa-layer-group fa-2x"></i>
-           </a>
-           <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-            </div>
+         
+           <i data-nombre_proyecto="'.$id_proyecto.'" class="fas fa-check fa-2x cerrar_proyecto"></i>
+           
+          
            ' ;
     }
     public function _produccionProceso($value, $row)

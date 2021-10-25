@@ -67,7 +67,13 @@
 
 
 <script language="javascript">
-
+$(document).ready(function()
+{
+	$(document).on('click', '.cerrar_proyecto', function () {
+		var proyecto = $(this).attr('data-nombre_proyecto');
+		alert(proyecto);
+	})
+})
 </script>
 
 	
