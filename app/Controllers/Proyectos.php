@@ -96,7 +96,7 @@ class Proyectos extends BaseController
             for($i=0;$i<count($gastosalariototalarray);$i++)
             {
             
-            $totalSalarioCon909+=$gastosalariototalarray[$i]['gastosalariocon909'];    
+            $totalSalarioCon909+=$gastosalariototalarray[$i]['gastosalario'];    
                     
                 
                 // foreach($gastosalariototalarray[$i] as $array)
@@ -107,6 +107,7 @@ class Proyectos extends BaseController
                         
                 //     }
             }
+            //dd( $totalSalarioCon909);
         }
         else
         {
@@ -121,7 +122,7 @@ class Proyectos extends BaseController
         // $icono = base_url() . '/assets/images/descarga.png';
         // return '<a>'.$valor.'</a>';
         if($produccionProceso!=0)
-        {
+        {//dd($gastoTotal);
           if($gastoTotal!=0){  
           return
           '
@@ -129,7 +130,7 @@ class Proyectos extends BaseController
           
           <div class="progress">
           <div class="progress-bar bg-success progress-bar-animated" style="width:'.round($gastoTotal,2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)).'%">
-            '.round($gastoTotal,2).' ('.round(round($gastoTotal,2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)),2).'%)
+            '.round($gastoTotal,2).' 
           </div>
           <div class="progress-bar bg-warning progress-bar-animated" style="width:'.round($totalRealDescargado[0]['totalDescargado'],2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)).'%">
           '.round($totalRealDescargado[0]['totalDescargado'],2).'  ( '.round(round($totalRealDescargado[0]['totalDescargado'],2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)),2).'%)
