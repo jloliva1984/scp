@@ -156,7 +156,7 @@ class Proyectos extends BaseController
         $especialistas = new EspecialistasModel();
 
         $datos= $subelementos->SubElementosGastosxProyecto($id_proyecto);
-
+        //dd($datos);
         //reccoriendo arreglo ,verificando sis existe indice para el mes de la fecha y creando indice con 0 o 1 dependiende de si existe el IP o no
         for($i=0;$i<count($datos);$i++)
         {                    

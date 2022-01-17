@@ -335,11 +335,13 @@ Highcharts.chart('indices_prorrateo', {
     xAxis: {
        //  categories: ['01/2021 ', '02/2021', '03/2021 ', '04/2021 ', '005/2021 ',],
         categories: [
-            <?php foreach($indicesProrrateo as $ip)
+            <?php if(isset($indicesProrrateo) && $indicesProrrateo!=null){
+            foreach($indicesProrrateo as $ip)
             {
                echo $ip->mes.$ip->anno.','; 
              
-          } ?>
+            } 
+        }?>
         ],
         title: {
             text: 'Mes/Año'
@@ -385,11 +387,12 @@ Highcharts.chart('indices_prorrateo', {
         name: 'Indices Prorrateo',
         data: [
             <?php 
+            if(isset($indicesProrrateo) && $indicesProrrateo!=null){
             foreach ($indicesProrrateo as $ip)
             {?>
             ["<?php echo $ip->mes.'/'.$ip->anno ?>",<?php echo $ip->valor_indice_prorrateo ?>],
 
-            <?php } ?>
+            <?php } }?>
 //            ['Firefox',   45.0],
 //            ['IE',       26.8],
 

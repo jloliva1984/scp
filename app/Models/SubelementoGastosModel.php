@@ -26,6 +26,7 @@ class SubelementoGastosModel extends Model
         //dd($builder->getCompiledSelect());
         $query = $builder->get();
         $useKint = true;//para debug
+        //dd($query->getResultArray());
         return $query->getResultArray();
     }
     public function SubElementosGastosxId($inserted_id)
