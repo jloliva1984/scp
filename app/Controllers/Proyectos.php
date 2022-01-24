@@ -213,7 +213,7 @@ class Proyectos extends BaseController
                 $especialistas = new EspecialistasModel();  
                 $esp=$especialistas->find($especialista[$count]);
                 $valorEsp=($esp['salario_diario'])*$valor[$count];
-                $valor909 =$valorEsp*0.09;
+                $valor909 =$valorEsp*0.0909;
                 $valorEsp=$valorEsp+ $valor909;
                 //estados = 1 pendiente ,0 descargado
                 $inserted_id=$proyecto->insert_descarga($id_proyecto,$subelemento[$count], $especialista[$count], $valorEsp,$fecha[$count],1);
