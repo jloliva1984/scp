@@ -117,7 +117,7 @@ $totalCostosIndirectos=0;
 <td class="costosDirectos">
 <?=$result['produccionProceso'];$totalProduccioProceso+=$result['produccionProceso'];?></td>
 <td class="costosIndirectos"><?php $totalCostosIndirectos+=($result['produccionProceso']*($valor731/$totalProduccionProceso));echo round($result['produccionProceso']*($valor731/$totalProduccionProceso),2);  ?></td>
-<td class="produccionProceso"><?php echo $result['produccionProceso'] + round($result['produccionProceso']*($valor731/$totalProduccionProceso),2)  ?></td>
+<td class="produccionProceso"><?php echo round($saldosInicio[$key],2)+$result['produccionProceso'] + round($result['produccionProceso']*($valor731/$totalProduccionProceso),2)  ?></td>
 
 </tr>
 <?php }?>
