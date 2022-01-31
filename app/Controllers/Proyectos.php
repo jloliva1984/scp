@@ -124,19 +124,10 @@ class Proyectos extends BaseController
         if($produccionProceso!=0)
         {//dd($gastoTotal);
           if($gastoTotal!=0){  
-          return
-          '
-          <a href="' . base_url() . '/Proyectos/resumen_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
+          return  
+          '<a href="' . base_url() . '/Proyectos/resumen_show/' . $produccionProceso[0]->id_proyecto . '" style="align-content: center">
+          '.round($gastoTotal,2).'
           
-          <div class="progress">
-          <div class="progress-bar bg-success progress-bar-animated" style="width:'.round($gastoTotal,2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)).'%">
-            '.round($gastoTotal,2).' 
-          </div>
-          <div class="progress-bar bg-warning progress-bar-animated" style="width:'.round($totalRealDescargado[0]['totalDescargado'],2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)).'%">
-          '.round($totalRealDescargado[0]['totalDescargado'],2).'  ( '.round(round($totalRealDescargado[0]['totalDescargado'],2)*100/(round($gastoTotal,2)+round($totalRealDescargado[0]['totalDescargado'],2)),2).'%)
-          </div>
-         
-        </div> 
         </a>
           
           ' ;
