@@ -76,9 +76,16 @@
                                         <td><?= $dato['nombre_completo'] ?></td>
                                         <td class="valor"><?= $dato['valor'] ?></td>
                                         <td class=""><?= $dato['fecha'] ?></td>
+                                        <?php if($dato['nombre']=='CARGA INICIAL'){ ?>
+                                         
+                                        <?php }?>
+                                            <td>
+                                             <button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" onclick="eliminar_descarga(<?= $dato['id_proyectos_subelemento_gastos'] ?>)"> <i class="fa fa-minus-circle fa"></i>
 
-                                            <td><button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" onclick="eliminar_descarga(<?= $dato['id_proyectos_subelemento_gastos'] ?>)"> <i class="fa fa-minus-circle fa"></i>
-											</td>
+                                             <?php if($dato['nombre']=='CARGA INICIAL'){ ?>
+                                              <button type="button" name="descarga_inicial" class="btn btn-info btn-sm descarga_inicial" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" onclick="eliminar_descarga(<?= $dato['id_proyectos_subelemento_gastos'] ?>)"> <i class="fa fa-download fa"></i>
+                                            <?php }?> 
+										                     	</td>
 									    </tr>
                                         <?php endforeach ?>
                                         <?php } ?>

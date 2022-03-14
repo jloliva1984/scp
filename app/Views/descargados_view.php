@@ -58,6 +58,7 @@
                                                 <th>Valor</th>
                                                 <th>Indice prorrateo</th>
                                                 <th>Valor Descargado</th>
+                                                <th>Valor Descargado Total</th>
                                             </tr>
                                         </thead>
                                        
@@ -65,6 +66,7 @@
 									   <?php 
 										$totalvalorSubelementoGasto=0;
 										$totalvalorSubelementoGastoDescargado=0;
+										$totalvalorSubelementoGastoDescargadototal=0;
 									if(isset($resumenDescargardosPorProyecto)&& $resumenDescargardosPorProyecto!=0){	  
 									   foreach($resumenDescargardosPorProyecto as $resumen){ ?>
 									   <tr>
@@ -73,6 +75,8 @@
 									   <td><?php $totalvalorSubelementoGasto+=$resumen['valorSubelementoGasto'];echo $resumen['valorSubelementoGasto']; ?></td>
 									   <td><?=$resumen['valor_indice_prorrateo'] ?></td>
 									   <td><?php $totalvalorSubelementoGastoDescargado+=$resumen['valorSubelementoGastoDescargado'];echo $resumen['valorSubelementoGastoDescargado'] ?></td>
+									   <td><?php $totalvalorSubelementoGastoDescargadototal+=$resumen['valorSubelementoGastoDescargado']+$resumen['valorSubelementoGasto'];
+									              echo $resumen['valorSubelementoGastoDescargado']+$resumen['valorSubelementoGasto'] ?></td>
 									   </tr> 
 									   <?php } ?> 
                                                                                                                        
@@ -87,6 +91,7 @@
                                                 <th><?=$totalvalorSubelementoGasto ?></th>
                                                 <th><?=$resumenDescargardosPorProyecto[0]['valor_indice_prorrateo'] ?></th>
                                                 <th><?=$totalvalorSubelementoGastoDescargado ?></th>
+                                                <th><?=$totalvalorSubelementoGastoDescargadototal ?></th>
                                             </tr>
                                         </tfoot>
 										<?php } ?>
