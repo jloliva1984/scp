@@ -83,7 +83,7 @@
                                              <button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" onclick="eliminar_descarga(<?= $dato['id_proyectos_subelemento_gastos'] ?>)"> <i class="fa fa-minus-circle fa"></i>
 
                                              <?php if($dato['nombre']=='CARGA INICIAL'){ ?>
-                                              <button type="button" name="descarga_inicial" class="btn btn-info btn-sm descarga_inicial" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" onclick="eliminar_descarga(<?= $dato['id_proyectos_subelemento_gastos'] ?>)"> <i class="fa fa-download fa"></i>
+                                              <button type="button" name="descarga_inicial" class="btn btn-info btn-sm descarga_inicial" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" data-toggle="modal" data-target="#exampleModal" > <i class="fa fa-download fa"></i>
                                             <?php }?> 
 										                     	</td>
 									    </tr>
@@ -801,4 +801,77 @@ function limpiarformulario(formulario) {
 
 }
 </script>
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header btn-info">
+        <h5 class="modal-title" id="exampleModalLabel">Descarga</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <!-- Modal Body -->
+       <div class="modal-body">
+                <p class="statusMsg"></p>
+                <form role="form">
+                    <div class="form-group">
+                        <label for="inputName">Monto a descargar</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Inserte valor o porciento con el formato numero% Ej. 25%"/>
+                    </div>
+                    
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary submitBtn" onclick="submitContactForm()">Descargar</button>
+            </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function submitContactForm(){
+    var reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+.)+[A-Z]{2,4}$/i;
+    var monto = $('#inputName').val();
+   
+    if(monto.trim() == '' ){
+        alert('Please enter your name.');
+        $('#inputName').focus();
+        return false;
+    }
+    else{
+        $.ajax({
+            type:'POST',
+            url:'submit_form.php',
+            data:'contactFrmSubmit=1&name='+monto,
+            beforeSend: function () {
+                $('.submitBtn').attr("disabled","disabled");
+                $('.modal-body').css('opacity', '.5');
+            },
+            success:function(msg){
+                if(msg == 'ok'){
+                    $('#inputName').val('');
+                   
+                    $('.statusMsg').html('<span style="color:green;">Monto descargado correctamente.</p>');
+                }else{
+                    $('.statusMsg').html('<span style="color:red;">Erro al descargar el monto especificado</span>');
+                }
+                $('.submitBtn').removeAttr("disabled");
+                $('.modal-body').css('opacity', '');
+            }
+        });
+    }
+}
+</script>
+
 <?= $this->endSection() ?>
