@@ -825,6 +825,10 @@ function limpiarformulario(formulario) {
                         <label for="inputName">Monto a descargar</label>
                         <input type="text" class="form-control" id="inputName" placeholder="Inserte valor o porciento con el formato numero% Ej. 25%"/>
                     </div>
+                    <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="fecha" id="fecha"  size="2" class="form-control fecha" placeholder="" ></td>
+                    </div>
                     
                 </form>
             </div>
@@ -843,17 +847,21 @@ function limpiarformulario(formulario) {
 function submitContactForm(){
     var reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+.)+[A-Z]{2,4}$/i;
     var monto = $('#inputName').val();
+    var fecha = $('#fecha').val();
+    var id_proyecto = $('#id_proyecto').attr('data-id_proyecto');
+    
    
-    if(monto.trim() == '' ){
-        alert('Please enter your name.');
+    if(monto.trim() == '' || fecha.trim()=='' ){
+        alert('Existen campos sin completar.');
         $('#inputName').focus();
         return false;
     }
     else{
         $.ajax({
             type:'POST',
-            url:'submit_form.php',
-            data:'contactFrmSubmit=1&name='+monto,
+            url:'<?php echo base_url();?>/Proyectos/descarga_carga_inicial',
+            // data:'contactFrmSubmit=1&name='+monto,
+            data:{'monto':monto ,'fecha':fecha},
             beforeSend: function () {
                 $('.submitBtn').attr("disabled","disabled");
                 $('.modal-body').css('opacity', '.5');
@@ -861,6 +869,7 @@ function submitContactForm(){
             success:function(msg){
                 if(msg == 'ok'){
                     $('#inputName').val('');
+                    $('#fecha').val('');
                    
                     $('.statusMsg').html('<span style="color:green;">Monto descargado correctamente.</p>');
                 }else{
