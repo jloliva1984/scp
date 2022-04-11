@@ -83,7 +83,7 @@
                                              <button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" onclick="eliminar_descarga(<?= $dato['id_proyectos_subelemento_gastos'] ?>)"> <i class="fa fa-minus-circle fa"></i>
 
                                              <?php if($dato['nombre']=='CARGA INICIAL'){ ?>
-                                              <button type="button" name="descarga_inicial" class="btn btn-info btn-sm descarga_inicial" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" data-toggle="modal" data-target="#exampleModal" > <i class="fa fa-download fa"></i>
+                                              <button type="button" name="descarga_inicial" class="btn btn-info btn-sm descarga_inicial" value="<?= $dato['id_especialista'] ?>" id="<?= $dato['id_especialista'] ?>" data-toggle="modal" data-target="#exampleModal" > <i class="fa fa-download fa"></i>
                                             <?php }?> 
 										                     	</td>
 									    </tr>
@@ -829,6 +829,10 @@ function limpiarformulario(formulario) {
                         <label for="fecha">Fecha</label>
                         <input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="fecha" id="fecha"  size="2" class="form-control fecha" placeholder="" ></td>
                     </div>
+                    <div class="form-group">
+                        <label for="inputName">Especialista</label>
+                        <input type="text" class="form-control" id="especialista" placeholder=""/>
+                    </div>
                     
                 </form>
             </div>
@@ -848,6 +852,7 @@ function submitContactForm(){
     var reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+.)+[A-Z]{2,4}$/i;
     var monto = $('#inputName').val();
     var fecha = $('#fecha').val();
+    var especialista = $('.descarga_inicial').val();
     var id_proyecto = $('#id_proyecto').attr('data-id_proyecto');
     
    
@@ -861,7 +866,7 @@ function submitContactForm(){
             type:'POST',
             url:'<?php echo base_url();?>/Proyectos/descarga_carga_inicial',
             // data:'contactFrmSubmit=1&name='+monto,
-            data:{'monto':monto ,'fecha':fecha},
+            data:{'monto':monto ,'fecha':fecha,'id_proyecto':id_proyecto,'especialista':especialista},
             beforeSend: function () {
                 $('.submitBtn').attr("disabled","disabled");
                 $('.modal-body').css('opacity', '.5');

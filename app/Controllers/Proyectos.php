@@ -166,14 +166,14 @@ class Proyectos extends BaseController
    {   $request = service('request'); //die($_POST['contactFrmSubmit']);isset($_POST['contactFrmSubmit']) &&
 if(!empty($request->getPost('monto')) && !empty($request->getPost('fecha')) )
 {
-    die('dfdfdfdf');
+    
     // Submitted form data
-    $monto=$request->getPost('inputName');
+    $monto=$request->getPost('monto');
     $fecha=$request->getPost('fecha');
-    // $name   = $_POST['name'];
-    // $email  = $_POST['email'];
-    // $message= $_POST['message'];
-    echo($monto);die;
+    $id_proyecto=$request->getPost('id_proyecto');
+    $especialista=$request->getPost('especialista');
+ 
+    
     /*
      * Send email to admin
      */

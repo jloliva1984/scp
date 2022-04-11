@@ -47,6 +47,9 @@ $routes->group('',['filter'=>'CheckIfLogged'],function($routes)//llama al filtro
 	 $routes->post('/SubElementosGastos/(:any)','SubElementosGastos::subelementosgastos_management');
 	 $routes->get('/SubElementosGastos','SubElementosGastos::subelementosgastos_management');
 
+	 $routes->get('/Proyectos/descarga_carga_inicial','Proyectos::descarga_carga_inicial');
+	 $routes->post('/Proyectos/descarga_carga_inicial','Proyectos::descarga_carga_inicial');
+
 	 $routes->post('/Especialidades/(:any)','Especialidades::especialidades_management');
 	 $routes->get('/Especialidades','Especialidades::especialidades_management');
 
