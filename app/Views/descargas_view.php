@@ -83,7 +83,7 @@
                                              <button type="button" name="remove_descarga" class="btn btn-danger btn-sm remove_descarga" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_proyectos_subelemento_gastos'] ?>" onclick="eliminar_descarga(<?= $dato['id_proyectos_subelemento_gastos'] ?>)"> <i class="fa fa-minus-circle fa"></i>
 
                                              <?php if($dato['nombre']=='CARGA INICIAL'){ ?>
-                                              <button type="button" name="descarga_inicial" class="btn btn-info btn-sm descarga_inicial" value="<?= $dato['id_especialista'] ?>" id="<?= $dato['id_especialista'] ?>" data-toggle="modal" data-target="#exampleModal" > <i class="fa fa-download fa"></i>
+                                              <button type="button" name="descarga_inicial" class="btn btn-info btn-sm descarga_inicial" value="<?= $dato['id_proyectos_subelemento_gastos'] ?>" id="<?= $dato['id_especialista'] ?>" data-monto_inicial="<?= $dato['valor'] ?>" data-toggle="modal" data-target="#exampleModal" > <i class="fa fa-download fa"></i>
                                             <?php }?> 
 										                     	</td>
 									    </tr>
@@ -829,10 +829,7 @@ function limpiarformulario(formulario) {
                         <label for="fecha">Fecha</label>
                         <input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="fecha" id="fecha"  size="2" class="form-control fecha" placeholder="" ></td>
                     </div>
-                    <div class="form-group">
-                        <label for="inputName">Especialista</label>
-                        <input type="text" class="form-control" id="especialista" placeholder=""/>
-                    </div>
+                   
                     
                 </form>
             </div>
@@ -852,8 +849,10 @@ function submitContactForm(){
     var reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+.)+[A-Z]{2,4}$/i;
     var monto = $('#inputName').val();
     var fecha = $('#fecha').val();
-    var especialista = $('.descarga_inicial').val();
+    var especialista = $('.descarga_inicial').attr('id');
     var id_proyecto = $('#id_proyecto').attr('data-id_proyecto');
+    var id_proyecto_subelemento_gasto = $('.descarga_inicial').val();
+    var monto_original=$('.descarga_inicial').attr('data-monto_inicial');
     
    
     if(monto.trim() == '' || fecha.trim()=='' ){
@@ -866,20 +865,23 @@ function submitContactForm(){
             type:'POST',
             url:'<?php echo base_url();?>/Proyectos/descarga_carga_inicial',
             // data:'contactFrmSubmit=1&name='+monto,
-            data:{'monto':monto ,'fecha':fecha,'id_proyecto':id_proyecto,'especialista':especialista},
+            data:{'monto':monto ,'fecha':fecha,'id_proyecto_subelemento_gasto':id_proyecto_subelemento_gasto,'especialista':especialista,'monto_original':monto_original},
             beforeSend: function () {
                 $('.submitBtn').attr("disabled","disabled");
                 $('.modal-body').css('opacity', '.5');
             },
             success:function(msg){
-                if(msg == 'ok'){
-                    $('#inputName').val('');
-                    $('#fecha').val('');
+                if(msg == 'noIp'){
+                    // $('#inputName').val('');
+                    // $('#fecha').val('');
                    
-                    $('.statusMsg').html('<span style="color:green;">Monto descargado correctamente.</p>');
-                }else{
-                    $('.statusMsg').html('<span style="color:red;">Erro al descargar el monto especificado</span>');
+                    $('.statusMsg').html('<span style="color:red;">No existe índice de prorrateo definido para la fecha seleccionada.</p>');
                 }
+                if($msg == 'ok')
+                {
+                  window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+                }
+                
                 $('.submitBtn').removeAttr("disabled");
                 $('.modal-body').css('opacity', '');
             }

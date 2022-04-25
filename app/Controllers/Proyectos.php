@@ -169,47 +169,45 @@ if(!empty($request->getPost('monto')) && !empty($request->getPost('fecha')) )
     
     // Submitted form data
     $monto=$request->getPost('monto');
-    $fecha=$request->getPost('fecha');
-    $id_proyecto=$request->getPost('id_proyecto');
+    $fecha=$request->getPost('fecha');$anno=substr($fecha,0,4);$mes=substr($fecha,5,2);
+    $id_proyecto_subelemento_gasto=$request->getPost('id_proyecto_subelemento_gasto');
     $especialista=$request->getPost('especialista');
- 
-    
-    /*
-     * Send email to admin
-     */
-    $to     = 'admin@example.com';
-    $subject= 'Contact Request Submitted';
-    
-    $htmlContent = '
-    <h4>Contact request has submitted at CodexWorld, details are given below.</h4>
-    <table cellspacing="0" style="width: 300px; height: 200px;">
-        <tr>
-            <th>Name:</th><td>'.$name.'</td>
-        </tr>
-        <tr style="background-color: #e0e0e0;">
-            <th>Email:</th><td>'.$email.'</td>
-        </tr>
-        <tr>
-            <th>Message:</th><td>'.$message.'</td>
-        </tr>
-    </table>';
-    
-    // Set content-type header for sending HTML email
-    $headers = "MIME-Version: 1.0" . "rn";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "rn";
-    
-    // Additional headers
-    $headers .= 'From: CodexWorld<sender@example.com>' . "rn";
-    
-    // Send email
-    if(mail($to,$subject,$htmlContent,$headers)){
-        $status = 'ok';
-    }else{
-        $status = 'err';
+    $monto_original=$request->getPost('monto_original');
+    $proyectos=new ProyectosModel();
+    $existeIp=$proyectos->existe_indice_prorrateo($mes,$anno);
+    if($existeIp==0)
+    {
+        echo 'noIp';exit();
+    }
+    else
+    {
+      $ip=$proyectos->buscar_indice_prorrateo($mes,$anno) ;
+      $id_ip=$ip[0]['id_indice_prorrateo'];
+      $valorReal=$monto*$ip[0]['valor_indice_prorrateo'];
+      $proyectos->insert_descarga_real($id_proyecto_subelemento_gasto,$id_ip,$valorReal);
+      //modificar el valor en el proyecto subelemento degasto ,seria monto original - monto
+      $proyectos->modificar_monto_subelemento_gasto_carga_inicial($id_proyecto_subelemento_gasto,$monto_original,$monto);
+      echo 'ok';
     }
     
-    // Output status
-    echo $status;die;
+    //guardar un ip en la tabla de ips con valor 1 y mes y anno especidicado por el usuario
+    
+    // try
+    // {
+    // $insertedId=$proyectos->insert_indice_prorrateo_descarga_inicial($mes,$anno,0,1);
+    
+    // }
+    // catch(\Exception $e)
+    // {
+    //  echo -1;die; 
+    // }
+
+    // //insertar en descarga real los datos de la descarga de la carga inicial con el id del ip insertado
+    // $proyectos->insert_descarga_real($id_proyecto_subelemento_gasto,$insertedId,$monto);
+
+    // //tengo que restarle al valor del subelemento de gasto lo que se descargo ,comparar cuando se haga 0 y cambiarle el estado a descargado
+    
+    // echo 'ok';
 }}
 
     public function delete_descarga($id_proyectos_subelemento_gastos)
@@ -493,28 +491,7 @@ if(!empty($request->getPost('monto')) && !empty($request->getPost('fecha')) )
         $subelementos = new SubelementoGastosModel();
         $proyectos= $proyectos->find($id_proyecto);
         $resumenDescargardosPorProyecto= $subelementos->resumenDescargardosPorProyecto($id_proyecto);
-       // dd($resumenDescargardosPorProyecto);
-        // $totalDescargado= $subelementos->totalGastoDescargado($id_proyecto);
-        
-	    // $crud = new GroceryCrud();
       
-        // $crud->setTable('proyectos_subelemento_gastos_real');
-        // $crud->setSubject('Gastos descargados - <strong>TOTAL :</strong> $'.round($totalDescargado[0]['totalDescargado'],2));
-        // $crud->setRelation('id_proyectos_subelemento_gastos','proyectos_subelemento_gastos','valor');
-        // $crud->columns(['Subelemento Gasto','Especialista','valor']);
-        // $crud->callbackColumn('Subelemento Gasto',array($this,'getSubelementoGasto'));
-        // $crud->callbackColumn('Especialista',array($this,'getEspecialista'));
-
-        // $crud->unsetOperations();
-
-      
-
-        // $output = $crud->render();
-        // $data['proyectos']=$proyectos;
-        // $data['totalDescargado']=$totalDescargado;
-        // $output->data = $data;
-
-        // return view('descargados_view',(array)$output);
         $data=['resumenDescargardosPorProyecto'=>$resumenDescargardosPorProyecto];
         return view('descargados_view',$data);
     }

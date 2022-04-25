@@ -63,6 +63,19 @@ class ProyectosModel extends Model
         $builder->update($data);
         if($db->affectedRows()>0) { return 1;} else { return 0;}//1 si modifica , 0 si no
     }
+    public function modificar_monto_subelemento_gasto_carga_inicial($id_proyecto_subelemento_gasto,$monto_original,$monto)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('proyectos_subelemento_gastos');
+
+        $data = ['valor' => $monto_original-$monto];
+        $builder->where('id_proyectos_subelemento_gastos', $id_proyecto_subelemento_gasto);
+        
+        $builder->update($data);
+        if($db->affectedRows()>0) { return 1;} else { return 0;}//1 si modifica , 0 si no
+    }
+
+
     public function resumen_proyecto_subelemento($id_proyecto,$id_subelemento)
     {
         $db      = \Config\Database::connect();
@@ -418,6 +431,28 @@ class ProyectosModel extends Model
                 return 0;
             }
         }
+       
+
+     
+    }
+    public function insert_indice_prorrateo_descarga_inicial($mes,$anno,$valor731,$valor_indice_prorrateo)
+    {   
+        $data = ['mes' => $mes,'anno' => $anno,'valor731' => $valor731,'valor_indice_prorrateo'  => $valor_indice_prorrateo, ]; 
+        
+        $db      = \Config\Database::connect();
+        $builder = $db->table('indices_prorrateo');
+
+        $builder->insert($data);
+        // $this->db->transComplete();
+        if($db->affectedRows()>0)
+            {
+            return $db->insertID();	
+            }
+            else
+            {
+                return 0;
+            }
+        
        
 
      
