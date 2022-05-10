@@ -67,8 +67,16 @@ class ProyectosModel extends Model
     {
         $db      = \Config\Database::connect();
         $builder = $db->table('proyectos_subelemento_gastos');
+        
+        if($monto<$monto_original){
+            $data = ['valor' => $monto_original-$monto,'estado'=>-1];  
+        }
+        else if($monto==$monto_original)
+        {
+            $data = ['valor' => $monto_original-$monto,'estado'=>0];    
+        }
 
-        $data = ['valor' => $monto_original-$monto];
+        
         $builder->where('id_proyectos_subelemento_gastos', $id_proyecto_subelemento_gasto);
         
         $builder->update($data);
@@ -106,7 +114,7 @@ class ProyectosModel extends Model
         Inner Join proyectos ON proyectos.id_proyecto = proyectos_subelemento_gastos.id_proyecto
         Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
         WHERE
-        proyectos_subelemento_gastos.estado =  '1' AND
+        (proyectos_subelemento_gastos.estado =  '1' or proyectos_subelemento_gastos.estado =  '-1') AND
         proyectos.estado =  '1' AND
         proyectos_subelemento_gastos.fecha BETWEEN  '$fechaInicio' AND '$fechaFin'
         GROUP BY
@@ -135,7 +143,7 @@ class ProyectosModel extends Model
     {
         $db      = \Config\Database::connect();
         $builder = $db->table('proyectos_subelemento_gastos');
-        $data = ['estado' => 0];//pendiente 1 ,descargado 0
+        $data = ['estado' => 0];//pendiente 1 ,descargado 0,descargando -1
         
         $builder->where('id_proyectos_subelemento_gastos', $id);
         $builder->update($data);

@@ -80,7 +80,7 @@ echo form_open('Proyectos/prorrateo_show', 'class="" id="prorrateo_form"');
 <div class="container-fluid text-right">
 <?php
  if(isset($mes,$anno,$valor731,$totalProduccionProceso)){?>
-	<h6 class="small" >
+	<h6 class="small" ><?//= round((145117.34/457353.84),4);die;?>
 	<strong id="indice_prorrateo" name="indice_prorrateo" class="indice_prorrateo" data-indice_prorrateo='<?=($totalProduccionProceso!=0) ? round($valor731/$totalProduccionProceso,4) : '' ?>'>ÍNDICE PRORRATEO</strong>- <?=($totalProduccionProceso!=0) ? round($valor731/$totalProduccionProceso,4) : '' ?>||<strong id="mes" name="mes" class="mes" data-mes='<?= $mes ?>' >  Mes</strong> - <?= $mes?> || <strong id="anno" name="anno" class="anno" data-anno='<?= $anno ?>'>Año</strong> - <?= $anno ?>|| <strong id="valor731" name="valor731" class="valor731" data-valor731='<?= $valor731 ?>'>Valor 731</strong> - <?= $valor731 ?>  
 	<!-- <button class="btn btn-success" id="confirmar" name="confirmar"><i class="fas fa-check fa-fw"></i>Confirmar</button>
 	<a href="#" class="btn btn-info"><span class="fas fa-print"></span> Imprimir</a> -->

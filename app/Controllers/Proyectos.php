@@ -175,6 +175,11 @@ if(!empty($request->getPost('monto')) && !empty($request->getPost('fecha')) )
     $monto_original=$request->getPost('monto_original');
     $proyectos=new ProyectosModel();
     $existeIp=$proyectos->existe_indice_prorrateo($mes,$anno);
+
+    if($monto>$monto_original)
+    {
+        echo 'errorMonto';exit();
+    }
     if($existeIp==0)
     {
         echo 'noIp';exit();
@@ -372,6 +377,7 @@ if(!empty($request->getPost('monto')) && !empty($request->getPost('fecha')) )
             
             }else{$totalProduccionProceso=0;}
             $data=['resultados'=>$resultados,'mes'=>$mes,'anno'=>$anno,'valor731'=>$valor731,'totalProduccionProceso'=>$totalProduccionProceso,'saldosInicio'=>$saldoInicio];
+            
             // return view('prorrateo_datatable_view',$data);
             return view('prorrateo_view',$data);
 
@@ -550,7 +556,7 @@ if(!empty($request->getPost('monto')) && !empty($request->getPost('fecha')) )
           
            if($resultado!=0)
            {
-                if($proyectos->descarga_real($id->value)!=0)
+                if($proyectos->descarga_real($id->value)!=0)//1 pasado ,0 descargado,-1 descargando
                 {
                         //cambio el estado a descargado del registro
                         $result+=1;//cambio el estado a descargado del registro y cuento para despues comparar si se inserrtaron todos

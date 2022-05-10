@@ -22,7 +22,8 @@ class SubelementoGastosModel extends Model
         $builder->join('especialistas', 'proyectos_subelemento_gastos.id_especialista = especialistas.id_especialista');
         $builder->join('subelemento_gastos', 'proyectos_subelemento_gastos.id_subelemento_gasto = subelemento_gastos.id_subelemento_gasto');
         $builder->having('proyectos.id_proyecto',$id_proyecto);
-        $builder->having('proyectos_subelemento_gastos.estado',1);// el que tenga estado 1 esta pendiente ,el 0 esta descargado
+        $builder->having('proyectos_subelemento_gastos.estado',1);// el que tenga estado 1 esta pendiente ,el 0 esta descargado ,el -1 esta descargando(carga inicial)
+        $builder->orHaving('proyectos_subelemento_gastos.estado',-1);
         //dd($builder->getCompiledSelect());
         $query = $builder->get();
         $useKint = true;//para debug
@@ -112,7 +113,7 @@ class SubelementoGastosModel extends Model
         Inner Join especialistas ON especialistas.id_especialista = proyectos_subelemento_gastos.id_especialista
         Inner Join subelemento_gastos ON subelemento_gastos.id_subelemento_gasto = proyectos_subelemento_gastos.id_subelemento_gasto
         WHERE
-        proyectos_subelemento_gastos.estado =  '0' AND
+        (proyectos_subelemento_gastos.estado =  '0' OR proyectos_subelemento_gastos.estado =  '-1')AND
         proyectos.id_proyecto =  '$id_proyecto'
         
         ");

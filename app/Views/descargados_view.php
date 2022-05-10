@@ -65,6 +65,7 @@
                                         <tbody>
 									   <?php 
 										$totalvalorSubelementoGasto=0;
+										$totalDescargadoCargaInicial=0;
 										$totalvalorSubelementoGastoDescargado=0;
 										$totalvalorSubelementoGastoDescargadototal=0;
 									if(isset($resumenDescargardosPorProyecto)&& $resumenDescargardosPorProyecto!=0){	  
@@ -72,11 +73,34 @@
 									   <tr>
 									   <td><?=$resumen['nombre'] ?></td>
 									   <td><?=$resumen['nombre_completo'] ?></td>
-									   <td><?php $totalvalorSubelementoGasto+=$resumen['valorSubelementoGasto'];echo $resumen['valorSubelementoGasto']; ?></td>
+									   <td><?php 
+									   if($resumen['nombre']!='CARGA INICIAL'){
+									   $totalvalorSubelementoGasto+=$resumen['valorSubelementoGasto'];echo $resumen['valorSubelementoGasto'];
+										}
+										else
+										{
+											$totalDescargadoCargaInicial+=$resumen['valorSubelementoGastoDescargado']/$resumen['valor_indice_prorrateo'];
+											//si el subelemento es carga inicial obtengo el valor que se descargo dividiendo el valor descargado/ip
+											echo ($resumen['valorSubelementoGastoDescargado']/$resumen['valor_indice_prorrateo']);
+										}
+									   ?></td>
 									   <td><?=$resumen['valor_indice_prorrateo'] ?></td>
 									   <td><?php $totalvalorSubelementoGastoDescargado+=$resumen['valorSubelementoGastoDescargado'];echo $resumen['valorSubelementoGastoDescargado'] ?></td>
-									   <td><?php $totalvalorSubelementoGastoDescargadototal+=$resumen['valorSubelementoGastoDescargado']+$resumen['valorSubelementoGasto'];
-									              echo $resumen['valorSubelementoGastoDescargado']+$resumen['valorSubelementoGasto'] ?></td>
+									  
+									   <td>
+									   
+									   <?php 
+									    if($resumen['nombre']!='CARGA INICIAL'){
+									   $totalvalorSubelementoGastoDescargadototal+=$resumen['valorSubelementoGastoDescargado']+$resumen['valorSubelementoGasto'];
+												  echo $resumen['valorSubelementoGastoDescargado']+$resumen['valorSubelementoGasto'] ;
+										}
+										else
+										{
+											echo ($resumen['valorSubelementoGastoDescargado']/$resumen['valor_indice_prorrateo']	)+$resumen['valorSubelementoGastoDescargado'];
+										}
+									   ?>
+												  
+									   </td>
 									   </tr> 
 									   <?php } ?> 
                                                                                                                        

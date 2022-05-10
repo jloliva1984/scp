@@ -859,7 +859,13 @@ function submitContactForm(){
         alert('Existen campos sin completar.');
         $('#inputName').focus();
         return false;
-    }
+
+       }
+       if(monto>monto_original){
+        alert('El monto a descargar no puede ser mayor al monto existente ='+ monto_original);
+        $('#inputName').focus();
+        return false;  
+       }
     else{
         $.ajax({
             type:'POST',
@@ -871,6 +877,10 @@ function submitContactForm(){
                 $('.modal-body').css('opacity', '.5');
             },
             success:function(msg){
+              if(msg=='errorMonto')
+              {
+                $('.statusMsg').html('<span style="color:red;">El monto a descargar no puede ser mayor al monto existente.</p>');
+              }
                 if(msg == 'noIp'){
                     // $('#inputName').val('');
                     // $('#fecha').val('');
