@@ -823,7 +823,7 @@ function limpiarformulario(formulario) {
                 <form role="form">
                     <div class="form-group">
                         <label for="inputName">Monto a descargar</label>
-                        <input type="text" class="form-control" id="inputName" placeholder="Inserte valor o porciento con el formato numero% Ej. 25%"/>
+                        <input type="text" class="form-control" id="inputName" placeholder="Inserte valor a descargar"/>
                     </div>
                     <div class="form-group">
                         <label for="fecha">Fecha</label>
@@ -877,6 +877,7 @@ function submitContactForm(){
                 $('.modal-body').css('opacity', '.5');
             },
             success:function(msg){
+             
               if(msg=='errorMonto')
               {
                 $('.statusMsg').html('<span style="color:red;">El monto a descargar no puede ser mayor al monto existente.</p>');
@@ -887,9 +888,11 @@ function submitContactForm(){
                    
                     $('.statusMsg').html('<span style="color:red;">No existe índice de prorrateo definido para la fecha seleccionada.</p>');
                 }
-                if($msg == 'ok')
+                if(msg == 'ok')
                 {
+                 // alert('monto descargfado correctamente');
                   window.location.assign("<?php echo base_url()?>/Proyectos/descarga_show/" + id_proyecto);
+                  $('#exampleModal').close();
                 }
                 
                 $('.submitBtn').removeAttr("disabled");
