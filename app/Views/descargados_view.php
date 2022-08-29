@@ -17,7 +17,7 @@
 						
 						
 					    <div class="card-body">
-					    <div>
+					    <!-- <div>
 						<a href='<?php echo site_url('proyectos/proyectos_management')?>'>Proyectos</a> |
 						<a href='<?php echo site_url('SubElementosGastos/SubElementosGastos_management')?>'>Subelementos de gasto</a> |
 						<a href='<?php echo site_url('Especialidades/especialidades_management')?>'>Especialidades</a> |
@@ -26,7 +26,7 @@
 						<a href='<?php echo site_url('Usuarios/Usuarios_management')?>'>Usuarios</a> | 
 						<a href='<?php echo site_url('examples/employees_management')?>'>Employees</a> |		 
 						<a href='<?php echo site_url('examples/film_management')?>'>Films</a>
-					</div>
+					</div> -->
 
 					<div class="container-fluid text-right">
                                                    
@@ -68,6 +68,10 @@
 										$totalDescargadoCargaInicial=0;
 										$totalvalorSubelementoGastoDescargado=0;
 										$totalvalorSubelementoGastoDescargadototal=0;
+
+										// print "<pre>";
+										// print_r($resumenDescargardosPorProyecto);
+										// print "</pre>";
 									if(isset($resumenDescargardosPorProyecto)&& $resumenDescargardosPorProyecto!=0){	  
 									   foreach($resumenDescargardosPorProyecto as $resumen){ ?>
 									   <tr>
@@ -79,6 +83,7 @@
 										}
 										else
 										{
+											$totalvalorSubelementoGasto+=$resumen['valorSubelementoGastoDescargado']/$resumen['valor_indice_prorrateo'];
 											$totalDescargadoCargaInicial+=$resumen['valorSubelementoGastoDescargado']/$resumen['valor_indice_prorrateo'];
 											//si el subelemento es carga inicial obtengo el valor que se descargo dividiendo el valor descargado/ip
 											echo ($resumen['valorSubelementoGastoDescargado']/$resumen['valor_indice_prorrateo']);
@@ -96,6 +101,7 @@
 										}
 										else
 										{
+											$totalvalorSubelementoGastoDescargadototal+=($resumen['valorSubelementoGastoDescargado']/$resumen['valor_indice_prorrateo']	)+$resumen['valorSubelementoGastoDescargado'];
 											echo ($resumen['valorSubelementoGastoDescargado']/$resumen['valor_indice_prorrateo']	)+$resumen['valorSubelementoGastoDescargado'];
 										}
 									   ?>
